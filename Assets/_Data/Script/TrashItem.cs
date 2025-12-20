@@ -66,10 +66,6 @@ public class TrashItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         DestroyImmediate(itemToBeDeleted.gameObject);
         InventorySystem.Instance.ReCalculateList();
         CraftingSystem.Instance.RefreshNeededItems();
-       
-
-
-
     }
     private void ReturItemToWorld(string itemName)
     {

@@ -61,29 +61,38 @@ public class InventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
             if (isConsumable)
             {
                 // Setting this specific gameobject to be the item we want to destroy later
+
+                StartCoroutine(IfDragItem());
                 itemPendingConsumption = gameObject;
-                consumingFunction(healthEffect, caloriesEffect, hydrationEffect);
+
+                IEnumerator IfDragItem()
+                {
+                    yield return new WaitForSeconds(0.1f);
+                    itemPendingConsumption = null;
+                }
+               
             }
             
         }
     }
-
+   
     // Triggered when the mouse button is released over the item that has this script.
     public void OnPointerUp(PointerEventData eventData)
     {
-        //if (eventData.button == PointerEventData.InputButton.Left)
-        //{
+        if (eventData.button == PointerEventData.InputButton.Left)
+        {
 
-        //    if (isConsumable && itemPendingConsumption == gameObject)
-        //    {
-        //        DestroyImmediate(gameObject);
-        //        InventorySystem.Instance.ReCalculateList();
-        //        CraftingSystem.Instance.RefreshNeededItems();
-        //    }
-        //}
+            if (isConsumable && itemPendingConsumption == gameObject)
+            {
+                consumingFunction();
+                DestroyImmediate(gameObject);
+                InventorySystem.Instance.ReCalculateList();
+                CraftingSystem.Instance.RefreshNeededItems();
+            }
+        }
     }
 
-    private void consumingFunction(float healthEffect, float caloriesEffect, float hydrationEffect)
+    public void consumingFunction()
     {
         itemInfoUI.SetActive(false);
 
@@ -93,7 +102,9 @@ public class InventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
         hydrationEffectCalculation(hydrationEffect);
 
+
     }
+   
 
 
     private static void healthEffectCalculation(float healthEffect)

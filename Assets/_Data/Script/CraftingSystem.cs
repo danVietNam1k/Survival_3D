@@ -8,23 +8,24 @@ public class CraftingSystem : MonoBehaviour
 
     public GameObject craftingScreenUI;
     public GameObject toolsScreenUI;
+    public GameObject constructScreenUI;
+    public Transform menuButtons;
 
-    public List<string> inventoryItemList = new List<string>();
-
-    //Category Buttons
+    //IN Menu Buttons
     Button toolsBTN;
-
+    Button constructBTN;
     //Craft Buttons
     Button craftAxeBTN;
-
+    Button craftPlankBTN;
     //Requirement Text
     Text AxeReq1, AxeReq2;
+    Text plankReq;
 
     public bool isOpen;
 
     //All Blueprints
-    private Blueprint AxeBLP = new Blueprint("Axe", 2, "Stone", 3, "Stick", 3);
-
+    private Blueprint AxeBLP = new Blueprint("Axe",1, 2, "Stone", 3, "Stick", 3);
+    private Blueprint PlankBLP = new Blueprint("Plank",2, 1, "Log", 1, "", 0);
 
     public static CraftingSystem Instance { get; set; }
 
@@ -48,11 +49,17 @@ public class CraftingSystem : MonoBehaviour
         if(craftingScreenUI == null || toolsScreenUI == null)
         {
             craftingScreenUI = ReferenceManager.Instance.canvas.Find("CraftingScreen").gameObject;
-            toolsScreenUI = ReferenceManager.Instance.canvas.Find("ToolCategoryScreen ").gameObject;
+            toolsScreenUI = ReferenceManager.Instance.canvas.Find("CategoryScreen").Find("ToolCategoryScreen").gameObject;
+            constructScreenUI = ReferenceManager.Instance.canvas.Find("CategoryScreen").Find("ContructCategoryScreen").gameObject;
         }
-        toolsBTN = craftingScreenUI.transform.Find("Button").Find("ToolsButton").GetComponent<Button>();
+        menuButtons = craftingScreenUI.transform.Find("MenuButton").transform;
+
+
+        toolsBTN = menuButtons.Find("ButtonTools").Find("ToolsButton").GetComponent<Button>();
         toolsBTN.onClick.AddListener(delegate { OpenToolsCategory(); });
 
+        constructBTN = menuButtons.Find("ButtonConstruct").Find("ConstructButton").GetComponent<Button>();
+        constructBTN.onClick.AddListener(delegate { OpenConstructCategory(); });
         // AXE
         AxeReq1 = toolsScreenUI.transform.Find("Button").Find("AxeCraft").Find("req1").GetComponent<Text>();
         AxeReq2 = toolsScreenUI.transform.Find("Button").Find("AxeCraft").Find("req2").GetComponent<Text>();
@@ -60,6 +67,11 @@ public class CraftingSystem : MonoBehaviour
         craftAxeBTN = toolsScreenUI.transform.Find("Button").Find("AxeCraft").transform.Find("CraftButton").GetComponent<Button>();
         craftAxeBTN.onClick.AddListener(delegate { CraftAnyItem(AxeBLP); });
 
+        //Plank
+        plankReq = constructScreenUI.transform.Find("Button").Find("PlankCraft").Find("req1").GetComponent<Text>();
+
+        craftPlankBTN = constructScreenUI.transform.Find("Button").Find("PlankCraft").transform.Find("CraftButton").GetComponent<Button>();
+        craftPlankBTN.onClick.AddListener(delegate { CraftAnyItem(PlankBLP); });
     }
 
 
@@ -68,12 +80,20 @@ public class CraftingSystem : MonoBehaviour
         craftingScreenUI.SetActive(false);
         toolsScreenUI.SetActive(true);
     }
+    void OpenConstructCategory()
+    {
+        craftingScreenUI.SetActive(false);
+        constructScreenUI.SetActive(true);
+    }
 
 
     void CraftAnyItem(Blueprint blueprintToCraft)
     {
-
-        InventorySystem.Instance.AddToInventory((blueprintToCraft.itemName));
+        for(int i = 0; i < blueprintToCraft.amountCraftItem; i++)
+        {
+            InventorySystem.Instance.AddToInventory((blueprintToCraft.itemName));
+        }
+      
 
         if (blueprintToCraft.numOfRequirements == 1)
         {
@@ -84,31 +104,45 @@ public class CraftingSystem : MonoBehaviour
             InventorySystem.Instance.RemoveItem(blueprintToCraft.Req1, blueprintToCraft.Req1amount);
             InventorySystem.Instance.RemoveItem(blueprintToCraft.Req2, blueprintToCraft.Req2amount);
         }
-        InventorySystem.Instance.ReCalculateList();
 
-        RefreshNeededItems();
+      RefreshNeededItems();
     }
   
     public void RefreshNeededItems()
     {
         int stone_count = 0;
         int stick_count = 0;
-
-        inventoryItemList = InventorySystem.Instance.itemList;
-
-        foreach (string itemName in inventoryItemList)
+        int logWood_count = 0;
+        InventorySystem.Instance.ReCalculateList();
+        foreach (string itemName in InventorySystem.Instance.itemList)
         {
-            switch (itemName)
-            {
-                case "Stone":
-                    stone_count += 1;
-                    break;
-                case "Stick":
-                    stick_count += 1;
-                    break;
-            }
+            //switch (itemName)
+            //{
+            //    case "Stone":
+            //        stone_count += 1;
+            //        break;
+            //    case "Stick":
+            //        stick_count += 1;
+            //        break;
+            //}
+            if(itemName == "Stone") { stone_count += 1; }
+            if (itemName == "Stick") { stick_count += 1; }
+            if (itemName == "Log") { logWood_count += 1; }
         }
+        //   Plank
+        plankReq.text = logWood_count + "/1 Log Wood";
+
+        if (logWood_count >= 1)
+        {
+            craftPlankBTN.gameObject.SetActive(true);
+        }
+        else
+        {
+            craftPlankBTN.gameObject.SetActive(false);
+        }
+
         //------Axe-----//
+
         AxeReq1.text = stone_count+ "/3 Stones";
         AxeReq2.text = stick_count+ "/3 Sticks";
 

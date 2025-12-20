@@ -6,6 +6,8 @@ public class TheItemEquipping : MonoBehaviour
 {
     public KeyCode action = KeyCode.Mouse0;
     Animator animator;
+    public float thisDamege;
+    public GameObject thisItemInQuickSlot;
     void Start()
     {
         animator = GetComponent<Animator>();    
@@ -14,9 +16,26 @@ public class TheItemEquipping : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(action))
+        if (Input.GetKeyDown(action) && !InventorySystem.Instance.isOpenInventory)
         {
             animator.SetTrigger("Action");
         }
     }
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.GetComponent<InteractableObject>() != null && other.GetComponent<InteractableObject>().CanHit)
+        {
+            other.GetComponent<InteractableObject>().TakeDamege(thisDamege);
+        }
+    }
+    public void Consumed()
+    {
+        if (!thisItemInQuickSlot.GetComponent<InventoryItem>().isConsumable) return;
+
+        thisItemInQuickSlot.GetComponent<InventoryItem>().consumingFunction();
+        EquipSystem.Instance.DropItemInQuickSlot();
+        Destroy(thisItemInQuickSlot);
+        Destroy(gameObject);
+    }
+    
 }

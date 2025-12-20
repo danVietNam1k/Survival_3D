@@ -98,6 +98,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   action: 323
+  thisDamege: 0
+  thisItemInQuickSlot: {fileID: 0}
 --- !u!95 &3166289165600550123
 Animator:
   serializedVersion: 5
@@ -108,7 +110,7 @@ Animator:
   m_GameObject: {fileID: 7348985678091246311}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: b983760ca99dca243be945642fd17f91, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

@@ -152,7 +152,7 @@ public class FirstPersonController : MonoBehaviour
 
     void Start()
     {
-        if (!InventorySystem.Instance.isOpen)
+        if (!InventorySystem.Instance.isOpenInventory)
         {
             Cursor.lockState = CursorLockMode.Locked;
         }else Cursor.lockState = CursorLockMode.None;
@@ -209,7 +209,7 @@ public class FirstPersonController : MonoBehaviour
         // Control camera movement
         if(cameraCanMove)
         {
-            if(!InventorySystem.Instance.isOpen)
+            if(!InventorySystem.Instance.isOpenInventory)
             {
                 yaw = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * mouseSensitivity;
 

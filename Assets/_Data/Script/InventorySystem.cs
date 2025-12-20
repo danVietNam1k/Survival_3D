@@ -13,14 +13,14 @@ public class InventorySystem : MonoBehaviour
     public static InventorySystem Instance { get; set; }
 
     public GameObject inventoryScreenUI;
-    public GameObject craftingScreen, toolCategoryScreen;
+    public GameObject craftingScreen, toolCategoryScreen, contructCategoryScreen;
     public GameObject inforItemPopup;
     public GameObject ThrowItemAreaUI;
     public GameObject itemInforUI;
 
-    public bool isOpen;
-    public List<GameObject> slotList ;
-    public List<string> itemList;
+    public bool isOpenInventory;
+    public List<GameObject> slotList = new List<GameObject>();
+    public List<string> itemList = new List<string>();
     private GameObject itemToAdd;
     public bool isFull;
     private GameObject whatSlotToEquip;
@@ -37,27 +37,29 @@ public class InventorySystem : MonoBehaviour
     }
     void Start()
     {
-        isOpen = inventoryScreenUI.activeSelf;
+        isOpenInventory = inventoryScreenUI.activeSelf;
         PopulateSlotList();
     }
     void Update()
     {
-
+       
         OpenInventory();
-
 
     }
     void OpenInventory()
     {
         if (Input.GetKeyDown(KeyCode.I))
         {
-            isOpen = !isOpen;
-            inventoryScreenUI.SetActive(isOpen);
-            ThrowItemAreaUI.SetActive(isOpen);
+            ReferenceManager.Instance.craftingSystem.RefreshNeededItems();
+            isOpenInventory = !isOpenInventory;
+            inventoryScreenUI.SetActive(isOpenInventory);
+            ThrowItemAreaUI.SetActive(isOpenInventory);
             craftingScreen.SetActive(inventoryScreenUI.activeSelf);
             if (!inventoryScreenUI.activeSelf)
             {
                 toolCategoryScreen.SetActive(false);
+                contructCategoryScreen.SetActive(false);
+
             }
             if (inventoryScreenUI.activeSelf)
             {
@@ -97,9 +99,8 @@ public class InventorySystem : MonoBehaviour
             itemToAdd.transform.SetParent(whatSlotToEquip.transform);
             itemToAdd.name = itemName;
             Debug.Log(itemToAdd.name);
-            itemList.Add(itemToAdd.name);
             OpenPopupItem(itemName, itemToAdd);
-
+          
         }
     }
     GameObject FindNextEptySlot()
@@ -131,24 +132,52 @@ public class InventorySystem : MonoBehaviour
     }
     public void RemoveItem(string nameToRemove, int amountToRemove)
     {
-        var itemsToRemove = slotList
-            .Where(s => s.transform.childCount > 0 && s.transform.GetChild(0).name == nameToRemove)
-            .Take(amountToRemove);
+        //var itemsToRemove = slotList
+        //    .Where(s => s.transform.childCount > 0 && s.transform.GetChild(0).name == nameToRemove)
+        //    .Take(amountToRemove);
 
-        foreach (var item in itemsToRemove)
+        //foreach (var item in itemsToRemove)
+        //{
+
+        //    Destroy(item.transform.GetChild(0).gameObject);
+
+        //}
+        //ReCalculateList();
+
+        Debug.Log("remove item");
+        int amount = 0;
+        foreach (GameObject slot in slotList)
         {
-            Destroy(item.transform.GetChild(0).gameObject);
+
+            if (slot.transform.childCount > 0 && slot.transform.GetChild(0).name == nameToRemove)
+            {
+                amount++;
+                DestroyImmediate(slot.transform.GetChild(0).gameObject);
+                if (amount == amountToRemove)
+                {
+
+                    return;
+                }
+            }
+
         }
+
     }
     public void ReCalculateList()
     {
         itemList.Clear();
         foreach (GameObject item in slotList)
         {
-            if(item.transform.childCount > 0)
-            itemList.Add(item.transform.GetChild(0).name);
+            if (item.transform.childCount > 0)
+            {
+                itemList.Add(item.transform.GetChild(0).name);
+              
+            }
+
         }
     }
+   
+    
     void OpenPopupItem(string itemName, GameObject item)
     {
         inforItemPopup.SetActive(false);

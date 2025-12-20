@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 public class EquipSystem : MonoBehaviour
 {
@@ -63,14 +64,18 @@ public class EquipSystem : MonoBehaviour
             SelectQuickSlot(5);
         }
         //check DropItem
-        if (selectedNumber != -1&& handHoldItem.childCount != quickSlotsList[selectedNumber -1].transform.childCount)
+        if (selectedNumber != -1&& handHoldItem.childCount != quickSlotsList[selectedNumber-1].transform.childCount)
         {
             SetUnEquippedModel();
-            foreach (Transform child in numbersHolder.transform)
-            {
-                child.transform.Find("number").GetComponent<Text>().color = Color.gray;
-                selectedNumber = -1;
-            }
+            SelectQuickSlot(-1);
+            //for (int i = 0;i >= quickSlotsList.Count - 1; i++)
+            //{
+            //    numbersHolder.transform.GetChild(i).Find("number").GetComponent<Text>().color = Color.gray;
+            //    //if (quickSlotsList[i].transform.childCount == 0)
+            //    //{
+            //    //    numbersHolder.transform.GetChild(i).Find("number").GetComponent<Text>().color = Color.gray;
+            //    //}
+            //}
         }
 
     }
@@ -136,15 +141,28 @@ public class EquipSystem : MonoBehaviour
             return false;
         }
     }
-
+    public void DropItemInQuickSlot()
+    {
+        selectedNumber = -1;
+        foreach (Transform child in numbersHolder.transform)
+        {
+            child.transform.Find("number").GetComponent<Text>().color = Color.gray;
+        }
+        return;
+    }
     void SelectQuickSlot(int number)
     {
+        if (number == -1)
+        {
+            DropItemInQuickSlot();
+        }
         if (checkIfSlotIsFull(number) == true)
         {
             SetUnEquippedModel();
             if (selectedNumber != number)
             {
                 selectedNumber = number;
+                //drop item on quickslot
                 // Unselect previously selected item
                 if (selectedItem != null)
                 {
@@ -152,13 +170,17 @@ public class EquipSystem : MonoBehaviour
                 }
                 selectedItem = GetSelectedItem(number);
                 selectedItem.GetComponent<InventoryItem>().isSelected = true;
-                SetEquippedModel(selectedItem.name);
+                SetEquippedModel(selectedItem.name, selectedItem);
+                
+
+
                 // Changing the color
                 foreach (Transform child in numbersHolder.transform)
                 {
                     child.transform.Find("number").GetComponent<Text>().color = Color.gray;
                 }
-                Text toBeChanged = numbersHolder.transform.Find("ImageSlot" + number).transform.Find("number").GetComponent<Text>();
+                Text toBeChanged = numbersHolder.transform.GetChild(number -1).GetChild(0).GetComponent<Text>();
+                Debug.Log(toBeChanged.gameObject);
                 toBeChanged.color = Color.white;
             }
             else
@@ -175,14 +197,14 @@ public class EquipSystem : MonoBehaviour
         
 
     }
-    void SetEquippedModel(string itemName)
+    void SetEquippedModel(string itemName,GameObject itemInQuickSlot)
     {
        
         GameObject item = Instantiate(Resources.Load<GameObject>("Item_on_hand/" + itemName), handHoldItem);
         item.transform.position = handHoldItem.transform.position;
         item.transform.Rotate(0f, -10f, -20f);
         item.name = itemName;
-
+        item.GetComponent<TheItemEquipping>().thisItemInQuickSlot = itemInQuickSlot;
     }
     void SetUnEquippedModel()
     {

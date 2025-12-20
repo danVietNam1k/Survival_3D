@@ -7,15 +7,18 @@ using UnityEngine.UI;
 public class SelectionManager : MonoBehaviour
 {
 
-    public GameObject interaction_Info_UI;
+    public GameObject interaction_InfoName_UI;
+    public GameObject interaction_Info_Hp;
     public Crosshair crosshair;
     Text interaction_text;
+    Slider interaction_Hp;
     [SerializeField] LayerMask layerMask;
 
     private void Start()
     {
         
-        interaction_text = interaction_Info_UI.GetComponent<Text>();
+        interaction_text = interaction_InfoName_UI.GetComponent<Text>();
+        interaction_Hp = interaction_Info_Hp.GetComponent<Slider>();
     }
 
     void Update()
@@ -37,20 +40,25 @@ public class SelectionManager : MonoBehaviour
             if (selectionTransform.GetComponent<InteractableObject>())
             {
                 interaction_text.text = selectionTransform.GetComponent<InteractableObject>().GetItemName();
-                interaction_Info_UI.SetActive(true);
+                interaction_InfoName_UI.SetActive(true);
                 //Debug.DrawRay(ray.origin, hit.transform.position, Color.green);
+                ShowHp(selectionTransform);
             }
             else
             {
 
-                interaction_Info_UI.SetActive(false);
+                interaction_InfoName_UI.SetActive(false);
+                interaction_Info_Hp.SetActive(false);
+
             }
 
         }
         else
         {
 
-            interaction_Info_UI.SetActive(false);
+            interaction_InfoName_UI.SetActive(false);
+            interaction_Info_Hp.SetActive(false);
+
         }
     }
     void ActionPickUp(Transform pickup)
@@ -60,5 +68,11 @@ public class SelectionManager : MonoBehaviour
         {
             pickup.GetComponent<PickUp>()?.PickUpItem();
         }
+    }
+    void ShowHp(Transform hit)
+    {
+        if(hit.GetComponent<InteractableObject>().CanHit ==false)return;
+        interaction_Hp.value = hit.GetComponent<InteractableObject>().GetHpInfor();
+        interaction_Info_Hp.SetActive(true);
     }
 }

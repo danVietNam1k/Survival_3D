@@ -10,13 +10,26 @@ public class ReferenceManager : MonoBehaviour
     public PlayerState playerState;
     public Transform canvas;
     public Transform player;
+    public CraftingSystem craftingSystem;
     private void Awake()
     {
         if(Instance != null && Instance!=this)  Destroy(gameObject);
         else Instance = this;
+        CheckNullReference();
 
-        selectionManager = this.transform.Find("SelectionManager").GetComponent<SelectionManager>();
-        inventorySystem = this.transform.Find("InventorySystem").GetComponent<InventorySystem>();
-        playerState = this.transform.Find("PlayerState").GetComponent<PlayerState>();
+    }
+    void CheckNullReference()
+    {
+        if(selectionManager ==null)
+            selectionManager = GetComponentInChildren<SelectionManager>();
+        if (inventorySystem == null)
+
+            inventorySystem = GetComponentInChildren<InventorySystem>();
+        if (playerState == null)
+
+            playerState = GetComponentInChildren<PlayerState>();
+        if (craftingSystem == null)
+
+            craftingSystem = GetComponentInChildren<CraftingSystem>();
     }
 }
