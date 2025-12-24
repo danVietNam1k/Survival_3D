@@ -7,6 +7,10 @@ TagManager:
   - Slot
   - CanPickUp
   - QuickSlot
+  - Ground
+  - Constructed
+  - GhostConstruction
+  - GhostConstructed
   layers:
   - Default
   - TransparentFX
@@ -16,12 +20,12 @@ TagManager:
   - UI
   - Player
   - ItemEquipable
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Ground
+  - GhostConstruction
+  - Constructed
+  - GhostConstructed
+  - GhostConstructedFloor
+  - GhostConstructedWall
   - 
   - 
   - 

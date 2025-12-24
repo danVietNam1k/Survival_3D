@@ -33,7 +33,7 @@ public class InteractableObject : MonoBehaviour
     void DaedState()
     {
         GameObject obj = null;
-        foreach (string nameTree in GroupFamily.FamilyTree)
+        foreach (string nameTree in NameStatic.FamilyTree)
         {
             if (ItemName == nameTree)
             {
@@ -42,9 +42,9 @@ public class InteractableObject : MonoBehaviour
             }
         }
 
-        foreach (string nameTree in GroupFamily.FamilyAnimal)
+        foreach (string nameAnimal in NameStatic.FamilyAnimal)
         {
-            if (ItemName == nameTree)
+            if (ItemName == nameAnimal)
             {
                 obj = Instantiate(Resources.Load<GameObject>("Item_obj/Meat"));
                 goto determined;
@@ -62,11 +62,4 @@ public class InteractableObject : MonoBehaviour
     }
 
 }
-    public class GroupFamily
-{
-    
-    public static List<string> FamilyTree = new List<string>{ "Pine tree", "Willow tree", "Oak tree", "Deciduous tree", "Birch tree" };
-    public static List<string> FamilyAnimal = new List<string> { "Rabbit" };
 
-
-}

@@ -17,7 +17,7 @@ public class InventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     private Text itemInfoUI_itemFunctionality;
 
     public string thisName, thisDescription, thisFunctionality;
-
+    
     // --- Consumption --- //
     private GameObject itemPendingConsumption;
     public bool isConsumable;
@@ -87,7 +87,7 @@ public class InventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
                 consumingFunction();
                 DestroyImmediate(gameObject);
                 InventorySystem.Instance.ReCalculateList();
-                CraftingSystem.Instance.RefreshNeededItems();
+                //CraftingSystem.Instance.RefreshNeededItems();
             }
         }
     }

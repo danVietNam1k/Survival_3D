@@ -55,7 +55,10 @@ public class TrashItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         //itemToBeDeleted = DragDrop.itemBeingDragged.gameObject;
         if (draggedItem.GetComponent<InventoryItem>().cannotTrash == false)
         {
-            itemToBeDeleted = draggedItem.gameObject;
+
+            itemToBeDeleted = draggedItem;
+            EquipSystem.Instance.SetUnEquippedModel();
+            EquipSystem.Instance.selectedNumber = -1;
             DeleteItemInventory();
         }
 
@@ -65,7 +68,7 @@ public class TrashItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         ReturItemToWorld(itemToBeDeleted.name);
         DestroyImmediate(itemToBeDeleted.gameObject);
         InventorySystem.Instance.ReCalculateList();
-        CraftingSystem.Instance.RefreshNeededItems();
+        //CraftingSystem.Instance.RefreshNeededItems();
     }
     private void ReturItemToWorld(string itemName)
     {

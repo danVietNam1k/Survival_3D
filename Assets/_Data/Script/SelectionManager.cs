@@ -6,14 +6,18 @@ using UnityEngine.UI;
 
 public class SelectionManager : MonoBehaviour
 {
-
+    static SelectionManager instance;
+    public static SelectionManager Instance => instance;
     public GameObject interaction_InfoName_UI;
     public GameObject interaction_Info_Hp;
     public Crosshair crosshair;
     Text interaction_text;
     Slider interaction_Hp;
     [SerializeField] LayerMask layerMask;
-
+    private void Awake()
+    {
+        instance = this;
+    }
     private void Start()
     {
         
@@ -28,6 +32,13 @@ public class SelectionManager : MonoBehaviour
     void RayCastCheck()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHitOntrigger(ray);
+        RaycastHit(ray);
+    }
+    
+
+    private void RaycastHit(Ray ray)
+    {
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, 3f, layerMask))
         {
@@ -58,9 +69,24 @@ public class SelectionManager : MonoBehaviour
 
             interaction_InfoName_UI.SetActive(false);
             interaction_Info_Hp.SetActive(false);
+            crosshair.SwitchCrosshair(null);
 
         }
     }
+    private Transform RaycastHitOntrigger(Ray ray)
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit, 3f, layerMask,QueryTriggerInteraction.Collide))
+        {
+            return hit.transform;
+
+        }
+        else
+        {
+            return null;
+        }
+    }
+
     void ActionPickUp(Transform pickup)
     {
        

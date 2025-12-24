@@ -129,11 +129,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cannotTrash: 0
+  isSelected: 0
   itemInfoUI: {fileID: 0}
   thisName: Stone
   thisDescription: 
   thisFunctionality: 
-  isConsumable: 0
-  healthEffect: 0
-  caloriesEffect: 0
-  hydrationEffect: 0
+  isConsumable: 1
+  healthEffect: 20
+  caloriesEffect: 300
+  hydrationEffect: 10

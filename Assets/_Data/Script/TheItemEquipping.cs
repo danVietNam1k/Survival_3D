@@ -33,7 +33,7 @@ public class TheItemEquipping : MonoBehaviour
         if (!thisItemInQuickSlot.GetComponent<InventoryItem>().isConsumable) return;
 
         thisItemInQuickSlot.GetComponent<InventoryItem>().consumingFunction();
-        EquipSystem.Instance.DropItemInQuickSlot();
+        EquipSystem.Instance.NotChoseItemInQuickSlot();
         Destroy(thisItemInQuickSlot);
         Destroy(gameObject);
     }

@@ -11,8 +11,7 @@ GameObject:
   - component: {fileID: 4918632398753201016}
   - component: {fileID: 5740591865836506643}
   - component: {fileID: 4921195085338417553}
-  - component: {fileID: -5667926189377423669}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Meat
   m_TagString: CanPickUp
   m_Icon: {fileID: 0}
@@ -84,17 +83,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &-5667926189377423669
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7348985678091246311}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 255eacd8725314745ad3a03810095fb2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  action: 323
-  thisDamege: 0

@@ -100,7 +100,7 @@ GameObject:
   - component: {fileID: 4363742799186533812}
   m_Layer: 0
   m_Name: Log
-  m_TagString: Untagged
+  m_TagString: CanPickUp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

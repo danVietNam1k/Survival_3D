@@ -14,6 +14,13 @@ public class Crosshair : MonoBehaviour
     }
     public void SwitchCrosshair(Transform target)
     {
+
+        if (target == null) {
+            dotCrosshair.gameObject.SetActive(true);
+            handCrosshair.gameObject.SetActive(false);
+            return;
+        }
+
         switch (target.tag)
         {
             case "CanPickUp":

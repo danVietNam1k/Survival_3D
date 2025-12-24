@@ -12,9 +12,10 @@ public class EquipSystem : MonoBehaviour
     // -- UI -- //
     public GameObject quickSlotsPanel, numbersHolder;
     public Transform handHoldItem;
+    public Transform referenceItemHolding = null;
     public List<GameObject> quickSlotsList = new List<GameObject>();
     public List<string> itemListQuickSlot = new List<string>();
-    int selectedNumber = -1;
+    public int selectedNumber = -1;
     public GameObject selectedItem;
     private void Awake()
     {
@@ -40,45 +41,19 @@ public class EquipSystem : MonoBehaviour
     }
     void ChoseSlot()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        for (int i = 1; i <= quickSlotsList.Count; i++)
         {
-            SelectQuickSlot(1);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            SelectQuickSlot(2);
-
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            SelectQuickSlot(3);
-
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
-            SelectQuickSlot(4);
-
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha5))
-        {
-            SelectQuickSlot(5);
+            if (Input.GetKeyDown(KeyCode.Alpha0 + i))
+            {
+                SelectQuickSlot(i);
+                break;
+            }
         }
         //check DropItem
-        if (selectedNumber != -1&& handHoldItem.childCount != quickSlotsList[selectedNumber-1].transform.childCount)
-        {
-            SetUnEquippedModel();
-            SelectQuickSlot(-1);
-            //for (int i = 0;i >= quickSlotsList.Count - 1; i++)
-            //{
-            //    numbersHolder.transform.GetChild(i).Find("number").GetComponent<Text>().color = Color.gray;
-            //    //if (quickSlotsList[i].transform.childCount == 0)
-            //    //{
-            //    //    numbersHolder.transform.GetChild(i).Find("number").GetComponent<Text>().color = Color.gray;
-            //    //}
-            //}
-        }
+    
 
     }
+ 
 
     private void PopulateSlotList()
     {
@@ -116,7 +91,7 @@ public class EquipSystem : MonoBehaviour
                 return slot;
             }
         }
-        return new GameObject();
+        return null;
     }
 
     public bool CheckIfFull()
@@ -141,9 +116,12 @@ public class EquipSystem : MonoBehaviour
             return false;
         }
     }
-    public void DropItemInQuickSlot()
+    public void NotChoseItemInQuickSlot()
     {
-        selectedNumber = -1;
+        //if(referenceItemHolding == null) selectedNumber = -1;
+
+
+
         foreach (Transform child in numbersHolder.transform)
         {
             child.transform.Find("number").GetComponent<Text>().color = Color.gray;
@@ -152,10 +130,7 @@ public class EquipSystem : MonoBehaviour
     }
     void SelectQuickSlot(int number)
     {
-        if (number == -1)
-        {
-            DropItemInQuickSlot();
-        }
+       
         if (checkIfSlotIsFull(number) == true)
         {
             SetUnEquippedModel();
@@ -171,17 +146,20 @@ public class EquipSystem : MonoBehaviour
                 selectedItem = GetSelectedItem(number);
                 selectedItem.GetComponent<InventoryItem>().isSelected = true;
                 SetEquippedModel(selectedItem.name, selectedItem);
-                
+
 
 
                 // Changing the color
                 foreach (Transform child in numbersHolder.transform)
                 {
                     child.transform.Find("number").GetComponent<Text>().color = Color.gray;
+                    if(child.transform == numbersHolder.transform.GetChild(number - 1))
+                    {
+                        child.transform.Find("number").GetComponent<Text>().color =Color.white;
+                    }
                 }
-                Text toBeChanged = numbersHolder.transform.GetChild(number -1).GetChild(0).GetComponent<Text>();
-                Debug.Log(toBeChanged.gameObject);
-                toBeChanged.color = Color.white;
+                //Text toBeChanged = numbersHolder.transform.GetChild(number - 1).GetChild(0).GetComponent<Text>();
+                //toBeChanged.color = Color.white;
             }
             else
             {
@@ -191,8 +169,9 @@ public class EquipSystem : MonoBehaviour
                     child.transform.Find("number").GetComponent<Text>().color = Color.gray;
                 }
             } // We are trying to select the same slot
-           
+
         }
+        else { }
 
         
 
@@ -204,13 +183,18 @@ public class EquipSystem : MonoBehaviour
         item.transform.position = handHoldItem.transform.position;
         item.transform.Rotate(0f, -10f, -20f);
         item.name = itemName;
+        if (item.GetComponent<TheItemEquipping>() != null)
         item.GetComponent<TheItemEquipping>().thisItemInQuickSlot = itemInQuickSlot;
+        referenceItemHolding = item.transform;
+        
     }
-    void SetUnEquippedModel()
+    public void SetUnEquippedModel()
     {
-        if(handHoldItem.childCount==0) return;
-        GameObject item = handHoldItem.GetChild(0).gameObject;
-        Destroy(item);
+        if(handHoldItem.childCount==0 || referenceItemHolding == null) return;
+        
+        Destroy(referenceItemHolding.gameObject);
+        referenceItemHolding = null;
+        NotChoseItemInQuickSlot();
     }
     GameObject GetSelectedItem(int slotNumber)
     {

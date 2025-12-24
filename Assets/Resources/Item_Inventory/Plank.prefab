@@ -131,7 +131,7 @@ MonoBehaviour:
   cannotTrash: 0
   isSelected: 0
   itemInfoUI: {fileID: 0}
-  thisName: Stone
+  thisName: Plank
   thisDescription: 
   thisFunctionality: 
   isConsumable: 0

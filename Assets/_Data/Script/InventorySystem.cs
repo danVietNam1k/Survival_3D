@@ -50,7 +50,7 @@ public class InventorySystem : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.I))
         {
-            ReferenceManager.Instance.craftingSystem.RefreshNeededItems();
+            //ReferenceManager.Instance.craftingSystem.RefreshNeededItems();
             isOpenInventory = !isOpenInventory;
             inventoryScreenUI.SetActive(isOpenInventory);
             ThrowItemAreaUI.SetActive(isOpenInventory);
@@ -69,6 +69,11 @@ public class InventorySystem : MonoBehaviour
             {
                 Cursor.lockState = CursorLockMode.Locked;
             }
+        }
+        if( isOpenInventory)
+        {
+            CraftingSystem.Instance.RefreshNeededItems();
+
         }
     }
     public void PopulateSlotList()
@@ -98,9 +103,8 @@ public class InventorySystem : MonoBehaviour
             itemToAdd = Instantiate(Resources.Load<GameObject>("Item_Inventory/"+itemName), whatSlotToEquip.transform);
             itemToAdd.transform.SetParent(whatSlotToEquip.transform);
             itemToAdd.name = itemName;
-            Debug.Log(itemToAdd.name);
             OpenPopupItem(itemName, itemToAdd);
-          
+            //CraftingSystem.Instance.RefreshNeededItems();
         }
     }
     GameObject FindNextEptySlot()
@@ -144,7 +148,6 @@ public class InventorySystem : MonoBehaviour
         //}
         //ReCalculateList();
 
-        Debug.Log("remove item");
         int amount = 0;
         foreach (GameObject slot in slotList)
         {
