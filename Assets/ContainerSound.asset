@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50750bd38677abd48aaba3e529942f10, type: 3}
+  m_Name: ContainerSound
+  m_EditorClassIdentifier: 
+  musicsBackground:
+  - {fileID: 8300000, guid: c32c54d16e9a19e4891dd514751e94fc, type: 3}
+  - {fileID: 8300000, guid: e8dbd693f734cf944b61bda8651597c9, type: 3}
+  - {fileID: 8300000, guid: 50147a8651963c748a46c73d2702de5e, type: 3}
+  - {fileID: 8300000, guid: 49a8354c6d2140f48a43481d4ba477cd, type: 3}
+  axeChoppingTree:
+  - {fileID: 8300000, guid: 39ab55127bb97aa43a798f298adfa350, type: 3}
+  - {fileID: 8300000, guid: 7750088278caa1742bc0bafee8783b2a, type: 3}
+  - {fileID: 8300000, guid: 89c22392cbbb1ab4184b3d866b95dd65, type: 3}
+  axeAtack: []
+  axeSwing: {fileID: 8300000, guid: 2095bd595c792654ea6b4315809502a6, type: 3}
+  playerWalk: {fileID: 8300000, guid: b273053803a5e9547b9dab633f5b86a0, type: 3}
+  playerJump: {fileID: 0}
+  playerSprint: {fileID: 8300000, guid: 70d0577c3bdc46b49b053efbd2723f89, type: 3}

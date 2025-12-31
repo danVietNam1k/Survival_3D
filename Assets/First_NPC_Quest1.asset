@@ -1,0 +1,52 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a15c565a910f3ab4eb93f670902c7a8e, type: 3}
+  m_Name: First_NPC_Quest1
+  m_EditorClassIdentifier: 
+  initialDialog:
+  - Hello stranger!
+  - Who are you? I've never seen you before.
+  - I have a small problem, can you help me?
+  - Give me three pieces of meat. Where are they? Kill a rabbit to get them.
+  - Don't worry, I'll give you the money.
+  initialDialogClips:
+  - {fileID: 8300000, guid: ee7d5037f8d01b346800a178924afc0d, type: 3}
+  - {fileID: 8300000, guid: 084e06d7cb1a1e24a8c71ab46c2b258a, type: 3}
+  - {fileID: 8300000, guid: 05be6ba6a2aa3cc43b0fc4477af7e9e4, type: 3}
+  - {fileID: 8300000, guid: 822158361106a8743826caf5a5f7c164, type: 3}
+  - {fileID: 8300000, guid: 26934548a90131e448cb4595233d6142, type: 3}
+  acceptOption: "C\u1EE9 g\u1ECDi l\xE0 \xF4 k\xEA"
+  acceptAnswer: Thanks, bro, I really appreciate your help.
+  acceptAnswerClip: {fileID: 8300000, guid: 8b4b1be0518094644bcc298bbfe0a20d, type: 3}
+  declineOption: "T\xF4i kh\xF4ng th\u1EC3 "
+  declineAnswer: I see. If you have a change of mind, please come back here.
+  declineAnswerClip: {fileID: 8300000, guid: ca59245cddb525b4eb891d095f973c36, type: 3}
+  comebackAfterDecline: Have you changed your mind?
+  comebackAfterDeclineClip: {fileID: 8300000, guid: 5034ced520d551e43a4c93b28c1772bd, type: 3}
+  comebackInProgress: Are you having any problems? I'm still waiting.
+  comebackInProgressClip: {fileID: 8300000, guid: d6b547667e4b29444a629c6a0e133e5b, type: 3}
+  comebackCompleted: Well done, and this is your reward, or do you want a special
+    reward? Just kidding, haha.
+  comebackCompletedClip: {fileID: 8300000, guid: a104ed746d4fae94f9092397028045b9, type: 3}
+  finalWords: Rabbit meat is delicious, but they are so cute, I can't bring myself
+    to kill them. Thank you for your help.
+  finalWordsClip: {fileID: 8300000, guid: 8f000f634433050429fbf96d7d450295, type: 3}
+  coinReward: 25
+  rewardItem1: Stone
+  rewardItem2: Stone
+  firstRequirmentItem: Stick
+  firstRequirementAmount: 3
+  secondRequirmentItem: Stone
+  secondRequirementAmount: 3
+  hasCheckpoints: 1
+  checkpoints:
+  - {fileID: 11400000, guid: 5207f861b4121554e96f49cc5b48ea82, type: 2}

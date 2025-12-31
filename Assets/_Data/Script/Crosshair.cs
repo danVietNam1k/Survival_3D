@@ -27,6 +27,11 @@ public class Crosshair : MonoBehaviour
                 dotCrosshair.gameObject.SetActive(false);
                 handCrosshair.gameObject.SetActive(true);
                 break;
+            case "NPC":
+                //handCrosshair.gameObject.SetActive(false);
+                //handCrosshair.gameObject.SetActive(false);
+
+                break;
             default:
                 dotCrosshair.gameObject.SetActive(true);
                 handCrosshair.gameObject.SetActive(false);

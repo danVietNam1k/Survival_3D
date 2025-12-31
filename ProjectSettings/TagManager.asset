@@ -11,6 +11,7 @@ TagManager:
   - Constructed
   - GhostConstruction
   - GhostConstructed
+  - NPC
   layers:
   - Default
   - TransparentFX

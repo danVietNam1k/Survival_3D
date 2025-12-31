@@ -13,7 +13,13 @@ public class InventorySystem : MonoBehaviour
     public static InventorySystem Instance { get; set; }
 
     public GameObject inventoryScreenUI;
-    public GameObject craftingScreen, toolCategoryScreen, contructCategoryScreen;
+
+    [Header("----------Category Screen------------")]
+    public GameObject craftingScreen;
+    public GameObject toolCategoryScreen;
+     public GameObject contructCategoryScreen;
+     public GameObject questCategoryScreen;
+   [Header("")]
     public GameObject inforItemPopup;
     public GameObject ThrowItemAreaUI;
     public GameObject itemInforUI;
@@ -49,32 +55,41 @@ public class InventorySystem : MonoBehaviour
     void OpenInventory()
     {
         if (Input.GetKeyDown(KeyCode.I))
-        {
+        {   
+            if(DialogSystem.Instance.thePlayerTalking) return;
             //ReferenceManager.Instance.craftingSystem.RefreshNeededItems();
             isOpenInventory = !isOpenInventory;
             inventoryScreenUI.SetActive(isOpenInventory);
             ThrowItemAreaUI.SetActive(isOpenInventory);
             craftingScreen.SetActive(inventoryScreenUI.activeSelf);
-            if (!inventoryScreenUI.activeSelf)
-            {
-                toolCategoryScreen.SetActive(false);
-                contructCategoryScreen.SetActive(false);
 
-            }
-            if (inventoryScreenUI.activeSelf)
+            SetActiveFollowInventory();
+
+            if (inventoryScreenUI.activeSelf == true)
             {
                 Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+
             }
             else
             {
                 Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+
             }
-        }
-        if( isOpenInventory)
-        {
             CraftingSystem.Instance.RefreshNeededItems();
 
         }
+      
+    }
+    void SetActiveFollowInventory()
+    {
+            if (!inventoryScreenUI.activeSelf)
+            {
+                toolCategoryScreen.SetActive(false);
+                contructCategoryScreen.SetActive(false);
+                questCategoryScreen.SetActive(false) ;
+            }
     }
     public void PopulateSlotList()
     {
@@ -104,7 +119,8 @@ public class InventorySystem : MonoBehaviour
             itemToAdd.transform.SetParent(whatSlotToEquip.transform);
             itemToAdd.name = itemName;
             OpenPopupItem(itemName, itemToAdd);
-            //CraftingSystem.Instance.RefreshNeededItems();
+            CraftingSystem.Instance.RefreshNeededItems();
+            QuestManager.Instance.RefreshTrackerAmountItem();
         }
     }
     GameObject FindNextEptySlot()
@@ -158,12 +174,17 @@ public class InventorySystem : MonoBehaviour
                 DestroyImmediate(slot.transform.GetChild(0).gameObject);
                 if (amount == amountToRemove)
                 {
+                    CraftingSystem.Instance.RefreshNeededItems();
 
                     return;
                 }
             }
 
         }
+        CraftingSystem.Instance.RefreshNeededItems();
+
+        QuestManager.Instance.RefreshTrackerAmountItem();
+
 
     }
     public void ReCalculateList()

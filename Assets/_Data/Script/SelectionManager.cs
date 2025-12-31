@@ -20,7 +20,7 @@ public class SelectionManager : MonoBehaviour
     }
     private void Start()
     {
-        
+
         interaction_text = interaction_InfoName_UI.GetComponent<Text>();
         interaction_Hp = interaction_Info_Hp.GetComponent<Slider>();
     }
@@ -35,8 +35,6 @@ public class SelectionManager : MonoBehaviour
         RaycastHitOntrigger(ray);
         RaycastHit(ray);
     }
-    
-
     private void RaycastHit(Ray ray)
     {
         RaycastHit hit;
@@ -44,24 +42,12 @@ public class SelectionManager : MonoBehaviour
         {
             var selectionTransform = hit.transform;
             //Debug.DrawLine(ray.origin, hit.point, Color.green);
-            ActionPickUp(selectionTransform);
+            InteractiveActions(selectionTransform);
 
             crosshair.SwitchCrosshair(selectionTransform);
+            GetInforItem(selectionTransform);
 
-            if (selectionTransform.GetComponent<InteractableObject>())
-            {
-                interaction_text.text = selectionTransform.GetComponent<InteractableObject>().GetItemName();
-                interaction_InfoName_UI.SetActive(true);
-                //Debug.DrawRay(ray.origin, hit.transform.position, Color.green);
-                ShowHp(selectionTransform);
-            }
-            else
-            {
 
-                interaction_InfoName_UI.SetActive(false);
-                interaction_Info_Hp.SetActive(false);
-
-            }
 
         }
         else
@@ -76,7 +62,7 @@ public class SelectionManager : MonoBehaviour
     private Transform RaycastHitOntrigger(Ray ray)
     {
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, 3f, layerMask,QueryTriggerInteraction.Collide))
+        if (Physics.Raycast(ray, out hit, 3f, layerMask, QueryTriggerInteraction.Collide))
         {
             return hit.transform;
 
@@ -86,13 +72,41 @@ public class SelectionManager : MonoBehaviour
             return null;
         }
     }
+    void GetInforItem(Transform hit) {
+        if (hit.GetComponent<InteractableObject>())
+        {
+            interaction_text.text = hit.GetComponent<InteractableObject>().GetItemName();
+            interaction_InfoName_UI.SetActive(true);
+            //Debug.DrawRay(ray.origin, hit.transform.position, Color.green);
+            ShowHp(hit);
+        }
+        else
+        {
 
-    void ActionPickUp(Transform pickup)
+            interaction_InfoName_UI.SetActive(false);
+            interaction_Info_Hp.SetActive(false);
+
+        }
+
+    }
+    void InteractiveActions(Transform hit)
     {
        
         if (Input.GetKeyDown(KeyCode.E))
         {
-            pickup.GetComponent<PickUp>()?.PickUpItem();
+            switch (hit.tag){ 
+                case NameStatic.TagNPC:
+
+                    hit.GetComponent<NPC>()?.StartConversation();
+
+                    break;
+                case NameStatic.TagCanPickUp:
+                    hit.GetComponent<PickUp>()?.PickUpItem();
+
+
+                    break;
+
+            }
         }
     }
     void ShowHp(Transform hit)

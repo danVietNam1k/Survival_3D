@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class TheItemEquipping : MonoBehaviour
@@ -26,8 +27,11 @@ public class TheItemEquipping : MonoBehaviour
         if(other.GetComponent<InteractableObject>() != null && other.GetComponent<InteractableObject>().CanHit)
         {
             other.GetComponent<InteractableObject>().TakeDamege(thisDamege);
+            SoundAxeHitTargetTree(other);
         }
     }
+
+    //Run is animator
     public void Consumed()
     {
         if (!thisItemInQuickSlot.GetComponent<InventoryItem>().isConsumable) return;
@@ -37,5 +41,23 @@ public class TheItemEquipping : MonoBehaviour
         Destroy(thisItemInQuickSlot);
         Destroy(gameObject);
     }
+    public void PlaySoundSwingTools() //use for axe, sword, pickaxe...
+    {
+        AudioClip sfx = SoundManager.Instance.containerSound.axeSwing;
+        SoundManager.Instance.PlaySFX(sfx);
+    }
+    public void SoundAxeHitTargetTree(Collider tree)
+    {
+        foreach(var name in NameStatic.FamilyTree)
+        {
+            if(tree.gameObject.name == name)
+            {
+                int ran = Random.Range(0, SoundManager.Instance.containerSound.axeChoppingTree.Length);
+                AudioClip sfx = SoundManager.Instance.containerSound.axeChoppingTree[ran];
+                SoundManager.Instance.PlaySFX(sfx);
+            }
+        }
+    }
+    
     
 }

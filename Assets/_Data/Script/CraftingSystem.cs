@@ -71,10 +71,10 @@ public class CraftingSystem : MonoBehaviour
 
         // ++++++ToolCategoryScreen+++++++++
         // AXE
-        AxeReq1 = toolsScreenUI.transform.Find("Button").Find("AxeCraft").Find("req1").GetComponent<Text>();
-        AxeReq2 = toolsScreenUI.transform.Find("Button").Find("AxeCraft").Find("req2").GetComponent<Text>();
+        AxeReq1 = toolsScreenUI.transform.Find("Axe").Find("AxeCraft").Find("req1").GetComponent<Text>();
+        AxeReq2 = toolsScreenUI.transform.Find("Axe").Find("AxeCraft").Find("req2").GetComponent<Text>();
 
-        craftAxeBTN = toolsScreenUI.transform.Find("Button").Find("AxeCraft").transform.Find("CraftButton").GetComponent<Button>();
+        craftAxeBTN = toolsScreenUI.transform.Find("Axe").Find("AxeCraft").transform.Find("CraftButton").GetComponent<Button>();
         craftAxeBTN.onClick.AddListener(delegate { CraftAnyItem(AxeBLP); });
 
         // +++++++ContructCategoryScreen++++
