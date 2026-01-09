@@ -310,11 +310,11 @@ public class NPC : MonoBehaviour
         
         if(currentActiveQuest.info.rewardItem1 != "")
         {
-            InventorySystem.Instance.AddToInventory(currentActiveQuest.info.rewardItem1);
+            InventorySystem.Instance.AddItemToInventoryAndPopup(currentActiveQuest.info.rewardItem1, true);
         }
         if (currentActiveQuest.info.rewardItem2 != "")
         {
-            InventorySystem.Instance.AddToInventory(currentActiveQuest.info.rewardItem2);
+            InventorySystem.Instance.AddItemToInventoryAndPopup(currentActiveQuest.info.rewardItem2, true);
         }
         activeQuestIndex++;
         // start next quest

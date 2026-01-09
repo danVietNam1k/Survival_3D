@@ -14,11 +14,16 @@ public class ConstructionManager : MonoBehaviour
     public bool canBuild =true, isBuilding =false;
     public LayerMask layerMask;
     public Material ghostMateriakRed, ghostMateriakGreen, nomalMaterial;
+    public Transform constructedArea;
     private void Awake()
     {
         Instance = this;
+        
     }
-
+    private void Start()
+    {
+        constructedArea = ReferenceManager.Instance.enviroment.Find("Constructed");
+    }
     void Update()
     {
         if (itemConstructionOnHand.IsDestroyed())
@@ -61,12 +66,14 @@ public class ConstructionManager : MonoBehaviour
     {
         if (InventorySystem.Instance.isOpenInventory) return;
         if (ghost == null || isBuilding) return;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
 
         if (Physics.Raycast(
             ray, out RaycastHit hit, buildDistance, layerMask
            ))
         {
+            Debug.DrawLine(hit.point, hit.point+hit.normal*3f, Color.red);
+                
             if (!ghost.activeSelf) ghost.SetActive(true);
 
             //ghost.transform.position = CalculateSnapPosition(hit);
@@ -100,14 +107,21 @@ public class ConstructionManager : MonoBehaviour
 
             }
         }
+
         Vector3 newPos = hit.point;
-        switch (ghost.name) {
-                case NameStatic.WoodenFloor:
+        ConstructItemType ghostType = ghost.transform.GetComponent<ConstructionType>().constructItemType;
+
+        switch (ghostType) {
+                case ConstructItemType.Floor:
                       newPos.y = newPos.y +0.1f;
                     break;
-                case NameStatic.WoodenWall:
+                case ConstructItemType.Wall:
                         newPos.y = newPos.y + 1f;
                   break;
+                case ConstructItemType.SomeItemPlacement:
+                newPos = newPos + hit.normal * 0.4f;
+
+                break;
             }
         
                 return newPos;
@@ -115,12 +129,24 @@ public class ConstructionManager : MonoBehaviour
     Quaternion CaculateRotate(RaycastHit hit)
     {
 
-        if (hit.transform.CompareTag("GhostConstructed") && hit.transform.name == ghost.transform.name)
+        ConstructItemType ghostType = ghost.transform.GetComponent<ConstructionType>().constructItemType;
+
+        if (hit.transform.CompareTag("GhostConstructed"))
         {
-            return hit.transform.rotation;
+            ConstructItemType hitType = hit.transform.GetComponent<ConstructionType>().constructItemType;
+            if (ghostType == hitType)
+            {
+                return hit.transform.rotation;
+            }
         }
-        
-            return player.rotation;
+        if (ghostType == ConstructItemType.SomeItemPlacement)
+        {
+            //Quaternion quaternion = Quaternion.Euler(hit.normal);
+            Quaternion quaternion = Quaternion.FromToRotation(transform.up, hit.normal) * player.rotation;
+           
+            return quaternion;
+        }
+            return player.rotation; 
 
     }
     //public Vector3 CalculateSnapPosition(RaycastHit hit)
@@ -215,15 +241,35 @@ public class ConstructionManager : MonoBehaviour
     {
         if (ghost == null) return;
         Debug.Log("changeLayer");
-        if (ghost.transform.name == NameStatic.WoodenFloor)
+        //if (ghost.transform.name == NameStatic.WoodenFloor)
+        //{
+        //    layerMask |= (1 << LayerMask.NameToLayer("GhostConstructedFloor"));
+        //    layerMask &= ~(1 << LayerMask.NameToLayer("GhostConstructedWall"));
+        //}
+        //else if (ghost.transform.name == NameStatic.WoodenWall)
+        //{
+        //    layerMask |= (1 << LayerMask.NameToLayer("GhostConstructedWall"));
+        //    layerMask &= ~(1 << LayerMask.NameToLayer("GhostConstructedFloor"));
+        //}
+
+        ConstructItemType ghostType = ghost.transform.GetComponent<ConstructionType>().constructItemType;
+
+        switch (ghostType)
         {
-            layerMask |= (1 << LayerMask.NameToLayer("GhostConstructedFloor"));
-            layerMask &= ~(1 << LayerMask.NameToLayer("GhostConstructedWall"));
-        }
-        else if (ghost.transform.name == NameStatic.WoodenWall)
-        {
-            layerMask |= (1 << LayerMask.NameToLayer("GhostConstructedWall"));
-            layerMask &= ~(1 << LayerMask.NameToLayer("GhostConstructedFloor"));
+            case ConstructItemType.Floor:
+                layerMask |= (1 << LayerMask.NameToLayer("GhostConstructedFloor"));
+                layerMask &= ~(1 << LayerMask.NameToLayer("GhostConstructedWall"));
+                break;
+            case ConstructItemType.Wall:
+                layerMask |= (1 << LayerMask.NameToLayer("GhostConstructedWall"));
+                layerMask &= ~(1 << LayerMask.NameToLayer("GhostConstructedFloor"));
+                break;
+            case ConstructItemType.SomeItemPlacement:
+
+                layerMask &= ~(1 << LayerMask.NameToLayer("GhostConstructedWall"));
+                layerMask &= ~(1 << LayerMask.NameToLayer("GhostConstructedFloor"));
+                break;
+
         }
 
     }
@@ -232,25 +278,46 @@ public class ConstructionManager : MonoBehaviour
         canBuild = ghost.transform.GetComponent<ConstructionCheck>().IsTriggerEmpty();
         if (canBuild)
         {
-            ghost.transform.GetComponentInChildren<MeshRenderer>().material = ghostMateriakGreen;
+            //ghost.transform.GetComponentInChildren<MeshRenderer>().material = ghostMateriakGreen;
+            ghost.GetComponent<ConstructionCheck>().SetValidColor();
         }
         else
         {
-            ghost.transform.GetComponentInChildren<MeshRenderer>().material = ghostMateriakRed;
+            //ghost.transform.GetComponentInChildren<MeshRenderer>().material = ghostMateriakRed;
+            ghost.GetComponent<ConstructionCheck>().SetInvalidColor();
 
         }
     }
     public void Construction()
     {
-        ghost.transform.GetComponentInChildren<MeshRenderer>().material = nomalMaterial;
+        //ghost.transform.GetComponentInChildren<MeshRenderer>().material = nomalMaterial;
+        ghost.GetComponent<ConstructionCheck>().SetDefaultColor();
+
         Destroy(ghost.GetComponent<ConstructionCheck>());
         ghost.GetComponent<Collider>().isTrigger = false;
         ghost.layer = 10;
-        ghost.tag = "Constructed";
+        classifyTypeConstruct(ghost);
         foreach (Transform child in ghost.transform)
         { child.gameObject.SetActive(true); }
+        ghost.transform.SetParent(constructedArea);
         ghost = null;
         isBuilding = false;
        
     }
+    void classifyTypeConstruct(GameObject ghostObj)
+    {
+        if (ghostObj.GetComponent<ConstructionType>().constructItemType == ConstructItemType.SomeItemPlacement)
+        {
+            ghostObj.tag = NameStatic.ChestStorage;
+            ghostObj.GetComponent<StorageChest>().enabled = true;
+
+        }
+        else
+        {
+            ghostObj.tag = "Constructed";
+        }
+    }
+
+
+
 }

@@ -22,7 +22,7 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
 
         rectTransform = GetComponent<RectTransform>();
         canvasGroup = GetComponent<CanvasGroup>();
-
+        canvas = ReferenceManager.Instance.canvas;
     }
 
 
@@ -34,7 +34,7 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
         canvasGroup.blocksRaycasts = false;
         startPosition = transform.position;
         startParent = transform.parent;
-        transform.SetParent(transform.root);
+        transform.SetParent(canvas.transform.root);
         itemBeingDragged = gameObject;
 
     }
@@ -42,7 +42,7 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
     public void OnDrag(PointerEventData eventData)
     {
         //So the item will move with our mouse (at same speed)  and so it will be consistant if the canvas has a different scale (other then 1);
-        rectTransform.anchoredPosition += eventData.delta;
+        rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
 
     }
 

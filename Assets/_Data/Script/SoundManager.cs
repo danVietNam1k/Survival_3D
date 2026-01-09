@@ -39,6 +39,7 @@ public class SoundManager : MonoBehaviour
 
         
             int index = Random.Range(0,containerSound.musicsBackground.Count);
+        
             musicBackGround.PlayOneShot(containerSound.musicsBackground[index]);
             secondWaitMusic = containerSound.musicsBackground[index].length;
         

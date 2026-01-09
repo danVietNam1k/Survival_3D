@@ -13,13 +13,13 @@ public class InventorySystem : MonoBehaviour
     public static InventorySystem Instance { get; set; }
 
     public GameObject inventoryScreenUI;
+    public GameObject quickSlotScreenUI;
 
     [Header("----------Category Screen------------")]
-    public GameObject craftingScreen;
-    public GameObject toolCategoryScreen;
-     public GameObject contructCategoryScreen;
-     public GameObject questCategoryScreen;
-   [Header("")]
+    public GameObject MenuScreen;
+    public GameObject categoryScreen;
+    
+   [Header("------------------------------------")]
     public GameObject inforItemPopup;
     public GameObject ThrowItemAreaUI;
     public GameObject itemInforUI;
@@ -27,6 +27,9 @@ public class InventorySystem : MonoBehaviour
     public bool isOpenInventory;
     public List<GameObject> slotList = new List<GameObject>();
     public List<string> itemList = new List<string>();
+    public List<GameObject> quickSlotList = new List<GameObject>();
+    public List<string> itemInQuickSlotList = new List<string>();
+
     private GameObject itemToAdd;
     public bool isFull;
     private GameObject whatSlotToEquip;
@@ -61,7 +64,7 @@ public class InventorySystem : MonoBehaviour
             isOpenInventory = !isOpenInventory;
             inventoryScreenUI.SetActive(isOpenInventory);
             ThrowItemAreaUI.SetActive(isOpenInventory);
-            craftingScreen.SetActive(inventoryScreenUI.activeSelf);
+            MenuScreen.SetActive(inventoryScreenUI.activeSelf);
 
             SetActiveFollowInventory();
 
@@ -85,10 +88,8 @@ public class InventorySystem : MonoBehaviour
     void SetActiveFollowInventory()
     {
             if (!inventoryScreenUI.activeSelf)
-            {
-                toolCategoryScreen.SetActive(false);
-                contructCategoryScreen.SetActive(false);
-                questCategoryScreen.SetActive(false) ;
+            {foreach (Transform child in categoryScreen.transform)
+                child.gameObject.SetActive(false);
             }
     }
     public void PopulateSlotList()
@@ -104,8 +105,19 @@ public class InventorySystem : MonoBehaviour
                 }
             }
         }
+        foreach (Transform child in quickSlotScreenUI.transform)
+        {
+            if (child.CompareTag("QuickSlot"))
+            {
+                quickSlotList.Add(child.gameObject);
+                if (child.transform.childCount > 0)
+                {
+                    itemInQuickSlotList.Add(child.GetChild(0).gameObject.name);
+                }
+            }
+        }
     }
-    public void AddToInventory(string itemName)
+    public void AddItemToInventoryAndPopup(string itemName, bool popupTurnOn)
     {
         CheckIsFull();
         if (isFull)
@@ -118,11 +130,12 @@ public class InventorySystem : MonoBehaviour
             itemToAdd = Instantiate(Resources.Load<GameObject>("Item_Inventory/"+itemName), whatSlotToEquip.transform);
             itemToAdd.transform.SetParent(whatSlotToEquip.transform);
             itemToAdd.name = itemName;
-            OpenPopupItem(itemName, itemToAdd);
+            if(popupTurnOn) OpenPopupItem(itemName, itemToAdd);
             CraftingSystem.Instance.RefreshNeededItems();
             QuestManager.Instance.RefreshTrackerAmountItem();
         }
     }
+
     GameObject FindNextEptySlot()
     {
         foreach (GameObject slot in slotList)
@@ -190,12 +203,22 @@ public class InventorySystem : MonoBehaviour
     public void ReCalculateList()
     {
         itemList.Clear();
+        itemInQuickSlotList.Clear();
         foreach (GameObject item in slotList)
         {
             if (item.transform.childCount > 0)
             {
                 itemList.Add(item.transform.GetChild(0).name);
               
+            }
+
+        }
+        foreach (GameObject item in quickSlotList)
+        {
+            if (item.transform.childCount > 0)
+            {
+                itemInQuickSlotList.Add(item.transform.GetChild(0).name);
+
             }
 
         }
@@ -214,4 +237,23 @@ public class InventorySystem : MonoBehaviour
         popup.Find("Text").GetComponent<Text>().text = itemName;
 
     }
+    public GameObject QuickSlotEmpty()
+    {
+        foreach (GameObject slot in quickSlotList)
+        {
+            if (slot.transform.childCount == 0)
+            { return slot; }
+        }
+        return null;
+    }
+    public void AddItemtoQuickSlot(string itemName)
+    {
+        GameObject SlotToEquip = QuickSlotEmpty();
+        GameObject itemToAddInQuickSlot = Instantiate(Resources.Load<GameObject>("Item_Inventory/" + itemName), SlotToEquip.transform);
+        itemToAddInQuickSlot.transform.SetParent(SlotToEquip.transform);
+        itemToAddInQuickSlot.name = itemName;
+        CraftingSystem.Instance.RefreshNeededItems();
+        QuestManager.Instance.RefreshTrackerAmountItem();
+    }
+
 }

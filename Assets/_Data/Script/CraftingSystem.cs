@@ -21,11 +21,14 @@ public class CraftingSystem : MonoBehaviour
     Button craftPlankBTN;
     Button craftWoodenWallBTN;
     Button craftWoodenFloorBTN;
+    Button craftWoodenChestBTN;
     //Requirement Text
     Text AxeReq1, AxeReq2;
     Text plankReq;
     Text woodenWallReq;
     Text woodenFloorReq;
+    Text woodenChestReq1, woodenChestReq2;
+
 
     public bool isOpen;
 
@@ -34,6 +37,7 @@ public class CraftingSystem : MonoBehaviour
     private Blueprint PlankBLP = new Blueprint("Plank",2, 1, "Log", 1, "", 0);
     private Blueprint WoodenWallBLP = new Blueprint("Wooden wall", 1, 1, "Plank", 2, "", 0);
     private Blueprint WoodenFloorBLP = new Blueprint("Wooden floor", 1, 1, "Plank", 2, "", 0);
+    private Blueprint WoodenChestBLP = new Blueprint("Wooden chest", 1, 2, "Plank", 1, "Log", 1);
 
 
 
@@ -55,9 +59,9 @@ public class CraftingSystem : MonoBehaviour
     {
         if(craftingScreenUI == null || toolsScreenUI == null)
         {
-            craftingScreenUI = ReferenceManager.Instance.canvas.Find("CraftingScreen").gameObject;
-            toolsScreenUI = ReferenceManager.Instance.canvas.Find("CategoryScreen").Find("ToolCategoryScreen").gameObject;
-            constructScreenUI = ReferenceManager.Instance.canvas.Find("CategoryScreen").Find("ContructCategoryScreen").gameObject;
+            craftingScreenUI = ReferenceManager.Instance.canvas.transform.Find("CraftingScreen").gameObject;
+            toolsScreenUI = ReferenceManager.Instance.canvas.transform.Find("CategoryScreen").Find("ToolCategoryScreen").gameObject;
+            constructScreenUI = ReferenceManager.Instance.canvas.transform.Find("CategoryScreen").Find("ContructCategoryScreen").gameObject;
         }
         menuButtons = craftingScreenUI.transform.Find("MenuButton").transform;
 
@@ -76,6 +80,13 @@ public class CraftingSystem : MonoBehaviour
 
         craftAxeBTN = toolsScreenUI.transform.Find("Axe").Find("AxeCraft").transform.Find("CraftButton").GetComponent<Button>();
         craftAxeBTN.onClick.AddListener(delegate { CraftAnyItem(AxeBLP); });
+
+        // Chest
+        woodenChestReq1 = toolsScreenUI.transform.Find("Chest").Find("ChestCraft").Find("req1").GetComponent<Text>();
+        woodenChestReq2 = toolsScreenUI.transform.Find("Chest").Find("ChestCraft").Find("req2").GetComponent<Text>();
+
+        craftWoodenChestBTN = toolsScreenUI.transform.Find("Chest").Find("ChestCraft").transform.Find("CraftButton").GetComponent<Button>();
+        craftWoodenChestBTN.onClick.AddListener(()=> { CraftAnyItem(WoodenChestBLP); });
 
         // +++++++ContructCategoryScreen++++
         //Plank
@@ -114,7 +125,7 @@ public class CraftingSystem : MonoBehaviour
     {
         for(int i = 0; i < blueprintToCraft.amountCraftItem; i++)
         {
-            InventorySystem.Instance.AddToInventory((blueprintToCraft.itemName));
+            InventorySystem.Instance.AddItemToInventoryAndPopup((blueprintToCraft.itemName),true);
         }
       
 
@@ -161,8 +172,8 @@ public class CraftingSystem : MonoBehaviour
         }
 
         //   wooden wall and floor
-         woodenWallReq.text = Plank_count + "/2 Plank wooden";
-         woodenFloorReq.text = Plank_count + "/2 Plank wooden";
+         woodenWallReq.text = Plank_count + "/2 Plank";
+        woodenFloorReq.text = woodenWallReq.text;
         if (Plank_count >= 2)
         {
             craftWoodenWallBTN.gameObject.SetActive(true);
@@ -174,7 +185,7 @@ public class CraftingSystem : MonoBehaviour
             craftWoodenFloorBTN.gameObject.SetActive(false);
         }
         //   Plank
-        plankReq.text = logWood_count + "/1 Log Wood";
+        plankReq.text = logWood_count + "/1 Log";
 
         if (logWood_count >= 1)
         {
@@ -197,6 +208,18 @@ public class CraftingSystem : MonoBehaviour
         else
         {
             craftAxeBTN.gameObject.SetActive(false);
+        }//------Chest-----//
+
+        woodenChestReq1.text = Plank_count + "/1  Plank";
+        woodenChestReq2.text = logWood_count + "/1 Log";
+
+        if (Plank_count >= 1 && logWood_count >= 1)
+        {
+            craftWoodenChestBTN.gameObject.SetActive(true);
+        }
+        else
+        {
+            craftWoodenChestBTN.gameObject.SetActive(false);
         }
     }
 }

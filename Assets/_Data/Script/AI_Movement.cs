@@ -20,7 +20,7 @@ public class AI_Movement : MonoBehaviour
     int WalkDirection;
 
     public bool isWalking;
-
+    public bool isDead;
     // Start is called before the first frame update
     void Start()
     {
@@ -40,6 +40,20 @@ public class AI_Movement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Move();
+    }
+    void Move()
+    {
+        //if (isDead)
+        //{
+
+        //    stopPosition = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+        //    isWalking = false;
+        //    //stop movement
+        //    transform.position = stopPosition;
+        //    return;
+        //}      
+
         if (isWalking)
         {
 

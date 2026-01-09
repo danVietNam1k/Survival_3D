@@ -18,7 +18,7 @@ public class PickUp : MonoBehaviour
     public void PickUpItem()
     {
         string itemName = this.GetComponent<InteractableObject>().ItemName;
-        InventorySystem.Instance.AddToInventory(itemName);
+        InventorySystem.Instance.AddItemToInventoryAndPopup(itemName, true);
         if(!InventorySystem.Instance.isFull)
         Destroy(gameObject);
        

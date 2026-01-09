@@ -27,7 +27,7 @@ public class TheItemEquipping : MonoBehaviour
         if(other.GetComponent<InteractableObject>() != null && other.GetComponent<InteractableObject>().CanHit)
         {
             other.GetComponent<InteractableObject>().TakeDamege(thisDamege);
-            SoundAxeHitTargetTree(other);
+            SoundAxeHitTarget(other);
         }
     }
 
@@ -46,17 +46,23 @@ public class TheItemEquipping : MonoBehaviour
         AudioClip sfx = SoundManager.Instance.containerSound.axeSwing;
         SoundManager.Instance.PlaySFX(sfx);
     }
-    public void SoundAxeHitTargetTree(Collider tree)
+    public void SoundAxeHitTarget(Collider other)
     {
         foreach(var name in NameStatic.FamilyTree)
         {
-            if(tree.gameObject.name == name)
+            if(other.gameObject.name == name)
             {
                 int ran = Random.Range(0, SoundManager.Instance.containerSound.axeChoppingTree.Length);
                 AudioClip sfx = SoundManager.Instance.containerSound.axeChoppingTree[ran];
                 SoundManager.Instance.PlaySFX(sfx);
             }
         }
+       if(other.GetComponent<Animal>() != null)
+        {
+            other.GetComponent<Animal>().PlaySoundHitRabbit();
+        }
+
+
     }
     
     

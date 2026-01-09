@@ -9,6 +9,7 @@ public class InventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     // --- Is this item trashable --- //
     public bool cannotTrash;
     public bool isSelected;
+    
     // --- Item Info UI --- //
     public GameObject itemInfoUI;
 
@@ -64,18 +65,21 @@ public class InventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
                 StartCoroutine(IfDragItem());
                 itemPendingConsumption = gameObject;
-
-                IEnumerator IfDragItem()
-                {
-                    yield return new WaitForSeconds(0.1f);
-                    itemPendingConsumption = null;
-                }
-               
             }
-            
+            else
+            {
+                StartCoroutine(IfDragItem());
+                itemPendingConsumption = gameObject;
+
+            }
+
         }
     }
-   
+    IEnumerator IfDragItem()
+    {
+        yield return new WaitForSeconds(0.1f);
+        itemPendingConsumption = null;
+    }
     // Triggered when the mouse button is released over the item that has this script.
     public void OnPointerUp(PointerEventData eventData)
     {
@@ -88,6 +92,14 @@ public class InventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
                 DestroyImmediate(gameObject);
                 InventorySystem.Instance.ReCalculateList();
                 //CraftingSystem.Instance.RefreshNeededItems();
+            }
+            else if(!isConsumable && itemPendingConsumption == gameObject)
+            {
+                if(InventorySystem.Instance.QuickSlotEmpty() == null) return;
+                GameObject newSlot = InventorySystem.Instance.QuickSlotEmpty();
+                this.transform.SetParent(newSlot.transform);
+                this.transform.localPosition = new Vector2(0, 0);
+                InventorySystem.Instance.ReCalculateList();
             }
         }
     }
@@ -104,12 +116,12 @@ public class InventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
 
     }
-   
 
 
+    // --- Health --- //
     private static void healthEffectCalculation(float healthEffect)
     {
-        // --- Health --- //
+        
 
         float healthBeforeConsumption = ReferenceManager.Instance.playerState.currentHeal;
 
@@ -128,10 +140,10 @@ public class InventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         }
     }
 
-
+    // --- Calories --- //
     private static void caloriesEffectCalculation(float caloriesEffect)
     {
-        // --- Calories --- //
+     
 
         float caloriesBeforeConsumption = ReferenceManager.Instance.playerState.currentCalories;
         float maxCalories = ReferenceManager.Instance.playerState.maxCalories;
@@ -149,10 +161,10 @@ public class InventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         }
     }
 
-
+    // --- Hydration --- //
     private static void hydrationEffectCalculation(float hydrationEffect)
     {
-        // --- Hydration --- //
+        
 
         float hydrationBeforeConsumption = ReferenceManager.Instance.playerState.currentHydration;
         float maxHydration = ReferenceManager.Instance.playerState.maxHydration;

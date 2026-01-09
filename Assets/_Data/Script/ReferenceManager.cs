@@ -8,15 +8,16 @@ public class ReferenceManager : MonoBehaviour
    public SelectionManager selectionManager;
     public InventorySystem inventorySystem;
     public PlayerState playerState;
-    public Transform canvas;
-    public Transform player;
+    public Canvas canvas;
+    public Transform player, enviroment;
     public CraftingSystem craftingSystem;
+    public GameObject eventSystem;
     private void Awake()
     {
         if(Instance != null && Instance!=this)  Destroy(gameObject);
         else Instance = this;
         CheckNullReference();
-
+        eventSystem = this.transform.Find("EventSystem").gameObject;
     }
     void CheckNullReference()
     {

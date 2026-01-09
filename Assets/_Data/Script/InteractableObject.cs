@@ -8,6 +8,8 @@ public class InteractableObject : MonoBehaviour
     //state
     public bool CanHit;
     public float maxHealth, currentHealth;
+    public Animator animator;
+    
     private void Start()
     {
         currentHealth = maxHealth;
@@ -29,6 +31,7 @@ public class InteractableObject : MonoBehaviour
             currentHealth = 0;
             DaedState();
         }
+        
     }
     void DaedState()
     {
@@ -37,8 +40,8 @@ public class InteractableObject : MonoBehaviour
         {
             if (ItemName == nameTree)
             {
-                obj = Instantiate(Resources.Load<GameObject>("Item_obj/DeadTree"));
-                goto determined;
+                StateDeadOfTree(obj);
+                return;
             }
         }
 
@@ -46,20 +49,28 @@ public class InteractableObject : MonoBehaviour
         {
             if (ItemName == nameAnimal)
             {
-                obj = Instantiate(Resources.Load<GameObject>("Item_obj/Meat"));
-                goto determined;
+              GetComponent<Animal>().StateDeadOfAnimal(animator);
+                return;
+
             }
         }
         if (obj == null)
         {
+            print("obj equal null");
             Destroy(gameObject);
             return;
         }
 
-    determined:
+    }
+    void StateDeadOfTree(GameObject obj)
+    {
+        obj = Instantiate(Resources.Load<GameObject>("Item_obj/DeadTree"));
+
         obj.transform.position = this.transform.position;
         Destroy(gameObject);
     }
+   
+ 
 
 }
 

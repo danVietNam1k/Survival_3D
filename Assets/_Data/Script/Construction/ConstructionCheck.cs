@@ -7,6 +7,11 @@ public class ConstructionCheck : MonoBehaviour
 {
    
     private HashSet<Collider> objectsInTrigger = new HashSet<Collider>();
+    private Outline outline;
+    private void Start()
+    {
+        outline = GetComponent<Outline>();
+    }
     private void OnEnable()
     {
         objectsInTrigger.Clear();
@@ -62,6 +67,31 @@ public class ConstructionCheck : MonoBehaviour
     //    }
     //}
 
+    // Set Outline
+    public void SetInvalidColor()
+    {
+        if (outline != null)
+        {
+            outline.enabled = true;
+            outline.OutlineColor = Color.red;
+        }
+    }
+    public void SetValidColor()
+    {
+        if (outline != null)
+        {
+            outline.enabled = true;
 
+            outline.OutlineColor = Color.green;
+        }
+    }
+    public void SetDefaultColor()
+    {
+        if (outline != null)
+        {
+            Destroy(outline);
+        }
+      
 
+    }
 }

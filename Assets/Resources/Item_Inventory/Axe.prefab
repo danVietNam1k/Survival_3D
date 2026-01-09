@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 1935236680368950684}
   - component: {fileID: 686835279988422236}
   - component: {fileID: -2892693535856669896}
-  - component: {fileID: -7990908013519216454}
   - component: {fileID: 6740179656200171570}
   m_Layer: 0
   m_Name: Axe
@@ -104,18 +103,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvas: {fileID: 0}
---- !u!114 &-7990908013519216454
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8519133329163568123}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8416294c1ba4ffb44b4e92d309d98a62, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &6740179656200171570
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -129,6 +116,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cannotTrash: 0
+  isSelected: 0
   itemInfoUI: {fileID: 0}
   thisName: Axe
   thisDescription: Can use attack enemy

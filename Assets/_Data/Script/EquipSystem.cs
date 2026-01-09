@@ -133,6 +133,10 @@ public class EquipSystem : MonoBehaviour
        
         if (checkIfSlotIsFull(number) == true)
         {
+            if (ConstructionManager.Instance.isBuilding == true) // check progress construction 
+            {
+                ConstructionManager.Instance.isBuilding = false;
+            }
             SetUnEquippedModel();
             if (selectedNumber != number)
             {

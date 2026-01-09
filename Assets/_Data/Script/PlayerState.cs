@@ -4,6 +4,16 @@ using UnityEngine;
 
 public class PlayerState : MonoBehaviour
 {
+    public static PlayerState Instance {  get; private set; }
+    private void Awake()
+    {
+        if(Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+        }else Instance = this;
+    }
+    public Transform playerBody;
+
     //Hp
     public float currentHeal, maxHeal;
 

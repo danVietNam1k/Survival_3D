@@ -12,6 +12,7 @@ TagManager:
   - GhostConstruction
   - GhostConstructed
   - NPC
+  - ChestStorage
   layers:
   - Default
   - TransparentFX

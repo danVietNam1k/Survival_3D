@@ -31,7 +31,7 @@ public class SelectionManager : MonoBehaviour
     }
     void RayCastCheck()
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
         RaycastHitOntrigger(ray);
         RaycastHit(ray);
     }
@@ -41,7 +41,7 @@ public class SelectionManager : MonoBehaviour
         if (Physics.Raycast(ray, out hit, 3f, layerMask))
         {
             var selectionTransform = hit.transform;
-            //Debug.DrawLine(ray.origin, hit.point, Color.green);
+           
             InteractiveActions(selectionTransform);
 
             crosshair.SwitchCrosshair(selectionTransform);
@@ -94,6 +94,7 @@ public class SelectionManager : MonoBehaviour
        
         if (Input.GetKeyDown(KeyCode.E))
         {
+            print(hit.tag);
             switch (hit.tag){ 
                 case NameStatic.TagNPC:
 
@@ -102,8 +103,9 @@ public class SelectionManager : MonoBehaviour
                     break;
                 case NameStatic.TagCanPickUp:
                     hit.GetComponent<PickUp>()?.PickUpItem();
-
-
+                    break;
+                case NameStatic.ChestStorage:
+                    hit.GetComponent<StorageChest>()?.OpenChest();
                     break;
 
             }
