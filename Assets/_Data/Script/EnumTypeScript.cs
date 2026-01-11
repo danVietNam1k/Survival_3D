@@ -1,23 +1,30 @@
-public enum ConstructItemType {
+public enum eConstructItemType {
     None,
     Wall,
     Floor,
     SomeItemPlacement,
+    CampFire,
 
 
 
 
 
 }
-public enum interactionType
+public enum eInteractionType
 {
     None,
     Chest,
     NPC,
     Item,
-
-
+}
+public enum eCanPickupItemType
+{
+    None,
+    stick,
+    RawMeat,
+    CookedFood,
+    stone,
+    LogWooden,
 
 
 }
-

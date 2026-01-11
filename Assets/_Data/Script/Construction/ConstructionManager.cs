@@ -109,19 +109,20 @@ public class ConstructionManager : MonoBehaviour
         }
 
         Vector3 newPos = hit.point;
-        ConstructItemType ghostType = ghost.transform.GetComponent<ConstructionType>().constructItemType;
+        eConstructItemType ghostType = ghost.transform.GetComponent<ConstructionType>().constructItemType;
 
         switch (ghostType) {
-                case ConstructItemType.Floor:
+                case eConstructItemType.Floor:
                       newPos.y = newPos.y +0.1f;
                     break;
-                case ConstructItemType.Wall:
+                case eConstructItemType.Wall:
                         newPos.y = newPos.y + 1f;
                   break;
-                case ConstructItemType.SomeItemPlacement:
+                case eConstructItemType.SomeItemPlacement:
                 newPos = newPos + hit.normal * 0.4f;
-
                 break;
+                default:
+                return newPos;
             }
         
                 return newPos;
@@ -129,17 +130,17 @@ public class ConstructionManager : MonoBehaviour
     Quaternion CaculateRotate(RaycastHit hit)
     {
 
-        ConstructItemType ghostType = ghost.transform.GetComponent<ConstructionType>().constructItemType;
+        eConstructItemType ghostType = ghost.transform.GetComponent<ConstructionType>().constructItemType;
 
         if (hit.transform.CompareTag("GhostConstructed"))
         {
-            ConstructItemType hitType = hit.transform.GetComponent<ConstructionType>().constructItemType;
+            eConstructItemType hitType = hit.transform.GetComponent<ConstructionType>().constructItemType;
             if (ghostType == hitType)
             {
                 return hit.transform.rotation;
             }
         }
-        if (ghostType == ConstructItemType.SomeItemPlacement)
+        if (ghostType == eConstructItemType.SomeItemPlacement || ghostType == eConstructItemType.CampFire)
         {
             //Quaternion quaternion = Quaternion.Euler(hit.normal);
             Quaternion quaternion = Quaternion.FromToRotation(transform.up, hit.normal) * player.rotation;
@@ -252,23 +253,28 @@ public class ConstructionManager : MonoBehaviour
         //    layerMask &= ~(1 << LayerMask.NameToLayer("GhostConstructedFloor"));
         //}
 
-        ConstructItemType ghostType = ghost.transform.GetComponent<ConstructionType>().constructItemType;
+        eConstructItemType ghostType = ghost.transform.GetComponent<ConstructionType>().constructItemType;
 
         switch (ghostType)
         {
-            case ConstructItemType.Floor:
+            case eConstructItemType.Floor:
                 layerMask |= (1 << LayerMask.NameToLayer("GhostConstructedFloor"));
                 layerMask &= ~(1 << LayerMask.NameToLayer("GhostConstructedWall"));
                 break;
-            case ConstructItemType.Wall:
+            case eConstructItemType.Wall:
                 layerMask |= (1 << LayerMask.NameToLayer("GhostConstructedWall"));
                 layerMask &= ~(1 << LayerMask.NameToLayer("GhostConstructedFloor"));
                 break;
-            case ConstructItemType.SomeItemPlacement:
+            case eConstructItemType.SomeItemPlacement:
 
                 layerMask &= ~(1 << LayerMask.NameToLayer("GhostConstructedWall"));
                 layerMask &= ~(1 << LayerMask.NameToLayer("GhostConstructedFloor"));
                 break;
+            case eConstructItemType.CampFire:
+                layerMask &= ~(1 << LayerMask.NameToLayer("GhostConstructedWall"));
+                layerMask &= ~(1 << LayerMask.NameToLayer("GhostConstructedFloor"));
+                break;
+
 
         }
 
@@ -296,26 +302,12 @@ public class ConstructionManager : MonoBehaviour
         Destroy(ghost.GetComponent<ConstructionCheck>());
         ghost.GetComponent<Collider>().isTrigger = false;
         ghost.layer = 10;
-        classifyTypeConstruct(ghost);
-        foreach (Transform child in ghost.transform)
-        { child.gameObject.SetActive(true); }
+        ghost.GetComponent<ConstructionType>().ConstructDone();
+
         ghost.transform.SetParent(constructedArea);
         ghost = null;
         isBuilding = false;
        
-    }
-    void classifyTypeConstruct(GameObject ghostObj)
-    {
-        if (ghostObj.GetComponent<ConstructionType>().constructItemType == ConstructItemType.SomeItemPlacement)
-        {
-            ghostObj.tag = NameStatic.ChestStorage;
-            ghostObj.GetComponent<StorageChest>().enabled = true;
-
-        }
-        else
-        {
-            ghostObj.tag = "Constructed";
-        }
     }
 
 

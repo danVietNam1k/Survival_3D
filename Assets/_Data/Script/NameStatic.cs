@@ -11,6 +11,8 @@ public class NameStatic
     //single name
     public const string WoodenFloor = "Wooden floor";
     public const string WoodenWall = "Wooden wall";
+    public const string CookedMeat = "Cooked meat";
+
 
     //Tag
     public const string TagNPC = "NPC";

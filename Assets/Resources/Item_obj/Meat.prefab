@@ -121,6 +121,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cc8f4514acdede448af64236919da4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  type: 2
+  thisCanCooking: 1
+  countTimeCooking: 2
 --- !u!114 &5148265528581799461
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -133,10 +136,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18d8f0ce2bf58f7469a64a32e37a2dfc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ItemName: Stone
+  ItemName: Meat
   CanHit: 0
   maxHealth: 0
   currentHealth: 0
+  animator: {fileID: 0}
 --- !u!54 &4178244673165707010
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -22,6 +22,7 @@ public class StorageChest : MonoBehaviour
     }
     public void OpenChest()
     {
+        InventorySystem.Instance.isOpeningChest = true;
         chestStorage.SetActive(true);
         inventory.SetActive(true);
         Cursor.lockState = CursorLockMode.None;
@@ -48,6 +49,8 @@ public class StorageChest : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         InventorySystem.Instance.isOpenInventory = false;
+        InventorySystem.Instance.isOpeningChest = false;
+
 
 
     }

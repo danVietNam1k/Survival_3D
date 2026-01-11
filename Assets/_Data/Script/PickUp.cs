@@ -1,20 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PickUp : MonoBehaviour
 {
-    void Start()
-    {
-       
-    }
+    public eCanPickupItemType type;
+    public bool thisCanCooking;
+    public float countTimeCooking;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     public void PickUpItem()
     {
         string itemName = this.GetComponent<InteractableObject>().ItemName;
@@ -22,7 +17,7 @@ public class PickUp : MonoBehaviour
         if(!InventorySystem.Instance.isFull)
         Destroy(gameObject);
        
-        
     }
+  
    
 }

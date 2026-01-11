@@ -213,7 +213,7 @@ public class FirstPersonController : MonoBehaviour
     }
     void Movement()
     {
-        if (DialogSystem.Instance.thePlayerTalking)
+        if (DialogSystem.Instance.thePlayerTalking || InventorySystem.Instance.isOpeningChest)
         {
             transform.GetComponent<Rigidbody>().useGravity = false;
             transform.GetComponent<Rigidbody>().isKinematic = true;

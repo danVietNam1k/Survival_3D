@@ -14,6 +14,7 @@ public class InventorySystem : MonoBehaviour
 
     public GameObject inventoryScreenUI;
     public GameObject quickSlotScreenUI;
+    public Transform ItemInforUI;
 
     [Header("----------Category Screen------------")]
     public GameObject MenuScreen;
@@ -33,6 +34,9 @@ public class InventorySystem : MonoBehaviour
     private GameObject itemToAdd;
     public bool isFull;
     private GameObject whatSlotToEquip;
+    [Header("------------------------------------")]
+    public bool isOpeningChest;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -57,6 +61,7 @@ public class InventorySystem : MonoBehaviour
     }
     void OpenInventory()
     {
+        if (isOpeningChest) return;
         if (Input.GetKeyDown(KeyCode.I))
         {   
             if(DialogSystem.Instance.thePlayerTalking) return;
@@ -66,31 +71,34 @@ public class InventorySystem : MonoBehaviour
             ThrowItemAreaUI.SetActive(isOpenInventory);
             MenuScreen.SetActive(inventoryScreenUI.activeSelf);
 
-            SetActiveFollowInventory();
+            SetActiveFollowInventoryAndCursor();
 
-            if (inventoryScreenUI.activeSelf == true)
-            {
-                Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;
-
-            }
-            else
-            {
-                Cursor.lockState = CursorLockMode.Locked;
-                Cursor.visible = false;
-
-            }
+       
             CraftingSystem.Instance.RefreshNeededItems();
 
         }
       
     }
-    void SetActiveFollowInventory()
+    void SetActiveFollowInventoryAndCursor()
     {
-            if (!inventoryScreenUI.activeSelf)
-            {foreach (Transform child in categoryScreen.transform)
+        if (inventoryScreenUI.activeSelf == true)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+           
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            
+          foreach (Transform child in categoryScreen.transform)
+            {
                 child.gameObject.SetActive(false);
             }
+            ItemInforUI.gameObject.SetActive(false);
+
+        }
     }
     public void PopulateSlotList()
     {
