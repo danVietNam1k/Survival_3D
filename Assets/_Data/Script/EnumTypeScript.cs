@@ -4,11 +4,6 @@ public enum eConstructItemType {
     Floor,
     SomeItemPlacement,
     CampFire,
-
-
-
-
-
 }
 public enum eInteractionType
 {
@@ -27,4 +22,13 @@ public enum eCanPickupItemType
     LogWooden,
 
 
+}
+public enum eInventoryItemType
+{
+    None,
+    stick,
+    RawMeat,
+    CookedFood,
+    stone,
+    LogWooden,
 }

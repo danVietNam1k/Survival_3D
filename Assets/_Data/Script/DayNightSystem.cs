@@ -5,7 +5,8 @@ using UnityEngine;
 
 public class DayNightSystem : MonoBehaviour
 {
-    public Light directionalLight;
+    public Light DayLight;
+    public Light EveningLight;
     public float dayDurationInSeconds = 24f;
     public int currenthour;
     float currentTimeOfDay = 9/24f;
@@ -26,7 +27,8 @@ public class DayNightSystem : MonoBehaviour
         currentTimeOfDay %= 1;
         currenthour = Mathf.FloorToInt(currentTimeOfDay * 24);
 
-        directionalLight.transform.rotation = Quaternion.Euler(new Vector3(currentTimeOfDay * 360 - 90, 170, 0));
+        DayLight.transform.rotation = Quaternion.Euler(new Vector3(currentTimeOfDay * 360 - 90, 170, 0));
+        EveningLight.transform.rotation = Quaternion.Euler(new Vector3(currentTimeOfDay * 360 - 270, 170, 0));
         UpdateSkybox();
 
     }
@@ -41,11 +43,9 @@ public class DayNightSystem : MonoBehaviour
             if (currenthour == mapping.hour)
             {
                 currentSkybox = mapping.skyboxMaterial;
-                print(currentSkybox);
                 if (currentSkybox.shader.name == "Custom/SkyboxTransition")
                 {
-                    print("into shader name     ");
-
+                  
                     blenderValue += Time.deltaTime;
                     blenderValue = Mathf.Clamp01(blenderValue);
                     currentSkybox.SetFloat("_TransitionFactor", blenderValue);
@@ -69,6 +69,21 @@ public class DayNightSystem : MonoBehaviour
         {
             RenderSettings.skybox = currentSkybox;
 
+        }
+        TurnOfflight();
+    }
+    void TurnOfflight()
+    {
+        if (currenthour >= 5f && currenthour <= 17f)
+        {
+            DayLight.enabled = true;
+            EveningLight.enabled = false;
+
+        }
+        else
+        {
+            DayLight.enabled = false;
+            EveningLight.enabled = true;
         }
     }
 }

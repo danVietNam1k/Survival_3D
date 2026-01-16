@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
@@ -24,19 +25,21 @@ public class InventorySystem : MonoBehaviour
     public GameObject inforItemPopup;
     public GameObject ThrowItemAreaUI;
     public GameObject itemInforUI;
-
-    public bool isOpenInventory;
-    public List<GameObject> slotList = new List<GameObject>();
-    public List<string> itemList = new List<string>();
-    public List<GameObject> quickSlotList = new List<GameObject>();
-    public List<string> itemInQuickSlotList = new List<string>();
-
     private GameObject itemToAdd;
     public bool isFull;
     private GameObject whatSlotToEquip;
     [Header("------------------------------------")]
     public bool isOpeningChest;
+    public bool isOpeningShop;
+    public int currentMonney = 0;
+ 
 
+    public bool isOpenInventory;
+    [Header("------------------------------------")]
+    public List<GameObject> slotList = new List<GameObject>();
+    public List<string> itemList = new List<string>();
+    public List<GameObject> quickSlotList = new List<GameObject>();
+    public List<string> itemInQuickSlotList = new List<string>();
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -57,11 +60,12 @@ public class InventorySystem : MonoBehaviour
     {
        
         OpenInventory();
+        ShowMonney();
 
     }
     void OpenInventory()
     {
-        if (isOpeningChest) return;
+        if (GameManager.Instance.UnableOpenInventory()) return;
         if (Input.GetKeyDown(KeyCode.I))
         {   
             if(DialogSystem.Instance.thePlayerTalking) return;
@@ -71,7 +75,7 @@ public class InventorySystem : MonoBehaviour
             ThrowItemAreaUI.SetActive(isOpenInventory);
             MenuScreen.SetActive(inventoryScreenUI.activeSelf);
 
-            SetActiveFollowInventoryAndCursor();
+            //SetActiveFollowInventoryAndCursor();
 
        
             CraftingSystem.Instance.RefreshNeededItems();
@@ -127,8 +131,8 @@ public class InventorySystem : MonoBehaviour
     }
     public void AddItemToInventoryAndPopup(string itemName, bool popupTurnOn)
     {
-        CheckIsFull();
-        if (isFull)
+        
+        if (CheckInventoryIsFull())
         {
             Debug.Log("Inventory Is Full");
         }
@@ -144,7 +148,7 @@ public class InventorySystem : MonoBehaviour
         }
     }
 
-    GameObject FindNextEptySlot()
+    public GameObject FindNextEptySlot()
     {
         foreach (GameObject slot in slotList)
         {
@@ -156,7 +160,7 @@ public class InventorySystem : MonoBehaviour
         return new GameObject();
 
     }
-    void CheckIsFull()
+    public bool CheckInventoryIsFull()
     {
         int counter = 0;
         foreach (GameObject slot in slotList) {
@@ -170,6 +174,7 @@ public class InventorySystem : MonoBehaviour
                 isFull = true;
             }
             else isFull = false;
+        return isFull;
     }
     public void RemoveItem(string nameToRemove, int amountToRemove)
     {
@@ -263,5 +268,12 @@ public class InventorySystem : MonoBehaviour
         CraftingSystem.Instance.RefreshNeededItems();
         QuestManager.Instance.RefreshTrackerAmountItem();
     }
-
+    private void ShowMonney()
+    {
+        if (isOpenInventory)
+        {
+            TextMeshProUGUI txtMoney =ThrowItemAreaUI.transform.Find("Text Gold").GetComponent<TextMeshProUGUI>();
+            txtMoney.text = currentMonney + " Bitcoin";
+        }
+    }
 }

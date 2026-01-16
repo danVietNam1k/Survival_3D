@@ -37,7 +37,8 @@ public class FirstPersonController : MonoBehaviour
     // Internal Variables
     private float yaw = 0.0f;
     private float pitch = 0.0f;
-    private Image crosshairObject;
+
+   
 
     #region Camera Zoom Variables
 
@@ -60,7 +61,7 @@ public class FirstPersonController : MonoBehaviour
     public float maxVelocityChange = 10f;
 
     // Internal Variables
-    private bool isWalking = false;
+    public bool isWalking = false;
 
     #region Sprint
 
@@ -85,20 +86,25 @@ public class FirstPersonController : MonoBehaviour
     //private CanvasGroup sprintBarCG;
     public bool isSprinting = false;
     private float sprintRemaining;
-    private float sprintBarWidth;
-    private float sprintBarHeight;
+  
     private bool isSprintCooldown = false;
     private float sprintCooldownReset;
     //
-    public float gravity = -9.81f *2;
+    public float normalGravity = -9.81f * 2;
+    public float swimGravity = -1f;
+    public float gravity = -9.81f * 2;
+     
+    public bool isSwimming = false;
+    public bool isUnderWater = false;
+    CharacterController controller;
+    Vector3 velocity;
     #endregion
 
     #region Jump
 
-    public bool enableJump = true;
     public KeyCode jumpKey = KeyCode.Space;
     public float jumpPower = 5f;
-
+    public float speedSwim = 1f;    
     // Internal Variables
     private bool isGrounded = false;
 
@@ -152,11 +158,12 @@ public class FirstPersonController : MonoBehaviour
 
     void Start()
     {
-        if (!InventorySystem.Instance.isOpenInventory)
+        controller = GetComponent<CharacterController>();
+        if (GameManager.Instance.UnableLookAround())
         {
-            Cursor.lockState = CursorLockMode.Locked;
-        }else Cursor.lockState = CursorLockMode.None;
-        Physics.gravity = new Vector3(0, gravity, 0);
+            Cursor.lockState = CursorLockMode.None;
+        }else Cursor.lockState = CursorLockMode.Locked;
+      
 
         //if(crosshair)
         //{
@@ -205,60 +212,105 @@ public class FirstPersonController : MonoBehaviour
     private void Update()
     {
         PlayerCamera();
+        Jump();
     }
 
     void FixedUpdate()
     {
+        //if (isSwimming)
+        //{
+        //    controller.enabled = true;
+        //SwimmingAndDiving();
+        //    gravity = 0.1f;
+
+
+        //}
+        //else {
+        //    controller.enabled = false;
+
+        //    gravity = 1f;
+        //    Movement();
+        //}
         Movement();
+
+        GravityPlayer();
+
+
     }
-    void Movement()
+    void GravityPlayer()
     {
-        if (DialogSystem.Instance.thePlayerTalking || InventorySystem.Instance.isOpeningChest)
+        if( isSwimming)
         {
-            transform.GetComponent<Rigidbody>().useGravity = false;
-            transform.GetComponent<Rigidbody>().isKinematic = true;
-            return;
+            gravity = -0.01f;
+            velocity.y = 0f;
+        }else
+        {
+            gravity = normalGravity;
         }
-        else
+        if (!isSwimming&&isGrounded && velocity.y < 0)
         {
-            transform.GetComponent<Rigidbody>().useGravity = true;
-            transform.GetComponent<Rigidbody>().isKinematic = false;
+            velocity.y = -2f;
+        }
+        SwimUpAndSwimDown();
+        velocity.y += gravity * Time.deltaTime;
+        
+        controller.Move(velocity * Time.deltaTime);
+      
+
+    }
+    void SwimUpAndSwimDown()
+    {
+        if (!isSwimming) return;
+        if (Input.GetKey(KeyCode.C)) {
+            velocity.y = -5;
 
         }
-
-        #region Movement
-
-        if (playerCanMove)
+        else if (Input.GetKey(jumpKey))
         {
-            // Calculate how fast we should be moving
-            Vector3 targetVelocity = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+            velocity.y = 5;
 
-            // Checks if player is walking and isGrounded
-            // Will allow head bob
-            if (targetVelocity.x != 0 || targetVelocity.z != 0 && isGrounded)
+        }
+    }
+
+    void Movement()
             {
-                isWalking = true;
-            }
-            else
+
+        if (GameManager.Instance.UnableMovement()) return;
+                #region Movement
+
+                if (playerCanMove)
+                {
+                    // Calculate how fast we should be moving
+                    float x = Input.GetAxis("Horizontal");
+                    float z = Input.GetAxis("Vertical");
+                    // Checks if player is walking and isGrounded
+                    // Will allow head bob
+                    if (x != 0 || z != 0 && isGrounded)
+                    {
+                        isWalking = true;
+                    }
+                    else
+                    {
+                        isWalking = false;
+                    }
+            Vector3 move;
+            if (isSwimming)
             {
-                isWalking = false;
+                 move = transform.right * x + playerCamera.transform.forward * z;
+                move = move * speedSwim;
             }
+            else  move = transform.right * x + transform.forward * z;
+
+
 
             // All movement calculations shile sprint is active
             if (canSprint && Input.GetKey(sprintKey) && sprintRemaining > 0f && !isSprintCooldown)
             {
-                targetVelocity = transform.TransformDirection(targetVelocity) * sprintSpeed;
 
-                // Apply a force that attempts to reach our target velocity
-                Vector3 velocity = rb.velocity;
-                Vector3 velocityChange = (targetVelocity - velocity);
-                velocityChange.x = Mathf.Clamp(velocityChange.x, -maxVelocityChange, maxVelocityChange);
-                velocityChange.z = Mathf.Clamp(velocityChange.z, -maxVelocityChange, maxVelocityChange);
-                velocityChange.y = 0;
 
                 // Player is only moving when valocity change != 0
                 // Makes sure fov change only happens during movement
-                if (velocityChange.x != 0 || velocityChange.z != 0)
+                if (x != 0 || z != 0)
                 {
                     isSprinting = true;
 
@@ -267,43 +319,33 @@ public class FirstPersonController : MonoBehaviour
                         Crouch();
                     }
 
-                    //if (hideBarWhenFull && !unlimitedSprint)
-                    //{
-                    //    sprintBarCG.alpha += 5 * Time.deltaTime;
-                    //}
-                }
 
-                rb.AddForce(velocityChange, ForceMode.VelocityChange);
+                }
+                else
+                {
+                    isSprinting = false;
+                }
+                controller.Move(move * sprintSpeed * Time.deltaTime);
+
             }
             // All movement calculations while walking
             else
             {
                 isSprinting = false;
 
-                //if (hideBarWhenFull && sprintRemaining == sprintDuration)
-                //{
-                //    sprintBarCG.alpha -= 3 * Time.deltaTime;
-                //}
 
-                targetVelocity = transform.TransformDirection(targetVelocity) * walkSpeed;
+                controller.Move(move * walkSpeed * Time.deltaTime);
 
-                // Apply a force that attempts to reach our target velocity
-                Vector3 velocity = rb.velocity;
-                Vector3 velocityChange = (targetVelocity - velocity);
-                velocityChange.x = Mathf.Clamp(velocityChange.x, -maxVelocityChange, maxVelocityChange);
-                velocityChange.z = Mathf.Clamp(velocityChange.z, -maxVelocityChange, maxVelocityChange);
-                velocityChange.y = 0;
 
-                rb.AddForce(velocityChange, ForceMode.VelocityChange);
             }
-        }
+                }
 
-        #endregion
-    }
+                #endregion
+            }
 
     void PlayerCamera()
     {
-        if (DialogSystem.Instance.thePlayerTalking)
+        if (GameManager.Instance.UnableLookAround())
         {
             playerCamera.fieldOfView = Mathf.Lerp(playerCamera.fieldOfView, fov, zoomStepTime * Time.deltaTime);
                 return;
@@ -437,10 +479,7 @@ public class FirstPersonController : MonoBehaviour
         #region Jump
 
         // Gets input and calls jump method
-        if (enableJump && Input.GetKeyDown(jumpKey) && isGrounded)
-        {
-            Jump();
-        }
+      
 
         #endregion
 
@@ -494,18 +533,34 @@ public class FirstPersonController : MonoBehaviour
 
     private void Jump()
     {
-        // Adds force to the player rigidbody to jump
-        if (isGrounded)
+        if (Input.GetKeyDown(jumpKey) && isGrounded && !isSwimming)
         {
-            rb.AddForce(0f, jumpPower, 0f, ForceMode.Impulse);
-            isGrounded = false;
-        }
+            if (isGrounded )
+            {
+                velocity.y = Mathf.Sqrt(jumpPower * -2f * gravity);
+                isGrounded = false;
+            }
 
-        // When crouched and using toggle system, will uncrouch for a jump
-        if(isCrouched && !holdToCrouch)
-        {
-            Crouch();
+            // When crouched and using toggle system, will uncrouch for a jump
+            if (isCrouched && !holdToCrouch)
+            {
+                Crouch();
+            }
         }
+        // Adds force to the player rigidbody to jump
+    
+    }
+    float ForceSwimUpAndSwimDown()
+    {
+        float forceWsim;
+        if (Input.GetKey(jumpKey))
+            forceWsim = 0.7f;
+        else if (Input.GetKey(KeyCode.C))
+            forceWsim = -1f;
+        else forceWsim = 0f;    
+            
+        return forceWsim;
+
     }
 
     private void Crouch()
@@ -586,7 +641,18 @@ public class FirstPersonController : MonoBehaviour
         GUILayout.Label("By Jess Case", new GUIStyle(GUI.skin.label) { alignment = TextAnchor.MiddleCenter, fontStyle = FontStyle.Normal, fontSize = 12 });
         GUILayout.Label("version 1.0.1", new GUIStyle(GUI.skin.label) { alignment = TextAnchor.MiddleCenter, fontStyle = FontStyle.Normal, fontSize = 12 });
         EditorGUILayout.Space();
+        #region -----------Option-----------
+        EditorGUILayout.Space();
+        EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
+        GUILayout.Label("Option", new GUIStyle(GUI.skin.label) { alignment = TextAnchor.MiddleCenter, fontStyle = FontStyle.Bold, fontSize = 13 }, GUILayout.ExpandWidth(true));
+        EditorGUILayout.Space();
 
+        fpc.gravity = EditorGUILayout.FloatField(new GUIContent("Gravity Scale"),fpc.gravity);
+        fpc.isSwimming = EditorGUILayout.ToggleLeft(new GUIContent("Is Swimming"), fpc.isSwimming);
+        fpc.isUnderWater = EditorGUILayout.ToggleLeft(new GUIContent("Is UnderWater"), fpc.isUnderWater);
+        fpc.speedSwim = EditorGUILayout.FloatField(new GUIContent("Speed Swimming"), fpc.speedSwim);
+
+        #endregion
         #region Camera Setup
 
         EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
@@ -652,6 +718,7 @@ public class FirstPersonController : MonoBehaviour
         GUI.enabled = fpc.playerCanMove;
         fpc.walkSpeed = EditorGUILayout.Slider(new GUIContent("Walk Speed", "Determines how fast the player will move while walking."), fpc.walkSpeed, .1f, fpc.sprintSpeed);
         GUI.enabled = true;
+        fpc.speedSwim = EditorGUILayout.FloatField(new GUIContent("Swim Speed", ""), fpc.speedSwim);
 
         EditorGUILayout.Space();
 
@@ -715,9 +782,7 @@ public class FirstPersonController : MonoBehaviour
 
         GUILayout.Label("Jump", new GUIStyle(GUI.skin.label) { alignment = TextAnchor.MiddleLeft, fontStyle = FontStyle.Bold, fontSize = 13 }, GUILayout.ExpandWidth(true));
 
-        fpc.enableJump = EditorGUILayout.ToggleLeft(new GUIContent("Enable Jump", "Determines if the player is allowed to jump."), fpc.enableJump);
-
-        GUI.enabled = fpc.enableJump;
+      
         fpc.jumpKey = (KeyCode)EditorGUILayout.EnumPopup(new GUIContent("Jump Key", "Determines what key is used to jump."), fpc.jumpKey);
         fpc.jumpPower = EditorGUILayout.Slider(new GUIContent("Jump Power", "Determines how high the player will jump."), fpc.jumpPower, .1f, 20f);
         GUI.enabled = true;
@@ -761,8 +826,10 @@ public class FirstPersonController : MonoBehaviour
 
         #endregion
 
+     
+
         //Sets any changes from the prefab
-        if(GUI.changed)
+        if (GUI.changed)
         {
             EditorUtility.SetDirty(fpc);
             Undo.RecordObject(fpc, "FPC Change");

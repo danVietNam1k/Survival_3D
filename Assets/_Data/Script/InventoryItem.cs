@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class InventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
 {
+    public eInventoryItemType type;
     // --- Is this item trashable --- //
     public bool cannotTrash;
     public bool isSelected;

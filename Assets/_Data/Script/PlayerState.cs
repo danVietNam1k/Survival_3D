@@ -25,9 +25,11 @@ public class PlayerState : MonoBehaviour
 
     //hydration
     public float currentHydration, maxHydration;
-    // 
+    // oxygen
+    public float currentOxygen, maxOxygen;
+
     KeyCode sprintKey;
-    FirstPersonController firstPersonController;
+    public FirstPersonController firstPersonController;
     // Start is called before the first frame update
     void Start()
     {
@@ -35,6 +37,7 @@ public class PlayerState : MonoBehaviour
         currentStamina = maxStamina;
         currentCalories = maxCalories;
         currentHydration = maxHydration;
+        currentOxygen = maxOxygen;
         firstPersonController = ReferenceManager.Instance.player.GetComponent<FirstPersonController>();
         StartCoroutine(MinusHydration());
         StartCoroutine(MinusCalories());
@@ -44,12 +47,12 @@ public class PlayerState : MonoBehaviour
     void Update()
     {
         UpdateStamina();
-
+        UpdateOxygen();
     }
     private void UpdateHeal()
     {
         if (currentHeal <= 0f) return;
-
+     
 
     }
     private void UpdateStamina()
@@ -79,7 +82,22 @@ public class PlayerState : MonoBehaviour
 
            
     }
-    
+    private void UpdateOxygen()
+    {
+        if (!firstPersonController.isUnderWater && currentOxygen <= maxOxygen)
+        {
+
+            currentOxygen += 5f * Time.deltaTime;
+        }
+        else if(firstPersonController.isUnderWater)
+        {
+
+            currentOxygen -=  Time.deltaTime;
+            
+        }
+
+
+    }
     void UpdateHydration()
     {
 
@@ -122,6 +140,10 @@ public class PlayerState : MonoBehaviour
     public void setHealth(float newHealth)
     {
         currentHeal = newHealth;
+    }
+    public void SetOxygen(float newOxygen)
+    {
+        currentOxygen = newOxygen;
     }
 
 }

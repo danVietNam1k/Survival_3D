@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class StatusBar : MonoBehaviour
 {
-    public Slider staminaBar, healBar, caloriesBar, hydrationBar;
+    public Slider staminaBar, healBar, caloriesBar, hydrationBar, oxygenBar;
     public PlayerState playerState;
     void Reset()
     {
@@ -13,6 +13,7 @@ public class StatusBar : MonoBehaviour
         healBar = this.transform.GetChild(1).GetComponent<Slider>();
         caloriesBar = this.transform.GetChild(2).GetComponent<Slider>();
         hydrationBar = this.transform.GetChild(3).GetComponent<Slider>();
+        oxygenBar = this.transform.GetChild(4).GetComponent<Slider>();
         playerState = ReferenceManager.Instance.playerState;
     }
 
@@ -23,6 +24,7 @@ public class StatusBar : MonoBehaviour
         UpdateHealBar();
         UpdateStaminaBar();
         UpdateHydrationBar();
+        UpdateOxygenBar();
     }
     void UpdateStaminaBar()
     {
@@ -63,6 +65,20 @@ public class StatusBar : MonoBehaviour
         float maxHydration = playerState.maxHydration;
         float fillValue = currentHydration / maxHydration;
         hydrationBar.value = fillValue;
+    }
+    void UpdateOxygenBar()
+    {
+        
+        float fillValue = playerState.currentOxygen / playerState.maxOxygen;
+        oxygenBar.value = fillValue;
+        if (fillValue < 1f)
+        {
+            oxygenBar.transform.gameObject.SetActive(true);
+        }
+        else
+        {
+            oxygenBar.transform.gameObject.SetActive(false);
+        }
     }
 }
 

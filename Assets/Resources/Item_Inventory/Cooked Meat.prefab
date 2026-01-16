@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -2892693535856669896}
   - component: {fileID: 7717286404212975981}
   m_Layer: 0
-  m_Name: Cooked Meat
+  m_Name: Cooked meat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -118,10 +118,10 @@ MonoBehaviour:
   cannotTrash: 0
   isSelected: 0
   itemInfoUI: {fileID: 0}
-  thisName: Stone
+  thisName: Cooked meat
   thisDescription: 
   thisFunctionality: 
   isConsumable: 1
   healthEffect: 20
-  caloriesEffect: 300
+  caloriesEffect: 500
   hydrationEffect: 10

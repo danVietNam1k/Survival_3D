@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class NPC : MonoBehaviour
 {
-    GameObject canvasDialog;
+    
     TextMeshProUGUI npcDialogText, answearBTN1Text, answearBTN2Text, answearBTN3Text;
      Button answearBTN1, answearBTN2, answearBTN3;
     public int currentDialog = 0;
@@ -15,6 +15,8 @@ public class NPC : MonoBehaviour
     public Quest currentActiveQuest = null;
     public int activeQuestIndex = 0;
     public bool firstTimeInteraction = true;
+    [Header("------Chose Type Npc----------")]
+    public bool thisIsShopkeeper = false;
 
 
 
@@ -39,15 +41,28 @@ public class NPC : MonoBehaviour
     {
         SoundManager.Instance.PlaySoundNPC(clip, this.transform);
     }
+    
     public void StartConversation()
     {
         LookAtPlayer();
+        if(GetComponent<NPC_Shopkeeper>() != null)
+        {GetComponent<NPC_Shopkeeper>().StartShopkeeperConvesation();
+
+        }
+        else
+        {
+            StartQuestConvesation();
+        }
+    }
+   public void StartQuestConvesation()
+    {
+        
         if (firstTimeInteraction) // interactiong with the npc for the first time
         {
-            firstTimeInteraction = false;
             currentActiveQuest = quests[activeQuestIndex];
             StartQuestInitialDialog();
             currentDialog = 0;
+            firstTimeInteraction = false;
         }
         else// interactiong with the npc after the first time
         {
@@ -81,17 +96,17 @@ public class NPC : MonoBehaviour
                     npcDialogText.text = currentActiveQuest.info.comebackInProgress;
                     PlaySoundConvesation(currentActiveQuest.info.comebackInProgressClip);
 
-                    CloseDialog();
+                    FinalDialog();
                 }
             }
-            else if(activeQuestIndex >= quests.Count)
+            else if (activeQuestIndex >= quests.Count)
             {
                 DialogSystem.Instance.OpenDialogUI();
 
                 npcDialogText.text = currentActiveQuest.info.finalWords;
                 PlaySoundConvesation(currentActiveQuest.info.finalWordsClip);
 
-                CloseDialog();
+                FinalDialog();
             }
 
         }
@@ -207,6 +222,7 @@ public class NPC : MonoBehaviour
         {
             DeclinedQuest();
         });
+        answearBTN3.gameObject.SetActive(false);
     }
 
     void CheckIfDialogDone()
@@ -234,6 +250,8 @@ public class NPC : MonoBehaviour
                 CheckIfDialogDone();
 
             });
+            answearBTN2.gameObject.SetActive(false);
+            answearBTN3.gameObject.SetActive(false);
         }
     }
     private void StartQuestInitialDialog()
@@ -272,7 +290,7 @@ public class NPC : MonoBehaviour
             PlaySoundConvesation(currentActiveQuest.info.acceptAnswerClip);
 
 
-            CloseDialog();
+            FinalDialog();
 
 
             answearBTN2.gameObject.SetActive(false);
@@ -292,7 +310,7 @@ public class NPC : MonoBehaviour
 
         });
     }
-    void CloseDialog()
+    void FinalDialog()
     {
         answearBTN1Text.text = "Close";
         answearBTN1.onClick.RemoveAllListeners();
@@ -300,6 +318,8 @@ public class NPC : MonoBehaviour
         {
             DialogSystem.Instance.CloseDialogUI();
         });
+        answearBTN2.gameObject.SetActive(false);
+        answearBTN3.gameObject.SetActive(false);
     }
 
     private void ReceiveRewardAndCompleteQuest()
@@ -345,6 +365,7 @@ public class NPC : MonoBehaviour
             DialogSystem.Instance.CloseDialogUI();
         });
         answearBTN2.gameObject.SetActive(false);
+        answearBTN3.gameObject.SetActive(false);
     }
     public void LookAtPlayer()
     {

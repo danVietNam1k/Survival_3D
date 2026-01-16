@@ -21,17 +21,11 @@ public class ItemSlot : MonoBehaviour, IDropHandler
     {
 
         //if there is not item already then set our item.
-        if (!Item)
-        {
-            print(this.name + "empty");
-            
+        if (!Item && DragDrop.itemBeingDragged!= null)
+        { 
                 DragDrop.itemBeingDragged.transform.SetParent(transform);
                 DragDrop.itemBeingDragged.transform.localPosition = new Vector2(0, 0);
                 print(Item.name);
-            
-            
-
-
         }
     }
 
