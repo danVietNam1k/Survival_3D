@@ -84,6 +84,9 @@ public class SaveManager : MonoBehaviour
    
     void SetPlayerData(PlayerData playerData)
     {
+        Transform player = PlayerState.Instance.playerBody;
+        player.GetComponent<CharacterController>().enabled = false;
+        #region ------SetPlayerData----
         // status 
         PlayerState.Instance.currentHeal = playerData.playerStates[0];
         PlayerState.Instance.currentCalories = playerData.playerStates[1];
@@ -93,7 +96,7 @@ public class SaveManager : MonoBehaviour
         loadPos.x = playerData.playerPositionAndRotation[0];
         loadPos.y = playerData.playerPositionAndRotation[1];
         loadPos.z = playerData.playerPositionAndRotation[2];
-        PlayerState.Instance.playerBody.position = loadPos;
+        player.position = loadPos;
         //rotation
         
         Quaternion loadRot;
@@ -101,7 +104,7 @@ public class SaveManager : MonoBehaviour
         loadRot.y = playerData.playerPositionAndRotation[4];
         loadRot.z = playerData.playerPositionAndRotation[5];
         loadRot.w = playerData.playerPositionAndRotation[6];
-        PlayerState.Instance.playerBody.rotation = loadRot;
+        player.rotation = loadRot;
         // inventory
         foreach (string item in playerData.inventoryContent)
         {
@@ -112,6 +115,9 @@ public class SaveManager : MonoBehaviour
         {
             InventorySystem.Instance.AddItemtoQuickSlot(item);
         }
+        #endregion
+        player.GetComponent<CharacterController>().enabled = true;
+
 
     }
     #endregion

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6446798613906235739}
   m_Layer: 0
   m_Name: DeadTree
-  m_TagString: Untagged
+  m_TagString: CanPickUp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -161,6 +161,7 @@ MonoBehaviour:
   CanHit: 1
   maxHealth: 100
   currentHealth: 0
+  animator: {fileID: 0}
 --- !u!54 &7382180916442768045
 Rigidbody:
   m_ObjectHideFlags: 0

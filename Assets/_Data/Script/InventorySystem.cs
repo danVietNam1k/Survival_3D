@@ -5,6 +5,7 @@ using System.Linq;
 using TMPro;
 using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEditor.Experimental.GraphView;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,7 +17,7 @@ public class InventorySystem : MonoBehaviour
     public GameObject inventoryScreenUI;
     public GameObject quickSlotScreenUI;
     public Transform ItemInforUI;
-
+    
     [Header("----------Category Screen------------")]
     public GameObject MenuScreen;
     public GameObject categoryScreen;
@@ -27,7 +28,7 @@ public class InventorySystem : MonoBehaviour
     public GameObject itemInforUI;
     private GameObject itemToAdd;
     public bool isFull;
-    private GameObject whatSlotToEquip;
+    private GameObject whatSlotToAdd;
     [Header("------------------------------------")]
     public bool isOpeningChest;
     public bool isOpeningShop;
@@ -74,34 +75,24 @@ public class InventorySystem : MonoBehaviour
             inventoryScreenUI.SetActive(isOpenInventory);
             ThrowItemAreaUI.SetActive(isOpenInventory);
             MenuScreen.SetActive(inventoryScreenUI.activeSelf);
+            TurnOffInMenu();
 
-            //SetActiveFollowInventoryAndCursor();
 
-       
+
+
             CraftingSystem.Instance.RefreshNeededItems();
 
         }
       
     }
-    void SetActiveFollowInventoryAndCursor()
+    void TurnOffInMenu()
     {
-        if (inventoryScreenUI.activeSelf == true)
+        foreach(Transform inMenu in categoryScreen.transform)
         {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-           
-        }
-        else
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-            
-          foreach (Transform child in categoryScreen.transform)
+            if (inMenu.gameObject.activeSelf)
             {
-                child.gameObject.SetActive(false);
+                inMenu.gameObject.SetActive(false);
             }
-            ItemInforUI.gameObject.SetActive(false);
-
         }
     }
     public void PopulateSlotList()
@@ -138,18 +129,58 @@ public class InventorySystem : MonoBehaviour
         }
         else
         {
-            whatSlotToEquip = FindNextEptySlot();
-            itemToAdd = Instantiate(Resources.Load<GameObject>("Item_Inventory/"+itemName), whatSlotToEquip.transform);
-            itemToAdd.transform.SetParent(whatSlotToEquip.transform);
-            itemToAdd.name = itemName;
+           
+            itemToAdd = Instantiate(Resources.Load<GameObject>("Item_Inventory/"+itemName));
+
             if(popupTurnOn) OpenPopupItem(itemName, itemToAdd);
-            CraftingSystem.Instance.RefreshNeededItems();
-            QuestManager.Instance.RefreshTrackerAmountItem();
+            print("add item");
+            if (ItemStackable(itemToAdd)) {
+                AddItemStackable(itemToAdd,itemName);
+                
+            }
+            else
+            {
+                AddItemNormal(itemToAdd, itemName);
+            }
         }
     }
-
+    void AddItemNormal(GameObject itemToAdd,string itemName)
+    {
+        whatSlotToAdd = FindNextEptySlot();
+        itemToAdd.transform.SetParent(whatSlotToAdd.transform);
+        itemToAdd.name = itemName;
+        itemToAdd.transform.localPosition = Vector3.zero;
+        whatSlotToAdd.GetComponent<ItemSlot>().amount = 1;
+        CraftingSystem.Instance.RefreshNeededItems();
+        QuestManager.Instance.RefreshTrackerAmountItem();
+    }
+    void AddItemStackable(GameObject itemToAdd, string itemName)
+    {
+        CraftingSystem.Instance.RefreshNeededItems();
+        foreach (string item in itemList)
+        {
+            if (item == itemName)
+            {
+                foreach(GameObject slot in slotList)
+                {
+                    if(slot.transform.childCount >0 && itemName == slot.transform.GetChild(0).name)
+                    {
+                        slot.GetComponent<ItemSlot>().amount++;
+                        Destroy(itemToAdd);
+                        return;
+                    }
+                }
+            }
+        }
+        AddItemNormal(itemToAdd,itemName);
+    }
+    bool ItemStackable(GameObject itemToAdd)
+    {
+        return itemToAdd.GetComponent<InventoryItem>().stackable;
+    }
     public GameObject FindNextEptySlot()
     {
+        
         foreach (GameObject slot in slotList)
         {
             if (slot.transform.childCount == 0)
@@ -178,18 +209,6 @@ public class InventorySystem : MonoBehaviour
     }
     public void RemoveItem(string nameToRemove, int amountToRemove)
     {
-        //var itemsToRemove = slotList
-        //    .Where(s => s.transform.childCount > 0 && s.transform.GetChild(0).name == nameToRemove)
-        //    .Take(amountToRemove);
-
-        //foreach (var item in itemsToRemove)
-        //{
-
-        //    Destroy(item.transform.GetChild(0).gameObject);
-
-        //}
-        //ReCalculateList();
-
         int amount = 0;
         foreach (GameObject slot in slotList)
         {
@@ -197,13 +216,34 @@ public class InventorySystem : MonoBehaviour
             if (slot.transform.childCount > 0 && slot.transform.GetChild(0).name == nameToRemove)
             {
                 amount++;
-                DestroyImmediate(slot.transform.GetChild(0).gameObject);
+
+                GameObject item = slot.transform.GetChild(0).gameObject;
+                if (ItemStackable(item))
+                {
+                    
+                    slot.GetComponent<ItemSlot>().amount--;
+                    print("use item ");
+                    if(slot.GetComponent<ItemSlot>().amount < 1)
+                    {
+                        slot.GetComponent<ItemSlot>().amount = 0;
+                        DestroyImmediate(item);
+                    }
+
+                }
+                else
+                {
+                    slot.GetComponent<ItemSlot>().amount = 0;
+                    DestroyImmediate(item);
+                }
+                
                 if (amount == amountToRemove)
                 {
                     CraftingSystem.Instance.RefreshNeededItems();
+                    QuestManager.Instance.RefreshTrackerAmountItem();
 
                     return;
                 }
+
             }
 
         }
@@ -270,7 +310,7 @@ public class InventorySystem : MonoBehaviour
     }
     private void ShowMonney()
     {
-        if (isOpenInventory)
+        if (isOpenInventory || isOpeningShop)
         {
             TextMeshProUGUI txtMoney =ThrowItemAreaUI.transform.Find("Text Gold").GetComponent<TextMeshProUGUI>();
             txtMoney.text = currentMonney + " Bitcoin";

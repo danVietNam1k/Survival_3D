@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -18,12 +19,22 @@ public class GameManager : MonoBehaviour
             Instance = this;
         }
     }
+    public void LoadScene(string sceneName)
+    {
+        if(sceneName == "MainMenu")
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+        SceneManager.LoadScene(sceneName);
+    }
     public bool UnableOpenInventory()
     {
         if (
             InventorySystem.Instance.isOpeningChest ||
             InventorySystem.Instance.isOpeningShop ||
             DialogSystem.Instance.thePlayerTalking
+            || PlayerState.Instance.isPlayerdead
             )
             return true;
         else return false;
@@ -36,6 +47,7 @@ public class GameManager : MonoBehaviour
             InventorySystem.Instance.isOpeningChest||
             InventorySystem.Instance.isOpeningShop||
             DialogSystem.Instance.thePlayerTalking
+             
             )
             return true;
         else return false;
@@ -60,6 +72,7 @@ public class GameManager : MonoBehaviour
             InventorySystem.Instance.isOpeningChest ||
             InventorySystem.Instance.isOpeningShop ||
             DialogSystem.Instance.thePlayerTalking
+             || PlayerState.Instance.isPlayerdead
             )
             return true;
         else return false;

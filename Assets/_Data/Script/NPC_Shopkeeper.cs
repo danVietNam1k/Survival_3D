@@ -10,13 +10,14 @@ public class NPC_Shopkeeper : MonoBehaviour
     public AudioClip shopkeeperVoice;
     public string shopkeeperDialog;
     Button answearBTN1, answearBTN2, answearBTN3;
+    public Button sellBTN;
     GameObject ShopUI;
     public GameObject slotSellUI;
     List<GameObject> slotSells = new();
     public TextMeshProUGUI txtTotalMonneySell;
     int totalMonneySellItem;
-    public List<ItemSell> itemSells = new();
-
+   
+    public PriceItemContainer priceItemContainer;
     private void Update()
     {
         ShowMonneyTotalSellItem();
@@ -79,6 +80,7 @@ public class NPC_Shopkeeper : MonoBehaviour
     {
         ShopUI.SetActive(false);
         InventorySystem.Instance.inventoryScreenUI.SetActive(false);
+        InventorySystem.Instance.ThrowItemAreaUI.SetActive(false);
         ReturnItemToInventory();
         InventorySystem.Instance.isOpeningShop = false;
 
@@ -87,6 +89,7 @@ public class NPC_Shopkeeper : MonoBehaviour
     public void OpenShopUI()
     {
         InventorySystem.Instance.inventoryScreenUI.SetActive(true);
+        InventorySystem.Instance.ThrowItemAreaUI.SetActive(true);
         ShopUI.SetActive(true);
         InventorySystem.Instance.isOpeningShop = true;
     }
@@ -111,6 +114,7 @@ public class NPC_Shopkeeper : MonoBehaviour
     {
         if (InventorySystem.Instance.isOpeningShop)
         {
+            HideSellBTN();
             totalMonneySellItem = 0;
             List<Transform> item = new();
             foreach(GameObject child in slotSells)
@@ -122,11 +126,11 @@ public class NPC_Shopkeeper : MonoBehaviour
             }
             foreach(Transform child in item)
             {
-                foreach(ItemSell itemSell in itemSells)
+                foreach(ItemPrice itemPrice in priceItemContainer.priceItemList)
                 {
-                   if(child.GetComponent<InventoryItem>().type == itemSell.type)
+                   if(child.GetComponent<InventoryItem>().type == itemPrice.type)
                     {
-                        totalMonneySellItem =+ itemSell.itemPrice;
+                        totalMonneySellItem += itemPrice.price;
                     }
                 }
                 
@@ -136,11 +140,27 @@ public class NPC_Shopkeeper : MonoBehaviour
         }
 
     }
+    public void SellClick()
+    {
+        foreach (GameObject child in slotSells)
+        {
+            if (child.transform.childCount > 0)
+            {
+                Destroy(child.transform.GetChild(0).gameObject);
+            }
+        }
+        InventorySystem.Instance.currentMonney += totalMonneySellItem;
+
+    }
+    public void HideSellBTN()
+    {
+        if (totalMonneySellItem > 0)
+        {
+            sellBTN.interactable = true;
+        }else
+            sellBTN.interactable = false;
+    }
     
 }
-[System.Serializable]
-public class ItemSell
-{
-    public eInventoryItemType type;
-    public int itemPrice;
-}
+
+ 

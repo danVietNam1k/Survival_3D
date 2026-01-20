@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 911b283bbabc72e4aabd7f74023c0e33, type: 3}
+  m_Name: PriceItemContainer
+  m_EditorClassIdentifier: 
+  priceItemList:
+  - Name: Raw meat
+    type: 1
+    price: 10
+  - Name: Cooked meat
+    type: 2
+    price: 20
+  - Name: Stick
+    type: 100
+    price: 5
+  - Name: Stone
+    type: 101
+    price: 5
+  - Name: Log wooden
+    type: 102
+    price: 20
+  - Name: Apple
+    type: 3
+    price: 20
+  - Name: Axe
+    type: 300
+    price: 50
+  - Name: CampFire
+    type: 203
+    price: 50
+  - Name: Wooden Chest
+    type: 202
+    price: 30
+  - Name: Wooden Wall
+    type: 201
+    price: 20
+  - Name: Wooden Floor
+    type: 200
+    price: 20

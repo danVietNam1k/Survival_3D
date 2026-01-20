@@ -20,15 +20,41 @@ public enum eCanPickupItemType
     CookedFood,
     stone,
     LogWooden,
+    Axe,
 
 
 }
 public enum eInventoryItemType
 {
     None,
-    stick,
+    //Consumable
     RawMeat,
-    CookedFood,
-    stone,
+    CookedMeat,
+    Apple,
+    SmallHp,
+    SmallWater,
+    MediumHp,
+    MediumWater,
+    BigHp,
+    BigWater,
+
+
+    // manufacturing materials
+    Stick = 100,
+    Stone,
     LogWooden,
+    Plank,
+    // construc item
+
+    WoodenFloor = 200,
+    WoodenWall,
+    WoodenChest,
+    CampFire,
+
+    // Weapon,
+    Axe = 300,
+    Arrow,
+    Bow,
+
+
 }

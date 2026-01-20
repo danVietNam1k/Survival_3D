@@ -10,6 +10,8 @@ public class InventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     // --- Is this item trashable --- //
     public bool cannotTrash;
     public bool isSelected;
+    public bool enableEquip;
+    public bool stackable;
     
     // --- Item Info UI --- //
     public GameObject itemInfoUI;
@@ -60,19 +62,9 @@ public class InventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         //Right Mouse Button Click on
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            if (isConsumable)
-            {
-                // Setting this specific gameobject to be the item we want to destroy later
-
-                StartCoroutine(IfDragItem());
-                itemPendingConsumption = gameObject;
-            }
-            else
-            {
-                StartCoroutine(IfDragItem());
-                itemPendingConsumption = gameObject;
-
-            }
+            StartCoroutine(IfDragItem());
+            itemPendingConsumption = gameObject;
+          
 
         }
     }
@@ -94,7 +86,7 @@ public class InventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
                 InventorySystem.Instance.ReCalculateList();
                 //CraftingSystem.Instance.RefreshNeededItems();
             }
-            else if(!isConsumable && itemPendingConsumption == gameObject)
+            else if(enableEquip &&!isConsumable && itemPendingConsumption == gameObject)
             {
                 if(InventorySystem.Instance.QuickSlotEmpty() == null) return;
                 GameObject newSlot = InventorySystem.Instance.QuickSlotEmpty();

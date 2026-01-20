@@ -30,6 +30,8 @@ public class PlayerState : MonoBehaviour
 
     KeyCode sprintKey;
     public FirstPersonController firstPersonController;
+    public bool isPlayerdead = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -49,10 +51,16 @@ public class PlayerState : MonoBehaviour
         UpdateStamina();
         UpdateOxygen();
     }
-    private void UpdateHeal()
+    public void TakeDamge(float damge)
     {
-        if (currentHeal <= 0f) return;
-     
+        if (!isPlayerdead)
+        {
+            currentHeal -= damge;
+            if(currentHeal < 0)
+            {
+                isPlayerdead = true;
+            }
+        }
 
     }
     private void UpdateStamina()

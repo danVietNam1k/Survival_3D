@@ -12,7 +12,7 @@ public class CraftingSystem : MonoBehaviour
     public GameObject toolsScreenUI;
     public GameObject constructScreenUI;
     public Transform menuButtons;
-
+    public bool isOpen;
     //IN Menu Buttons
     Button toolsBTN;
     Button constructBTN;
@@ -28,9 +28,13 @@ public class CraftingSystem : MonoBehaviour
     Text woodenWallReq;
     Text woodenFloorReq;
     Text woodenChestReq1, woodenChestReq2;
+    // hide
+    [HideInInspector] public int amountStick = 0;
+    [HideInInspector] public int amountStone = 0;
+    [HideInInspector] public int amountLog = 0;
+    [HideInInspector] public int amountPlank = 0;
 
-
-    public bool isOpen;
+   
 
     //All Blueprints
     private Blueprint AxeBLP = new Blueprint("Axe",1, 2, "Stone", 3, "Stick", 3);
@@ -38,6 +42,7 @@ public class CraftingSystem : MonoBehaviour
     private Blueprint WoodenWallBLP = new Blueprint("Wooden wall", 1, 1, "Plank", 2, "", 0);
     private Blueprint WoodenFloorBLP = new Blueprint("Wooden floor", 1, 1, "Plank", 2, "", 0);
     private Blueprint WoodenChestBLP = new Blueprint("Wooden chest", 1, 2, "Plank", 1, "Log", 1);
+ 
 
 
 
@@ -52,7 +57,7 @@ public class CraftingSystem : MonoBehaviour
             Instance = this;
         }
     }
-
+    
 
     // Start is called before the first frame update
     void Start()
@@ -121,7 +126,7 @@ public class CraftingSystem : MonoBehaviour
     }
 
 
-    void CraftAnyItem(Blueprint blueprintToCraft)
+    public void CraftAnyItem(Blueprint blueprintToCraft)
     {
         for(int i = 0; i < blueprintToCraft.amountCraftItem; i++)
         {
@@ -170,30 +175,34 @@ public class CraftingSystem : MonoBehaviour
             //if (itemName == "Stick") { stick_count += 1; }
             //if (itemName == "Log") { logWood_count += 1; }
         }
+        this.amountLog = logWood_count;
+        this.amountPlank = Plank_count;
+        this.amountStick = stick_count;
+        this.amountStone = stone_count;
 
         //   wooden wall and floor
          woodenWallReq.text = Plank_count + "/2 Plank";
         woodenFloorReq.text = woodenWallReq.text;
         if (Plank_count >= 2)
         {
-            craftWoodenWallBTN.gameObject.SetActive(true);
-             craftWoodenFloorBTN.gameObject.SetActive(true);
+            craftWoodenWallBTN.interactable = true;
+            craftWoodenFloorBTN.interactable = true;
         }
         else
         {
-            craftWoodenWallBTN.gameObject.SetActive(false);
-            craftWoodenFloorBTN.gameObject.SetActive(false);
+            craftWoodenWallBTN.interactable = false;
+            craftWoodenFloorBTN.interactable = false;
         }
         //   Plank
         plankReq.text = logWood_count + "/1 Log";
 
         if (logWood_count >= 1)
         {
-            craftPlankBTN.gameObject.SetActive(true);
+            craftPlankBTN.interactable = true;
         }
         else
         {
-            craftPlankBTN.gameObject.SetActive(false);
+            craftPlankBTN.interactable = false;
         }
 
         //------Axe-----//
@@ -203,11 +212,11 @@ public class CraftingSystem : MonoBehaviour
 
         if (stone_count >= 3 && stick_count >= 3)
         {
-            craftAxeBTN.gameObject.SetActive(true);
+            craftAxeBTN.interactable = true;
         }
         else
         {
-            craftAxeBTN.gameObject.SetActive(false);
+            craftAxeBTN.interactable = false;
         }//------Chest-----//
 
         woodenChestReq1.text = Plank_count + "/1  Plank";
@@ -215,11 +224,12 @@ public class CraftingSystem : MonoBehaviour
 
         if (Plank_count >= 1 && logWood_count >= 1)
         {
-            craftWoodenChestBTN.gameObject.SetActive(true);
+            craftWoodenChestBTN.interactable = true;
         }
         else
         {
-            craftWoodenChestBTN.gameObject.SetActive(false);
+            craftWoodenChestBTN.interactable = false;
         }
     }
+  
 }

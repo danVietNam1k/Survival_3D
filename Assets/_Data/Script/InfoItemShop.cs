@@ -10,23 +10,28 @@ public class InfoItemShop : MonoBehaviour
 
     public string nameItem;
     public int priceItem;
-    Button buyBTN;
-     TextMeshProUGUI nameText;
-     TextMeshProUGUI priceTxt;
+    public Button buyBTN;
+    public TextMeshProUGUI nameText;
+    public TextMeshProUGUI priceTxt;
     // Start is called before the first frame update
     void Start()
     {
+       
         nameText = transform.Find("Text Name").GetComponent<TextMeshProUGUI>();
         priceTxt = transform.Find("Text Price").GetComponent<TextMeshProUGUI>();
-        buyBTN = transform.GetComponentInChildren<Button>();
+        buyBTN = transform.Find("Button").GetComponent<Button>();
         nameText.text = nameItem;
         priceTxt.text = priceItem + " BitCoin";
         buyBTN.onClick.AddListener(() =>
         {
             BuytItem();
         });
+        LoadSprite();
     }
-
+    private void OnValidate()
+    {
+        this.name = nameItem;
+    }
     private void BuytItem()
     {
         if (InventorySystem.Instance.CheckInventoryIsFull()) return;
@@ -51,5 +56,10 @@ public class InfoItemShop : MonoBehaviour
             buyBTN.interactable = false;
 
         }
+    }
+    void LoadSprite()
+    {
+        Sprite item = Resources.Load<GameObject>("Item_Inventory/"+ nameItem).GetComponent<Image>().sprite;
+        transform.Find("Avatar").GetComponent<Image>().sprite = item;
     }
 }

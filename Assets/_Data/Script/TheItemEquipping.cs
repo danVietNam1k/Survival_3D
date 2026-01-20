@@ -59,7 +59,7 @@ public class TheItemEquipping : MonoBehaviour
         }
        if(other.GetComponent<Animal>() != null)
         {
-            other.GetComponent<Animal>().PlaySoundHitRabbit();
+            other.GetComponent<Animal>().PlaySoundHitAnimal();
         }
 
 

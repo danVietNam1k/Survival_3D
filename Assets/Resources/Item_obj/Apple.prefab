@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 7913435635598486529}
   m_Layer: 0
   m_Name: Apple
-  m_TagString: Untagged
+  m_TagString: CanPickUp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -121,6 +121,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cc8f4514acdede448af64236919da4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  type: 0
+  thisCanCooking: 0
+  countTimeCooking: 0
 --- !u!114 &5148265528581799461
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -134,6 +137,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ItemName: Apple
+  CanHit: 0
+  maxHealth: 0
+  currentHealth: 0
+  animator: {fileID: 0}
 --- !u!54 &7913435635598486529
 Rigidbody:
   m_ObjectHideFlags: 0

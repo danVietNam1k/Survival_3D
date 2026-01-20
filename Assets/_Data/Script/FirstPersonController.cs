@@ -164,7 +164,7 @@ public class FirstPersonController : MonoBehaviour
             Cursor.lockState = CursorLockMode.None;
         }else Cursor.lockState = CursorLockMode.Locked;
       
-
+        GetComponent<CharacterController>().enabled = true;
         //if(crosshair)
         //{
         //    crosshairObject.sprite = crosshairImage;
@@ -213,26 +213,12 @@ public class FirstPersonController : MonoBehaviour
     {
         PlayerCamera();
         Jump();
+        Movement();
     }
 
     void FixedUpdate()
     {
-        //if (isSwimming)
-        //{
-        //    controller.enabled = true;
-        //SwimmingAndDiving();
-        //    gravity = 0.1f;
-
-
-        //}
-        //else {
-        //    controller.enabled = false;
-
-        //    gravity = 1f;
-        //    Movement();
-        //}
-        Movement();
-
+ 
         GravityPlayer();
 
 

@@ -129,12 +129,12 @@ public class QuestManager : MonoBehaviour
         RefreshTrackerAmountItem();
     }
 
-    public void RefreshTrackerAmountItem()
+    public void RefreshTrackerAmountItem() //
     {
         if (tracker.currentTrackingQuest == null) return;
         firstRequirementAmountInventory = 0;
         secondRequirementAmountInventory = 0;
-        if(tracker.currentTrackingQuest == null) return;
+        
         QuestInfo quest = tracker.currentTrackingQuest.info;
         foreach (var item in InventorySystem.Instance.itemList)
         {

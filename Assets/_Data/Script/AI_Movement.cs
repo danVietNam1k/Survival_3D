@@ -20,7 +20,7 @@ public class AI_Movement : MonoBehaviour
     int WalkDirection;
 
     public bool isWalking;
-    public bool isDead;
+    
     // Start is called before the first frame update
     void Start()
     {

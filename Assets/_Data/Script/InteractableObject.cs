@@ -13,6 +13,7 @@ public class InteractableObject : MonoBehaviour
     private void Start()
     {
         currentHealth = maxHealth;
+        animator = GetComponent<Animator>();
     }
     public string GetItemName()
     {

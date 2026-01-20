@@ -4,7 +4,7 @@ public class NameStatic
 {
     //List name
     public static List<string> FamilyTree = new List<string> { "Pine tree", "Willow tree", "Oak tree", "Deciduous tree", "Birch tree", "Stump" };
-    public static List<string> FamilyAnimal = new List<string> { "Rabbit", "Baby Rabbit" };
+    public static List<string> FamilyAnimal = new List<string> { "Rabbit", "Baby Rabbit","Bear" };
     public static List<string> FamilyConstructed = new List<string>() { WoodenFloor, WoodenWall };
 
 

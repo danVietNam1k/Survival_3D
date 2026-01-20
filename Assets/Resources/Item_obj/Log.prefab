@@ -235,6 +235,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 5
+  thisCanCooking: 0
+  countTimeCooking: 0
 --- !u!114 &4363742799186533812
 MonoBehaviour:
   m_ObjectHideFlags: 0
