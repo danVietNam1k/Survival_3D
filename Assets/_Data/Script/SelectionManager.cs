@@ -27,7 +27,11 @@ public class SelectionManager : MonoBehaviour
 
     void Update()
     {
+    }
+    private void LateUpdate()
+    {
         RayCastCheck();
+
     }
     void RayCastCheck()
     {
@@ -47,6 +51,7 @@ public class SelectionManager : MonoBehaviour
             crosshair.SwitchCrosshair(selectionTransform);
             GetInforItem(selectionTransform);
 
+            print(hit.transform.name);
 
 
         }
@@ -106,6 +111,10 @@ public class SelectionManager : MonoBehaviour
                     break;
                 case NameStatic.ChestStorage:
                     hit.GetComponent<StorageChest>()?.OpenChest();
+                    break;
+                case "Horse":
+                    Transform player = ReferenceManager.Instance.player;
+                    hit.GetComponent<HorseController>()?.Mount(player);
                     break;
 
             }

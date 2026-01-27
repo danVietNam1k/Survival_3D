@@ -53,8 +53,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 8
-  cannotTrash: 0
+  cannotTrash: 1
   isSelected: 0
+  enableEquip: 0
+  stackable: 0
   itemInfoUI: {fileID: 0}
   thisName: Big Hp
   thisDescription: 

@@ -9,12 +9,14 @@ public class DayNightSystem : MonoBehaviour
     public Light EveningLight;
     public float dayDurationInSeconds = 24f;
     public int currenthour;
+    public float lightIntensity;
+    public AnimationCurve animationCurve;
     float currentTimeOfDay = 9/24f;
     public List<SkyboxTimeMapping> timeMappings;
 
     public float blenderValue = 0f;
     bool triggerNextDay = false;
-
+    private float valueBright = 200f;
     public TextMeshProUGUI textTime;
     void Start()
     {
@@ -30,6 +32,11 @@ public class DayNightSystem : MonoBehaviour
         DayLight.transform.rotation = Quaternion.Euler(new Vector3(currentTimeOfDay * 360 - 90, 170, 0));
         EveningLight.transform.rotation = Quaternion.Euler(new Vector3(currentTimeOfDay * 360 - 270, 170, 0));
         UpdateSkybox();
+        
+    }
+    private void FixedUpdate()
+    {
+        EnviromentLight();
 
     }
     void UpdateSkybox()
@@ -70,11 +77,33 @@ public class DayNightSystem : MonoBehaviour
             RenderSettings.skybox = currentSkybox;
 
         }
-        TurnOfflight();
+        SwitchlightMoonSun();
     }
-    void TurnOfflight()
+    void EnviromentLight()
     {
-        if (currenthour >= 5f && currenthour <= 17f)
+        if (currenthour >= 6f && currenthour <= 17f)
+        {
+            if (valueBright < 200f)
+            {
+                valueBright += Time.deltaTime * dayDurationInSeconds;
+                float i = valueBright / 255f;
+                RenderSettings.ambientLight =new Color(i, i, i);
+                
+            }
+        }
+        else
+        {
+            if (valueBright > 0f)
+            {
+                valueBright -= Time.deltaTime * dayDurationInSeconds;
+                float i = valueBright / 255f;
+                RenderSettings.ambientLight = new Color(i, i, i);
+            }
+        }
+    }
+    void SwitchlightMoonSun()
+    {
+        if (currenthour >= 6f && currenthour <= 17f)
         {
             DayLight.enabled = true;
             EveningLight.enabled = false;

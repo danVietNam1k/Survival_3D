@@ -56,27 +56,16 @@ public class SoundManager : MonoBehaviour
     }
     public void PlaySoundPlayerAction(AudioClip audioClip)
     {
-        if (soundPlayerAction.isPlaying)
-        {
-            soundPlayerAction.Stop();
+        
             soundPlayerAction.PlayOneShot(audioClip);
-        }
-        else
-        {
-            soundPlayerAction.PlayOneShot(audioClip);
-        }
+       
     }
     public void PlaySFX(AudioClip audioClip)
     {
-        if (SFX.isPlaying)
-        {
-            SFX.Stop();
+       
+            
             SFX.PlayOneShot(audioClip);
-        }
-        else
-        {
-            SFX.PlayOneShot(audioClip);
-        }
+       
     }
     public void PlaySoundNPC(AudioClip audioClip, Transform transform)
     {

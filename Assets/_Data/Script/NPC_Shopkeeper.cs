@@ -16,7 +16,7 @@ public class NPC_Shopkeeper : MonoBehaviour
     List<GameObject> slotSells = new();
     public TextMeshProUGUI txtTotalMonneySell;
     int totalMonneySellItem;
-   
+    private Animator animator;
     public PriceItemContainer priceItemContainer;
     private void Update()
     {
@@ -25,6 +25,7 @@ public class NPC_Shopkeeper : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        animator = this.transform.Find("Model").GetComponent<Animator>();   
         npcDialogText = DialogSystem.Instance.dialogText;
         answearBTN1 = DialogSystem.Instance.answearBTN1;
         answearBTN1Text = answearBTN1.transform.GetComponentInChildren<TextMeshProUGUI>();

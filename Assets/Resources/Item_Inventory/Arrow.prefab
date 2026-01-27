@@ -60,8 +60,8 @@ MonoBehaviour:
   stackable: 1
   itemInfoUI: {fileID: 0}
   thisName: Arrow
-  thisDescription: this is apple, can eat.
-  thisFunctionality: food
+  thisDescription: 
+  thisFunctionality: 
   isConsumable: 0
   healthEffect: 30
   caloriesEffect: 200

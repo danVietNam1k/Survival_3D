@@ -6,6 +6,7 @@ public class InteractableObject : MonoBehaviour
 {
     public string ItemName;
     //state
+    public bool showHp = true;
     public bool CanHit;
     public float maxHealth, currentHealth;
     public Animator animator;
@@ -14,6 +15,7 @@ public class InteractableObject : MonoBehaviour
     {
         currentHealth = maxHealth;
         animator = GetComponent<Animator>();
+        this.name = GetItemName();
     }
     public string GetItemName()
     {

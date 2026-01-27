@@ -55,7 +55,7 @@ MonoBehaviour:
   type: 302
   cannotTrash: 0
   isSelected: 0
-  enableEquip: 0
+  enableEquip: 1
   stackable: 0
   itemInfoUI: {fileID: 0}
   thisName: Bow

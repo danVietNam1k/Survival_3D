@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 8122930771244746312}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 342.6315, y: 15.2816515, z: 316.32858}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -48,12 +48,9 @@ MonoBehaviour:
   listCreature:
   - Name: Bear
     type: 2
-    creature: {fileID: 0}
-  - Name: Rabit
-    type: 1
-    creature: {fileID: 0}
+    creature: {fileID: 4259534720957709152, guid: a2320b9495fb7d447b8eac2b77a16f6f, type: 3}
   - Name: RabitFamily
     type: 0
-    creature: {fileID: 0}
+    creature: {fileID: 7695044995075532419, guid: 6690377a0914b5b4ebeda6f72a1e8da3, type: 3}
   rangeSpawn: 10
   spawnAmount: 5

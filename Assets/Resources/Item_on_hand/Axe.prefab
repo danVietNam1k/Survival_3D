@@ -376,6 +376,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fea965f451bb2174487bd00c23e62fb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  meleeDamge: 20
 --- !u!65 &2569011744337277153
 BoxCollider:
   m_ObjectHideFlags: 0

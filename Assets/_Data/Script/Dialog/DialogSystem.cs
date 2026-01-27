@@ -49,6 +49,9 @@ public class DialogSystem : MonoBehaviour
         thePlayerTalking = false;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        answearBTN3.gameObject.SetActive(false);
+        answearBTN1.gameObject.SetActive(false);
+        answearBTN2.gameObject.SetActive(false);
 
     }
 }

@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -17,12 +16,13 @@ public class NPC : MonoBehaviour
     public bool firstTimeInteraction = true;
     [Header("------Chose Type Npc----------")]
     public bool thisIsShopkeeper = false;
-
+    private Animator animator;
 
 
     // Start is called before the first frame update
     void Start()
     {
+        animator= transform.Find("Model").GetComponent<Animator>();
         npcDialogText = DialogSystem.Instance.dialogText;
         answearBTN1 = DialogSystem.Instance.answearBTN1;
         answearBTN1Text = answearBTN1.transform.GetComponentInChildren<TextMeshProUGUI>();
@@ -66,6 +66,13 @@ public class NPC : MonoBehaviour
         }
         else// interactiong with the npc after the first time
         {
+            if(currentActiveQuest.info.acceptAnswer == "")
+            {
+                DialogSystem.Instance.OpenDialogUI();
+                npcDialogText.text = currentActiveQuest.info.finalWords;
+                PlaySoundConvesation(currentActiveQuest.info.finalWordsClip);
+                StartCoroutine(EndTheConversation(currentActiveQuest.info.finalWordsClip));
+            }
             if (currentActiveQuest.declined)
             {
                 DialogSystem.Instance.OpenDialogUI();
@@ -95,8 +102,9 @@ public class NPC : MonoBehaviour
 
                     npcDialogText.text = currentActiveQuest.info.comebackInProgress;
                     PlaySoundConvesation(currentActiveQuest.info.comebackInProgressClip);
+                    StartCoroutine(EndTheConversation(currentActiveQuest.info.comebackInProgressClip));
 
-                    FinalDialog();
+                    //FinalDialog();
                 }
             }
             else if (activeQuestIndex >= quests.Count)
@@ -105,8 +113,8 @@ public class NPC : MonoBehaviour
 
                 npcDialogText.text = currentActiveQuest.info.finalWords;
                 PlaySoundConvesation(currentActiveQuest.info.finalWordsClip);
-
-                FinalDialog();
+                StartCoroutine(EndTheConversation(currentActiveQuest.info.finalWordsClip));
+                //FinalDialog();
             }
 
         }
@@ -208,7 +216,8 @@ public class NPC : MonoBehaviour
     {
 
         answearBTN1Text.text = currentActiveQuest.info.acceptOption;
-       
+        answearBTN1.gameObject.SetActive(true);
+
         answearBTN1.onClick.RemoveAllListeners();
         answearBTN1.onClick.AddListener(() =>
         {
@@ -229,6 +238,14 @@ public class NPC : MonoBehaviour
     {
         if(currentDialog == currentActiveQuest.info.initialDialog.Count - 1)
         {
+            if (currentActiveQuest.info.acceptAnswer == "")
+            {
+                DialogSystem.Instance.OpenDialogUI();
+                npcDialogText.text = currentActiveQuest.info.finalWords;
+                PlaySoundConvesation(currentActiveQuest.info.finalWordsClip);
+                StartCoroutine(EndTheConversation(currentActiveQuest.info.finalWordsClip));
+                return;
+            }
             npcDialogText.text = currentActiveQuest.info.initialDialog[currentDialog];
             PlaySoundConvesation(currentActiveQuest.info.initialDialogClips[currentDialog]);
 
@@ -241,32 +258,45 @@ public class NPC : MonoBehaviour
         {
             npcDialogText.text = currentActiveQuest.info.initialDialog[currentDialog];
             PlaySoundConvesation(currentActiveQuest.info.initialDialogClips[currentDialog]);
+            StartCoroutine(WaitToNextConversation(currentActiveQuest.info.initialDialogClips[currentDialog]));
+            //answearBTN1Text.text = "Next";
+            //answearBTN1.onClick.RemoveAllListeners();
+            //answearBTN1.onClick.AddListener(() =>
+            //{
+            //    currentDialog++;
+            //    CheckIfDialogDone();
 
-            answearBTN1Text.text = "Next";
-            answearBTN1.onClick.RemoveAllListeners();
-            answearBTN1.onClick.AddListener(() =>
-            {
-                currentDialog++;
-                CheckIfDialogDone();
-
-            });
+            //});
             answearBTN2.gameObject.SetActive(false);
+            answearBTN1.gameObject.SetActive(false);
             answearBTN3.gameObject.SetActive(false);
         }
+    }
+    IEnumerator WaitToNextConversation(AudioClip audioClip)
+    {
+        float clipLenght = audioClip.length;
+        yield return new WaitForSeconds(clipLenght);
+        currentDialog++;
+        CheckIfDialogDone();
+
+
     }
     private void StartQuestInitialDialog()
     {
         DialogSystem.Instance.OpenDialogUI();
         npcDialogText.text = currentActiveQuest.info.initialDialog[currentDialog];
         PlaySoundConvesation(currentActiveQuest.info.initialDialogClips[currentDialog]);
-        answearBTN1Text.text = "Next";
-        answearBTN1.onClick.RemoveAllListeners();
-        answearBTN1.onClick.AddListener(() =>
-        {
-            currentDialog++;
-            CheckIfDialogDone();
+        StartCoroutine(WaitToNextConversation(currentActiveQuest.info.initialDialogClips[currentDialog]));
+        //RandomAnimationTalking();
+        //answearBTN1Text.text = "Next";
+        //answearBTN1.onClick.RemoveAllListeners();
+        //answearBTN1.onClick.AddListener(() =>
+        //{
+        //    currentDialog++;
+        //    CheckIfDialogDone();
 
-        });
+        //});
+        answearBTN1.gameObject.SetActive(false);
         answearBTN2.gameObject.SetActive(false);
         answearBTN3.gameObject.SetActive(false);
     }
@@ -289,10 +319,11 @@ public class NPC : MonoBehaviour
             npcDialogText.text = currentActiveQuest.info.acceptAnswer;
             PlaySoundConvesation(currentActiveQuest.info.acceptAnswerClip);
 
+            StartCoroutine(EndTheConversation(currentActiveQuest.info.acceptAnswerClip));
+            //FinalDialog();
 
-            FinalDialog();
-
-
+            answearBTN3.gameObject.SetActive(false);
+            answearBTN1.gameObject.SetActive(false);
             answearBTN2.gameObject.SetActive(false);
 
 
@@ -300,7 +331,7 @@ public class NPC : MonoBehaviour
     }
     void TakeReward()
     {
-        
+        answearBTN1.gameObject.SetActive(true);
         answearBTN1Text.text = "Take Reward";
         answearBTN1.onClick.RemoveAllListeners();
         answearBTN1.onClick.AddListener(() =>
@@ -318,6 +349,8 @@ public class NPC : MonoBehaviour
         {
             DialogSystem.Instance.CloseDialogUI();
         });
+        answearBTN1.gameObject.SetActive(true);
+
         answearBTN2.gameObject.SetActive(false);
         answearBTN3.gameObject.SetActive(false);
     }
@@ -357,13 +390,14 @@ public class NPC : MonoBehaviour
 
         npcDialogText.text = currentActiveQuest.info.declineAnswer;
         PlaySoundConvesation(currentActiveQuest.info.declineAnswerClip);
-
-        answearBTN1Text.text = "Close";
-        answearBTN1.onClick.RemoveAllListeners();
-        answearBTN1.onClick.AddListener(() =>
-        {
-            DialogSystem.Instance.CloseDialogUI();
-        });
+        StartCoroutine(EndTheConversation(currentActiveQuest.info.declineAnswerClip));
+        //answearBTN1Text.text = "Close";
+        //answearBTN1.onClick.RemoveAllListeners();
+        //answearBTN1.onClick.AddListener(() =>
+        //{
+        //    DialogSystem.Instance.CloseDialogUI();
+        //});
+        answearBTN1.gameObject.SetActive(false);
         answearBTN2.gameObject.SetActive(false);
         answearBTN3.gameObject.SetActive(false);
     }
@@ -377,10 +411,22 @@ public class NPC : MonoBehaviour
         transform.rotation = Quaternion.LookRotation(direction);
         var yRotation = transform.eulerAngles.y;
         transform.rotation = Quaternion.Euler(0, yRotation, 0);
+        Camera.main.transform.LookAt(transform.position + Vector3.up*1.5f);
     }
-    IEnumerator Conversation()
+    IEnumerator EndTheConversation(AudioClip audioclip)
     {
+         float clipLength = audioclip.length;
 
-        yield return null;
+        yield return new WaitForSeconds(clipLength);
+        DialogSystem.Instance.CloseDialogUI();
+    }
+    void RandomAnimationTalking()
+    {
+        int x = Random.Range(0, 100);
+        if (x > 49) animator.SetTrigger("Talking");
+        else animator.SetTrigger("Talking2");
+
+
+
     }
 }

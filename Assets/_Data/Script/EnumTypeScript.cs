@@ -55,6 +55,9 @@ public enum eInventoryItemType
     Axe = 300,
     Arrow,
     Bow,
+    Torch,
+    Democracy,
+    Sword,
 
 
 }

@@ -55,6 +55,8 @@ MonoBehaviour:
   type: 103
   cannotTrash: 0
   isSelected: 0
+  enableEquip: 0
+  stackable: 0
   itemInfoUI: {fileID: 0}
   thisName: Plank
   thisDescription: 

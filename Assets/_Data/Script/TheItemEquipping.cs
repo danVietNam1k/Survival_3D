@@ -52,6 +52,7 @@ public class TheItemEquipping : MonoBehaviour
         {
             if(other.gameObject.name == name)
             {
+                
                 int ran = Random.Range(0, SoundManager.Instance.containerSound.axeChoppingTree.Length);
                 AudioClip sfx = SoundManager.Instance.containerSound.axeChoppingTree[ran];
                 SoundManager.Instance.PlaySFX(sfx);
