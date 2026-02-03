@@ -44,6 +44,7 @@ public enum eInventoryItemType
     Stone,
     LogWooden,
     Plank,
+    Bearskin,
     // construc item
 
     WoodenFloor = 200,

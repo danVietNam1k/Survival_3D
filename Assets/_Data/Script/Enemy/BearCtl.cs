@@ -166,7 +166,7 @@ public class BearCtl : MonoBehaviour
         Vector3 pos =this.transform.position;
         pos.x = Random.Range(pos.x - distaneRamPos,pos.x + distaneRamPos);
         pos.z = Random.Range(pos.z - distaneRamPos,pos.z + distaneRamPos);
-        pos.y += 50f;
+        
         newPos = pos;
         // pos = Random.insideUnitSphere * distance;
         return newPos;

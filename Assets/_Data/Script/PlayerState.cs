@@ -56,7 +56,7 @@ public class PlayerState : MonoBehaviour
         if (!isPlayerdead)
         {
             currentHeal -= damge;
-            if(currentHeal < 0)
+            if(currentHeal <= 0)
             {
                 isPlayerdead = true;
             }

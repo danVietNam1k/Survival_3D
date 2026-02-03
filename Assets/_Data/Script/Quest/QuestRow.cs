@@ -43,7 +43,7 @@ public class QuestRow : MonoBehaviour
             firstReward.gameObject.SetActive(false);
         }
         coinAmount.text = $"{quest.info.coinReward}" + " Coin";
-        if (quest.info.rewardItem1 != "")
+        if (quest.info.rewardItem2 != "")
         {
             secondReward.sprite = GetSpriteForItem(quest.info.rewardItem2);
 
@@ -108,6 +108,7 @@ public class QuestRow : MonoBehaviour
     }
     Sprite GetSpriteForItem(string itemName)
     {
-        return Resources.Load<GameObject>("Item_Inventory/" + itemName).GetComponent<Image>().sprite;
+        Sprite image = Resources.Load<GameObject>("Item_Inventory/" + itemName).GetComponent<Image>().sprite;
+        return image;
     }
 }

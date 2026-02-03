@@ -17,6 +17,11 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 315970f3851b5dc41a37ce8d7baca415
   m_SerializeEntries:
+  - m_GUID: aa847c84ae06d7e4ea6c812e3be00b66
+    m_Address: Assets/_Data/Animator/NPC/Boss/Standing Idle.anim
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f6730b960ba6c914e9141395fc93249f
     m_Address: Assets/_import/ithappy/Animals_FREE/Materials/Material.mat
     m_ReadOnly: 0

@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Audio;
+using UnityEngine.UI;
 
 public class SoundManager : MonoBehaviour
 {
@@ -12,35 +14,56 @@ public class SoundManager : MonoBehaviour
     }
 
     public ContainerSound containerSound;
-
+    public AudioMixer audioMixer;
     public AudioSource musicBackGround;
     public AudioSource SFX;
     public AudioSource soundNPC_Talking;
     public AudioSource soundPlayerAction;
-
+    Slider musicSlider, sfxSlider, matterSlider;
     public List<AudioClip> musicsBackground;
     float secondWaitMusic;
 
     [Header("ON/Off")]
     public bool playMusic;
+
+    //
+    const string Mix_Music = "Music";
+    const string Mix_Master = "Master";
+    const string Mix_Sfx = "SFX";
+
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(ReplayMusicBackground());   
+        StartCoroutine(ReplayMusicBackground());
+        musicSlider = MenuManager.Instance.musicSlider;
+        sfxSlider = MenuManager.Instance.sfxSlider;
+        matterSlider = MenuManager.Instance.matterSlider;
+        musicSlider.onValueChanged.AddListener(MusicVolume);
+        sfxSlider.onValueChanged.AddListener(SFXVolume);
+        matterSlider.onValueChanged.AddListener(MasterVolume);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void MusicVolume(float volume)
     {
-        
+        audioMixer.SetFloat(Mix_Music, Mathf.Log10(volume)*20f);
+    }
+    private void SFXVolume(float volume)
+    {
+        audioMixer.SetFloat(Mix_Sfx, Mathf.Log10(volume)*20f);
+    }
+    private void MasterVolume(float volume)
+    {
+        audioMixer.SetFloat(Mix_Master, Mathf.Log10(volume)*20f);
     }
     void PlayMusicBackground()
     {
 
         
             int index = Random.Range(0,containerSound.musicsBackground.Count);
-        
-            musicBackGround.PlayOneShot(containerSound.musicsBackground[index]);
+        AudioClip audioClip = containerSound.musicsBackground[index];
+            musicBackGround.clip = audioClip;
+            musicBackGround.Play();
+
             secondWaitMusic = containerSound.musicsBackground[index].length;
         
 

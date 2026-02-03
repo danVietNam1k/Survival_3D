@@ -324,6 +324,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ItemName: Axe
+  showHp: 0
   CanHit: 0
   maxHealth: 0
   currentHealth: 0

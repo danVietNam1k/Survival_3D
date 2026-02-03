@@ -137,6 +137,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ItemName: Stone
+  showHp: 0
   CanHit: 0
   maxHealth: 0
   currentHealth: 0

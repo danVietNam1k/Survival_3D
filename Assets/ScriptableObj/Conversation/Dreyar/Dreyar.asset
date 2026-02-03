@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a15c565a910f3ab4eb93f670902c7a8e, type: 3}
+  m_Name: Dreyar
+  m_EditorClassIdentifier: 
+  initialDialog:
+  - Who are you?
+  - Are you the one who was rescued a few days ago?
+  initialDialogClips:
+  - {fileID: 8300000, guid: 7db809287dbdb3c47aed6de75a9150b3, type: 3}
+  - {fileID: 8300000, guid: b788c35dff3bcf148af056f0724d94aa, type: 3}
+  acceptOption: 
+  acceptAnswer: 
+  acceptAnswerClip: {fileID: 0}
+  declineOption: 
+  declineAnswer: 
+  declineAnswerClip: {fileID: 0}
+  comebackAfterDecline: 
+  comebackAfterDeclineClip: {fileID: 0}
+  comebackInProgress: 
+  comebackInProgressClip: {fileID: 0}
+  comebackCompleted: 
+  comebackCompletedClip: {fileID: 0}
+  finalWords: Sit down and have a few drinks with me, bro.
+  finalWordsClip: {fileID: 8300000, guid: 258eb59886b5afb41b7a196348ed7a65, type: 3}
+  coinReward: 0
+  rewardItem1: 
+  rewardItem2: 
+  firstRequirmentItem: 
+  firstRequirementAmount: 0
+  secondRequirmentItem: 
+  secondRequirementAmount: 0
+  hasCheckpoints: 0
+  checkpoints: []

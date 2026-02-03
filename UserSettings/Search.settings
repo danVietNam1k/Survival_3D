@@ -11,7 +11,7 @@ showStatusBar = false
 scopes = {
 	"last_search.66F56946" = "Render"
 	"OpenInspectorPreview.66F56946" = "0"
-	"currentGroup.66F56946" = "settings"
+	"currentGroup.66F56946" = "all"
 }
 providers = {
 	asset = {
@@ -77,6 +77,16 @@ providers = {
 	static_methods = {
 		active = false
 		priority = 85
+		defaultAction = null
+	}
+	st = {
+		active = true
+		priority = 100
+		defaultAction = null
+	}
+	at = {
+		active = true
+		priority = 100
 		defaultAction = null
 	}
 }

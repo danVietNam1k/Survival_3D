@@ -17,7 +17,7 @@ public class NPC : MonoBehaviour
     [Header("------Chose Type Npc----------")]
     public bool thisIsShopkeeper = false;
     private Animator animator;
-
+    private Quaternion originalRotate;
 
     // Start is called before the first frame update
     void Start()
@@ -30,6 +30,7 @@ public class NPC : MonoBehaviour
         answearBTN2Text = answearBTN2.transform.GetComponentInChildren<TextMeshProUGUI>();
         answearBTN3 = DialogSystem.Instance.answearBTN3;
         answearBTN3Text = answearBTN3.transform.GetComponentInChildren<TextMeshProUGUI>();
+        originalRotate = this.transform.localRotation;
     }
 
     // Update is called once per frame
@@ -338,7 +339,7 @@ public class NPC : MonoBehaviour
         {
             ReceiveRewardAndCompleteQuest();
             DialogSystem.Instance.CloseDialogUI();
-
+            this.transform.rotation = originalRotate;
         });
     }
     void FinalDialog()
@@ -376,10 +377,14 @@ public class NPC : MonoBehaviour
             currentActiveQuest = quests[activeQuestIndex];
             currentDialog = 0;
             DialogSystem.Instance.CloseDialogUI();
+            this.transform.rotation = originalRotate;
+
         }
         else
         {
             DialogSystem.Instance.CloseDialogUI();
+            this.transform.rotation = originalRotate;
+
 
         }
     }
@@ -419,6 +424,8 @@ public class NPC : MonoBehaviour
 
         yield return new WaitForSeconds(clipLength);
         DialogSystem.Instance.CloseDialogUI();
+        this.transform.rotation = originalRotate;
+
     }
     void RandomAnimationTalking()
     {

@@ -1070,9 +1070,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   possibilityItem:
-  - item: {fileID: 0}
+  - item: {fileID: 7348985678091246311, guid: 041dd918e41cd5641bf595755e1ccff0, type: 3}
     amountMin: 1
     amountMax: 5
+  - item: {fileID: 7348985678091246311, guid: 3f5b2d5ff54a65644b5a5ef232fc6fcd, type: 3}
+    amountMin: 1
+    amountMax: 1
   actualItems: []
   wasLootCalculated: 0
 --- !u!136 &3544158278175425121
