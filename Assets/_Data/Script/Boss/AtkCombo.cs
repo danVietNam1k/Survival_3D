@@ -5,7 +5,7 @@ using UnityEngine;
 public class AtkCombo : IState
 {
     BossCtl ctl;
-    int comboNumber = 0;
+    
     float damgeCB = 30f;
    
     float countTimeCB;
@@ -25,7 +25,6 @@ public class AtkCombo : IState
     }
     public void Execute()
     {
-        ctl.transform.LookAt(ctl.player);
         countTimeCB-=Time.deltaTime;
         if (countTimeCB < 0) ctl.ChangeState(ctl.chaseState);
     }
@@ -33,12 +32,9 @@ public class AtkCombo : IState
     {
         countTimeCB = 5f;
         ctl.EnterStateAtk(damgeCB);
-        Animator anim = ctl.animator;
-        anim.SetInteger("Combo", NewCombo());
-        anim.Play("Combo");
+        int i = Random.Range(0, 2);
+        ctl.animator.SetInteger("comboType", i);
+        ctl.animator.SetTrigger("combo");
     }
-    int NewCombo()
-    {
-        return Random.Range(0, comboNumber);
-    }
+  
 }

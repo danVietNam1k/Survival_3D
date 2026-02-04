@@ -10,12 +10,15 @@ public class BossCtl : MonoBehaviour
     public float radiusGizmos;
     [Header("Parameter")]
     public IState currentState;
+    public GameObject fxPhase2;
     public NavMeshAgent agent;
     private StateMachine stateMachine;
     public float currentSpeed = 0f;
     public Animator animator;
     public Transform player;
     public TriggerDamge triggerDamge;
+    public AudioSource AudioSource;
+    private BossStateInfo stateInfo;
     //State
     public IdleState idleState;
     public AttackState attackState;
@@ -25,7 +28,7 @@ public class BossCtl : MonoBehaviour
     public JumpAtkState jumpState;
     // condition
     public bool lostTarget = false;
-    public bool isAttacking = false;
+    public bool notChangeState = false;
     public bool phase2 = false;
     // Target position
     [HideInInspector] public Vector3 playerPos;
@@ -34,6 +37,7 @@ public class BossCtl : MonoBehaviour
     private void Start()
     {
         agent = GetComponent<NavMeshAgent>();
+        stateInfo = GetComponentInChildren<BossStateInfo>();
         player = ReferenceManager.Instance.player;
         animator = this.GetComponent<Animator>();
         SetUpState();
@@ -68,7 +72,7 @@ public class BossCtl : MonoBehaviour
 
     private void BehaviorEnemy()
     {
-        if (isAttacking) return;
+        if (notChangeState) return;
         if (CanSeePlayer())
         {
             if (lostTarget) lostTarget = false;
@@ -107,13 +111,13 @@ public class BossCtl : MonoBehaviour
     public void ExitStateAtk()
     {
        agent.isStopped = false;
-       isAttacking = false;
+       notChangeState = false;
        triggerDamge.damge = 0;
     }
     public void EnterStateAtk(float damge)
     {
         agent.isStopped = true;
-        isAttacking = true;
+        notChangeState = true;
         triggerDamge.damge = damge;
     }
     private void OnDrawGizmos()
@@ -121,6 +125,10 @@ public class BossCtl : MonoBehaviour
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(this.transform.position, radiusGizmos);
     }
-   
+    public void TakeDamge(float damge) => stateInfo.TakeDamge(damge);
+    public void TurnOnFxPhase2()
+    {
+        fxPhase2.SetActive(true);
 
+    }
 }

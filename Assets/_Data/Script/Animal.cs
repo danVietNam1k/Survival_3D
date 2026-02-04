@@ -24,7 +24,7 @@ public class Animal : MonoBehaviour
     {
         RefreshState();
     }
-    public void TakeDamege(float damegeTakeIn)
+    public void TakeDamge(float damegeTakeIn)
     {
         
         currentHealth -= damegeTakeIn;

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.PackageManager;
 using UnityEngine;
 
 public class Arow : MonoBehaviour
@@ -34,8 +35,10 @@ public class Arow : MonoBehaviour
             rb.isKinematic = true;
             if (other.collider.GetComponent<Animal>())
             {
-                other.collider.GetComponent<Animal>().TakeDamege(damge);
+                other.collider.GetComponent<Animal>().TakeDamge(damge);
             }
+            other.transform.GetComponent<BossCtl>()?.TakeDamge(damge);
+
             this.GetComponent<TrailRenderer>().enabled = false ;
             this.GetComponent<Collider>().enabled = false;
             this.transform.SetParent(other.transform);

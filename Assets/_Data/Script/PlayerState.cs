@@ -86,9 +86,7 @@ public class PlayerState : MonoBehaviour
                 firstPersonController.canSprint = true;
             }
                 currentStamina += 10f * Time.deltaTime;
-        }
-
-           
+        }    
     }
     private void UpdateOxygen()
     {

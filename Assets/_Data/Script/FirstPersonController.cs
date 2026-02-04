@@ -305,8 +305,6 @@ public class FirstPersonController : MonoBehaviour
                     {
                         Crouch();
                     }
-
-
                 }
                 else
                 {
@@ -322,14 +320,10 @@ public class FirstPersonController : MonoBehaviour
 
 
                 controller.Move(move * walkSpeed * Time.deltaTime);
-
-
             }
                 }
-
                 #endregion
             }
-
     void PlayerCamera()
     {
         if (GameManager.Instance.UnableLookAround())
@@ -356,9 +350,6 @@ public class FirstPersonController : MonoBehaviour
                     pitch += mouseSensitivity * Input.GetAxis("Mouse Y");
                 }
             }
-
-
-
             // Clamp pitch between lookAngle
             pitch = Mathf.Clamp(pitch, -maxLookAngle, maxLookAngle);
 

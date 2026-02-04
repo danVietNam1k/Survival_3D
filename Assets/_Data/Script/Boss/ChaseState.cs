@@ -24,15 +24,16 @@ public class ChaseState : IState
 
     public void Execute()
     {
-        if(ctl.isAttacking) return;
+        if (ConditionExecute()) return;
         timeCount-= Time.deltaTime;
-        if (ctl.lostTarget == true) return;
         ctl.agent.SetDestination(ctl.playerPos);
         float rangeAtk = Vector3.Distance(ctl.transform.position, ctl.player.position);
-        if (rangeAtk < 3f && CheckDirectAttack())
+        if (rangeAtk < 3f && CheckDirectionAttack())
         {
-
-            ctl.ChangeState(ctl.attackState);
+            if (ctl.phase2)
+                ctl.ChangeState(ctl.atkCombo);
+            else
+                ctl.ChangeState(ctl.attackState);
 
         }
         else if (rangeAtk < 7f&& rangeAtk>3f && timeCount < 0)
@@ -41,7 +42,15 @@ public class ChaseState : IState
             timeCount = 20f;
         }
     }
-    public bool CheckDirectAttack()
+    bool ConditionExecute()
+    {
+        if (ctl.notChangeState) return true;
+        if (ctl.lostTarget == true) return true;
+
+        return false;
+
+    }
+    public bool CheckDirectionAttack()
     {
         if (Physics.Raycast(ctl.transform.position +Vector3.up, ctl.transform.forward, 6f, LayerMask.GetMask("Player")))
         {

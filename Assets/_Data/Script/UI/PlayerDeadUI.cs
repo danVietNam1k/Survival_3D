@@ -35,7 +35,7 @@ public class PlayerDeadUI : MonoBehaviour
     {
         float newValue = image.color.a +Time.deltaTime;
         image.color = new Color(0, 0, 0, newValue);
-        print(newValue);
+       
         if(newValue > 1f)
         {
             if(!text.gameObject.activeSelf) 

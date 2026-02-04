@@ -43,10 +43,11 @@ public class DanChu : MonoBehaviour
             CasingBullet();
             animator.SetTrigger("Shoot");
             Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f,0.5f));
-            if (Physics.Raycast(ray, out var hitInfo) && hitInfo.transform.GetComponent<Animal>())
+            if (Physics.Raycast(ray, out var hitInfo) )
             {
-
-                hitInfo.transform.GetComponent<Animal>().TakeDamege(damage);
+              
+                hitInfo.transform.GetComponent<Animal>()?.TakeDamge(damage);
+                hitInfo.transform.GetComponent<BossCtl>()?.TakeDamge(damage);
             }
             shootCount = 0.5f;
 

@@ -50,14 +50,9 @@ public class SelectionManager : MonoBehaviour
 
             crosshair.SwitchCrosshair(selectionTransform);
             GetInforItem(selectionTransform);
-
-            print(hit.transform.name);
-
-
         }
         else
         {
-
             interaction_InfoName_UI.SetActive(false);
             interaction_Info_Hp.SetActive(false);
             crosshair.SwitchCrosshair(null);
