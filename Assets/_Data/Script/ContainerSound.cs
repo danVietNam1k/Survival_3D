@@ -16,6 +16,7 @@ public class ContainerSound : ScriptableObject
     public AudioClip playerWalk;
     public AudioClip playerJump;
     public AudioClip playerSprint;
+    public AudioClip playerHurt;
 
 }
 

@@ -14,29 +14,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initialDialog:
   - I can't believe you found me!
-  - I can't believe you found me!
-  - I can't believe you found me!
-  - I can't believe you found me!
+  - I am a princess of the fairy tribe.
+  - I have a problem. Can you help me?
+  - Don't worry, I'll pay you something worthy of your efforts.
+  - Please bring me some bear skins, they are too big for me to hunt.
   initialDialogClips:
   - {fileID: 8300000, guid: e13a1efd31a21cb46a1f7ff2d06db008, type: 3}
   - {fileID: 8300000, guid: 6b14a1deb48fabb42a919b936ca22985, type: 3}
   - {fileID: 8300000, guid: b02783b1c6649f04f92f6d6219d7a834, type: 3}
-  - {fileID: 8300000, guid: 6a430bb161b0ccb408defbeee465c456, type: 3}
+  - {fileID: 8300000, guid: 268abe65a4ea4c24783f0924f993be2b, type: 3}
+  - {fileID: 8300000, guid: d43d0d8a337d9834582dcddd553a508b, type: 3}
   acceptOption: Ok
   acceptAnswer: I am very grateful to you.
   acceptAnswerClip: {fileID: 8300000, guid: d56065e8bb1c60d4f8710b049480d338, type: 3}
   declineOption: No, i cant
   declineAnswer: Ok, fine.
-  declineAnswerClip: {fileID: 8300000, guid: 2e8d2b39439965f4795093e307315b0c, type: 3}
+  declineAnswerClip: {fileID: 8300000, guid: 4f89af61f688244419512088258ead0c, type: 3}
   comebackAfterDecline: Do you want to help me?
-  comebackAfterDeclineClip: {fileID: 8300000, guid: a69612e7b7007c343b86aaab5ca2ae77, type: 3}
+  comebackAfterDeclineClip: {fileID: 8300000, guid: e575d4e8527db574299da9821a4611b0, type: 3}
   comebackInProgress: Be careful with them.
-  comebackInProgressClip: {fileID: 8300000, guid: d849e790bde3feb49b06b8c7d728fc23, type: 3}
+  comebackInProgressClip: {fileID: 8300000, guid: 74fecb7ae2648a94db437d21b872a7cd, type: 3}
   comebackCompleted: Wow wow wow, I can't believe you're so fast, bro. Take what
     you deserve.
-  comebackCompletedClip: {fileID: 8300000, guid: 37586ac2b9635864388a58a7def8a31a, type: 3}
+  comebackCompletedClip: {fileID: 8300000, guid: 306a1ff6a028b214bbb0b0b842acd1ed, type: 3}
   finalWords: I'm so happy!
-  finalWordsClip: {fileID: 8300000, guid: e575d4e8527db574299da9821a4611b0, type: 3}
+  finalWordsClip: {fileID: 8300000, guid: 829156d2d448b924ca357d3d12ef1b4c, type: 3}
   coinReward: 0
   rewardItem1: Democracy
   rewardItem2: 

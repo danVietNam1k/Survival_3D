@@ -416,7 +416,11 @@ public class NPC : MonoBehaviour
         transform.rotation = Quaternion.LookRotation(direction);
         var yRotation = transform.eulerAngles.y;
         transform.rotation = Quaternion.Euler(0, yRotation, 0);
-        Camera.main.transform.LookAt(transform.position + Vector3.up*1.5f);
+
+        if (this.transform.Find("Lookat") != null)
+            Camera.main.transform.LookAt(this.transform.Find("Lookat").position);// small npc
+        else Camera.main.transform.LookAt(transform.position + Vector3.up * 1.5f);// normal npc
+
     }
     IEnumerator EndTheConversation(AudioClip audioclip)
     {

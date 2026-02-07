@@ -24,5 +24,6 @@ MonoBehaviour:
   axeAtack: []
   axeSwing: {fileID: 8300000, guid: 2095bd595c792654ea6b4315809502a6, type: 3}
   playerWalk: {fileID: 8300000, guid: b273053803a5e9547b9dab633f5b86a0, type: 3}
-  playerJump: {fileID: 0}
+  playerJump: {fileID: 8300000, guid: 4dd3709bc57e142658a6b53f15346ce6, type: 3}
   playerSprint: {fileID: 8300000, guid: 70d0577c3bdc46b49b053efbd2723f89, type: 3}
+  playerHurt: {fileID: 8300000, guid: 56c91fc855992a243854d6502bd0e8e2, type: 3}

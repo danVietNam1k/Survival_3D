@@ -14,13 +14,14 @@ public class SelectionManager : MonoBehaviour
     Text interaction_text;
     Slider interaction_Hp;
     [SerializeField] LayerMask layerMask;
+    private GameObject player;
     private void Awake()
     {
         instance = this;
     }
     private void Start()
     {
-
+        player = ReferenceManager.Instance.player.gameObject;
         interaction_text = interaction_InfoName_UI.GetComponent<Text>();
         interaction_Hp = interaction_Info_Hp.GetComponent<Slider>();
     }
@@ -35,6 +36,7 @@ public class SelectionManager : MonoBehaviour
     }
     void RayCastCheck()
     {
+        if (!player.activeSelf) return;
         Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
         RaycastHitOntrigger(ray);
         RaycastHit(ray);
@@ -112,6 +114,9 @@ public class SelectionManager : MonoBehaviour
                     hit.GetComponent<HorseController>()?.Mount(player);
                     break;
 
+            }
+            if (hit.GetComponent<CarInteract>() != null) {
+                hit.GetComponent<CarInteract>().IntoTheCar(); 
             }
         }
     }

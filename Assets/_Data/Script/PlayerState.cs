@@ -13,6 +13,7 @@ public class PlayerState : MonoBehaviour
         }else Instance = this;
     }
     public Transform playerBody;
+    public GameObject playerHurtFx;
 
     //Hp
     public float currentHeal, maxHeal;
@@ -55,7 +56,9 @@ public class PlayerState : MonoBehaviour
     {
         if (!isPlayerdead)
         {
+            
             currentHeal -= damge;
+            StartCoroutine(HurtFx());
             if(currentHeal <= 0)
             {
                 isPlayerdead = true;
@@ -134,6 +137,16 @@ public class PlayerState : MonoBehaviour
             yield return new WaitForSeconds(10f);
             UpdateHydration();
         }
+    }
+    IEnumerator HurtFx()
+    {
+        AudioClip audio = SoundManager.Instance.containerSound.playerHurt;
+        SoundManager.Instance.PlaySoundPlayerAction(audio);
+
+        playerHurtFx.SetActive(true);
+        yield return new WaitForSeconds(0.1f);
+        playerHurtFx.SetActive(false);
+
     }
     public void setHydration(float newHydration)
     {

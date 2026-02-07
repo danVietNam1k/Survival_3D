@@ -36,6 +36,7 @@ public class NpcMotion : MonoBehaviour
         {
             navMeshAgent.isStopped = true;
             currentPoit++;
+            if(currentPoit>= destination.childCount) currentPoit = 0;
             StartCoroutine(SetNewDestination());
         }
     }

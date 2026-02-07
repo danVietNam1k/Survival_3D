@@ -20,8 +20,8 @@ public class SpawnCreature : MonoBehaviour
             {
                 creature.Name = creature.type.ToString();
             }
-
         }
+      
     }
     void Start()
     {
@@ -94,6 +94,10 @@ public class SpawnCreature : MonoBehaviour
         Rabit,
         Bear,
         BearBaby,
+
+
+        Stick = 100,
+        Stone
     }
     [System.Serializable]
     public class Creatures {

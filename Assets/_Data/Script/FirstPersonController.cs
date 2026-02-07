@@ -108,7 +108,7 @@ public class FirstPersonController : MonoBehaviour
     // Internal Variables
     Transform checkGroundPoint;
     private bool isGrounded = false;
-
+    private AudioPlayer audioPlayer;
     #endregion
 
     #region Crouch
@@ -159,6 +159,7 @@ public class FirstPersonController : MonoBehaviour
 
     void Start()
     {
+        audioPlayer = this.transform.Find("Audio").GetComponent<AudioPlayer>();
         controller = GetComponent<CharacterController>();
         if (GameManager.Instance.UnableLookAround())
         {
@@ -272,29 +273,32 @@ public class FirstPersonController : MonoBehaviour
                     float z = Input.GetAxis("Vertical");
                     // Checks if player is walking and isGrounded
                     // Will allow head bob
-                    if (x != 0 || z != 0 && isGrounded)
+                    if (x != 0 || z != 0 && isGrounded && !isSprinting)
                     {
+                     audioPlayer.PlaySoundWalk();
                         isWalking = true;
                     }
                     else
                     {
-                        isWalking = false;
+                     audioPlayer.StopSoundWalk();
+
+                    isWalking = false;
                     }
             Vector3 move;
-            if (isSwimming)
-            {
+                 if (isSwimming)
+                  {
                  move = transform.right * x + playerCamera.transform.forward * z;
-                move = move * speedSwim;
-            }
-            else  move = transform.right * x + transform.forward * z;
+                 move = move * speedSwim;
+                  }
+                 else  move = transform.right * x + transform.forward * z;
 
 
 
             // All movement calculations shile sprint is active
-            if (canSprint && Input.GetKey(sprintKey) && sprintRemaining > 0f && !isSprintCooldown)
+            if (canSprint && Input.GetKey(sprintKey) && sprintRemaining > 0f && !isSprintCooldown && isGrounded) 
             {
 
-
+                audioPlayer.PlaySoundRun();
                 // Player is only moving when valocity change != 0
                 // Makes sure fov change only happens during movement
                 if (x != 0 || z != 0)
@@ -308,6 +312,7 @@ public class FirstPersonController : MonoBehaviour
                 }
                 else
                 {
+                  
                     isSprinting = false;
                 }
                 controller.Move(move * sprintSpeed * Time.deltaTime);
@@ -316,6 +321,7 @@ public class FirstPersonController : MonoBehaviour
             // All movement calculations while walking
             else
             {
+                audioPlayer.StopSoundRun();
                 isSprinting = false;
 
 
@@ -517,6 +523,8 @@ public class FirstPersonController : MonoBehaviour
     {
         if (Input.GetKeyDown(jumpKey) && isGrounded && !isSwimming)
         {
+            AudioClip audio = SoundManager.Instance.containerSound.playerJump;
+            SoundManager.Instance.PlaySoundPlayerAction(audio);
             if (isGrounded )
             {
                 velocity.y = Mathf.Sqrt(jumpPower * -2f * gravity);
@@ -544,7 +552,7 @@ public class FirstPersonController : MonoBehaviour
         return forceWsim;
 
     }
-
+   
     private void Crouch()
     {
         // Stands player up to full height
