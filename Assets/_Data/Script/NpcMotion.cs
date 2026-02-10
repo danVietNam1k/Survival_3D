@@ -32,7 +32,8 @@ public class NpcMotion : MonoBehaviour
     private void FixedUpdate()
     {
         float distance = Vector3.Distance(transform.position, posDestination[currentPoit]);
-        if(distance < 0.1f&& navMeshAgent.isStopped== false)
+       
+        if(distance < 0.5f&& navMeshAgent.isStopped== false)
         {
             navMeshAgent.isStopped = true;
             currentPoit++;

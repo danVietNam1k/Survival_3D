@@ -110,10 +110,14 @@ public class QuestManager : MonoBehaviour
                 + quest.info.firstRequirmentItem + "\n" + secondRequirementAmountInventory+ "/"+
            quest.info.secondRequirementAmount + " " + quest.info.secondRequirmentItem;
         }
-        else
+        else if(quest.info.firstRequirmentItem != "")
         {
             tracker.Requirements.text = firstRequirementAmountInventory + "/" + quest.info.firstRequirementAmount + " "
                 + quest.info.firstRequirmentItem;
+        }
+        else
+        {
+            tracker.Requirements.text = "";
         }
         if (quest.info.hasCheckpoints)
         {

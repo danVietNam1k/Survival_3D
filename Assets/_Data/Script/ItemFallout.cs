@@ -14,7 +14,7 @@ public class ItemFallout : MonoBehaviour
         foreach (FalloutItemPossibility possibility in possibilityItem)
         {
             var randomAmount = Random.Range(possibility.amountMin, possibility.amountMax+1);
-            print("ran"+randomAmount);
+            print("ran "+randomAmount);
             if (randomAmount > 0)
             {
                 FalloutItemActual falloutItemActual = new FalloutItemActual();

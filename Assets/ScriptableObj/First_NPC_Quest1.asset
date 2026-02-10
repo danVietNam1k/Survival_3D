@@ -47,6 +47,5 @@ MonoBehaviour:
   firstRequirementAmount: 3
   secondRequirmentItem: Stone
   secondRequirementAmount: 3
-  hasCheckpoints: 1
-  checkpoints:
-  - {fileID: 11400000, guid: 5207f861b4121554e96f49cc5b48ea82, type: 2}
+  hasCheckpoints: 0
+  checkpoints: []

@@ -12,6 +12,7 @@ public class BossStateInfo : MonoBehaviour
     bool phase2 = false;
     bool dead = false;
     public Slider healthSlider;
+    public GameObject checkPoint;
     void Start()
     {
         bossCtl = this.GetComponentInParent<BossCtl>();
@@ -61,6 +62,7 @@ public class BossStateInfo : MonoBehaviour
     void BossTobeDead()
     {
         if (dead) return;
+        checkPoint.SetActive(true);
         dead = true;
         currentHealth = 0;
         bossCtl.animator.SetTrigger("Dead");

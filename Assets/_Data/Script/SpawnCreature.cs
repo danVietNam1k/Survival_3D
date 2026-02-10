@@ -62,15 +62,19 @@ public class SpawnCreature : MonoBehaviour
         listCreatureSpawn.Add(creature);
     }
     Vector3 RandomPosSpawn()
-        {       Vector3 newPos = new Vector3();
+    {
+        Vector3 newPos = new Vector3();
         newPos.x = Random.Range(transform.position.x - rangeSpawn, transform.position.x + rangeSpawn);
         newPos.z = Random.Range(transform.position.z - rangeSpawn, transform.position.z + rangeSpawn);
-
-        Physics.Raycast(newPos, Vector3.down, out RaycastHit pos);
-        newPos.y = pos.point.y + 1f;
-                   
-            return newPos;
+        newPos.y = this.transform.position.y + 20f;
+        if (Physics.Raycast(newPos, Vector3.down, out RaycastHit pos))
+        {
+            newPos.y = pos.point.y + 1f;
         }
+
+
+        return newPos;
+    }
     void Spawn()
      {
             if (listCreatureSpawn.Count >= spawnAmount)

@@ -52,5 +52,5 @@ MonoBehaviour:
   - Name: RabitFamily
     type: 0
     creature: {fileID: 7695044995075532419, guid: 6690377a0914b5b4ebeda6f72a1e8da3, type: 3}
-  rangeSpawn: 10
+  rangeSpawn: 50
   spawnAmount: 5

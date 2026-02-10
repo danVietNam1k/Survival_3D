@@ -11,14 +11,22 @@ public class Door : MonoBehaviour {
 	}
 
 	void OnTriggerEnter (Collider other) {
-		anim.SetBool ("DoorOpen", true);
-		anim.SetBool ("DoorClose", false);
+		if (other.CompareTag("Player")) {
+            anim.SetBool("DoorOpen", true);
+            anim.SetBool("DoorClose", false);
+        }
+		
 
 	}
 
 	void OnTriggerExit (Collider other) {
-		anim.SetBool ("DoorOpen", false);
-		anim.SetBool ("DoorClose", true);
+        if (other.CompareTag("Player"))
+        {
+            anim.SetBool("DoorOpen", false);
+            anim.SetBool("DoorClose", true);
+        }
+
+       
 
 	}
 

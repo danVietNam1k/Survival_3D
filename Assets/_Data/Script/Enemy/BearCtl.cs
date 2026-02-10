@@ -52,6 +52,7 @@ public class BearCtl : MonoBehaviour
     }
     void SetTarget()
     {
+        if(agent.enabled == true) 
         agent.SetDestination(target.transform.position);
     }
    

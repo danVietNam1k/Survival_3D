@@ -17,10 +17,14 @@ MonoBehaviour:
   - How are you feeling? Oh, you're feeling better? That's great!
   - Where is this place? This is the island of freedom. It's nameless and isolated
     from the world.
+  - Anyway, you should go around and get to know the people here.
+  - You can talk to them, and who knows, they might need help.
   initialDialogClips:
   - {fileID: 8300000, guid: f4517750ec2d4454da3a5b7695899ac2, type: 3}
   - {fileID: 8300000, guid: cbcfc6d595ca4df44ab80aae1feebd90, type: 3}
   - {fileID: 8300000, guid: f37f11c7661a02b4fb58591ae9243e9a, type: 3}
+  - {fileID: 8300000, guid: 41c158db0876d624e9fd4be72cdacc19, type: 3}
+  - {fileID: 8300000, guid: 120172475d53bd04fa08563746b693ce, type: 3}
   acceptOption: 
   acceptAnswer: 
   acceptAnswerClip: {fileID: 0}

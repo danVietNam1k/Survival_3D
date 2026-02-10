@@ -245,7 +245,16 @@ public class NPC : MonoBehaviour
                 npcDialogText.text = currentActiveQuest.info.finalWords;
                 PlaySoundConvesation(currentActiveQuest.info.finalWordsClip);
                 StartCoroutine(EndTheConversation(currentActiveQuest.info.finalWordsClip));
+                if (quests.Count > activeQuestIndex)
+                {
+                    activeQuestIndex++;
+                    currentActiveQuest = quests[activeQuestIndex];
+                    currentDialog = 0;
+                    firstTimeInteraction = true;
+                }  
+             
                 return;
+
             }
             npcDialogText.text = currentActiveQuest.info.initialDialog[currentDialog];
             PlaySoundConvesation(currentActiveQuest.info.initialDialogClips[currentDialog]);

@@ -58,12 +58,6 @@ public class TheItemEquipping : MonoBehaviour
                 SoundManager.Instance.PlaySFX(sfx);
             }
         }
-       if(other.GetComponent<Animal>() != null)
-        {
-            other.GetComponent<Animal>().PlaySoundHitAnimal();
-        }
-
-
     }
     
     

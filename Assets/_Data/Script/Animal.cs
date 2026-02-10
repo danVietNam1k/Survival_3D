@@ -26,7 +26,8 @@ public class Animal : MonoBehaviour
     }
     public void TakeDamge(float damegeTakeIn)
     {
-        
+        if (isDeath) return;
+        PlaySoundHitAnimal();
         currentHealth -= damegeTakeIn;
         if (currentHealth <= 0)
         {
