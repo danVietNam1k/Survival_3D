@@ -12,7 +12,9 @@ public class BossStateInfo : MonoBehaviour
     bool phase2 = false;
     bool dead = false;
     public Slider healthSlider;
+    public Slider health2Slider;
     public GameObject checkPoint;
+    [SerializeField] private BossAudio bossAudio;
     void Start()
     {
         bossCtl = this.GetComponentInParent<BossCtl>();
@@ -24,7 +26,14 @@ public class BossStateInfo : MonoBehaviour
     void Update()
     {
         healthSlider.value = currentHealth/maxHealth;
-    
+        if(currentHealth > maxHealth)
+        {
+            float newHealth = currentHealth -maxHealth;
+            health2Slider.value = newHealth / maxHealth;
+        }else if(health2Slider.value !=0)
+        {
+            health2Slider.value = 0;
+        }
     }
     public void TakeDamge(float damge)
     {
@@ -38,13 +47,12 @@ public class BossStateInfo : MonoBehaviour
                 currentHealth = (maxHealth / 100) * maxHealthPersenPhase2;
                 bossCtl.animator.SetTrigger("Phase2");
                 StartCoroutine(WaitStartPhase2());
+                bossAudio.SoundScreamFX();
             }
             else
             {
                  BossTobeDead();
             }
-
-
         }
     }
     public bool IsDead() { 

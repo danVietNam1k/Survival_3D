@@ -91,6 +91,11 @@ public class SpawnCreature : MonoBehaviour
            
 
     }
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(this.transform.position, rangeSpawn); 
+    }
 }
     public enum CreatureType
     {

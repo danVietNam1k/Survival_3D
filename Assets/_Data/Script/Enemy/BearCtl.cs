@@ -31,7 +31,7 @@ public class BearCtl : MonoBehaviour
     public float distaneRamPos = 10f;
     Vector3 newPos;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
         obstacle = GetComponent<NavMeshObstacle>();
@@ -39,18 +39,29 @@ public class BearCtl : MonoBehaviour
         if (target == null) { target = ReferenceManager.Instance.player.transform; }
 
     }
+    private void OnEnable()
+    {
+    
+    }
 
     // Update is called once per frame
     void Update()
     {
-        if (GetComponent<Animal>().isDeath) return;
+        State();
+
+    }
+    void State()
+    {
+        if (GetComponent<Animal>().isDeath)
+        {
+            agent.isStopped = true;
+            return; }
         CheckState();
         Movement();
         SetAnimMove();
         SwitchNavMesh();
-
     }
-    void SetTarget()
+   public void SetTarget()
     {
         if(agent.enabled == true) 
         agent.SetDestination(target.transform.position);

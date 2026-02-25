@@ -49,7 +49,7 @@ public class CraftCtl : MonoBehaviour
         if (have2Require)
         {
            
-            rq2.text = amount2 + "/" + amountItemRq1 + " " + nameItemRq2.ToString();
+            rq2.text = amount2 + "/" + amountItemRq2 + " " + nameItemRq2.ToString();
             rq1.text = amount + "/" + amountItemRq1 + " " + nameItemRq1.ToString();
             if (amount >= amountItemRq1 && amount2 >=amountItemRq2)
             {

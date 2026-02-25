@@ -133,7 +133,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   action: 323
-  thisDamege: 0
+  thisDamege: 100
   thisItemInQuickSlot: {fileID: 0}
 --- !u!95 &752249016888883348
 Animator:
@@ -188,5 +188,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 0
   serializedVersion: 3
-  m_Size: {x: 0.16699219, y: 1.0142517, z: 0.26950073}
-  m_Center: {x: 0, y: 0.54676914, z: -0.015548706}
+  m_Size: {x: 0.16699219, y: 1.280802, z: 0.26950073}
+  m_Center: {x: 0, y: 0.6800443, z: -0.015548706}

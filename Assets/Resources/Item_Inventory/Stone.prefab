@@ -54,7 +54,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 101
   cannotTrash: 0
-  isSelected: 0
+  isSelected: 1
   enableEquip: 0
   stackable: 0
   itemInfoUI: {fileID: 0}
@@ -128,3 +128,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvas: {fileID: 0}
+  amountCurrent: 0

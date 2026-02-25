@@ -19,7 +19,7 @@ public class LoadSlot : MonoBehaviour
     {
         button.onClick.AddListener(() =>
         {
-            SaveManager.Instance.LoadAllGameData(slotNumber);
+            SaveManager.Instance.LoadGame(slotNumber);
         });
     }
     private void FixedUpdate()

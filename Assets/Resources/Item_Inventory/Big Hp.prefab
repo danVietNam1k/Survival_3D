@@ -54,12 +54,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 8
   cannotTrash: 1
-  isSelected: 0
+  isSelected: 1
   enableEquip: 0
   stackable: 0
   itemInfoUI: {fileID: 0}
   thisName: Big Hp
-  thisDescription: 
+  thisDescription: Restore full health with just this
   thisFunctionality: 
   isConsumable: 1
   healthEffect: 100
@@ -93,7 +93,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: ee148b87ba7b2444fb11b709f559e8df, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f4beffb19cb1aaf479afd42db16d2778, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -128,3 +128,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvas: {fileID: 0}
+  amountCurrent: 0

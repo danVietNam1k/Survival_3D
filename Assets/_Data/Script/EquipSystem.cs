@@ -149,7 +149,8 @@ public class EquipSystem : MonoBehaviour
                 }
                 selectedItem = GetSelectedItem(number);
                 selectedItem.GetComponent<InventoryItem>().isSelected = true;
-                SetEquippedModel(selectedItem.name, selectedItem);
+                string itemName = selectedItem.GetComponent<InventoryItem>().thisName;
+                SetEquippedModel(itemName, selectedItem);
 
 
 

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using static UnityEngine.ParticleSystem;
 
@@ -16,12 +17,17 @@ public class DanChu : MonoBehaviour
     public Transform casingPos;
     public ParticleSystem[] particle;
     public GameObject lightFX;
-   
+   [SerializeField] private int maxMunition = 7;
+    int currentMunition = 0;
+    [SerializeField] private TextMeshProUGUI amountBullet;
+
     // Start is called before the first frame update
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
         animator = GetComponent<Animator>();
+        amountBullet.text = currentMunition.ToString();
+
     }
 
     // Update is called once per frame
@@ -36,21 +42,28 @@ public class DanChu : MonoBehaviour
         if (shootCount > 0)  return;
         if (Input.GetMouseButtonDown(0)&& canFire)
         {
-            //StartCoroutine(effectShooting());
+            if(currentMunition > 0)
+            { //StartCoroutine(effectShooting());
+                currentMunition--;
+                EffectShooting();
+                audioSource.PlayOneShot(shootClip);
+                CasingBullet();
+                animator.SetTrigger("Shoot");
+                Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f));
+                if (Physics.Raycast(ray, out var hitInfo))
+                {
 
-            EffectShooting();
-            audioSource.PlayOneShot(shootClip);
-            CasingBullet();
-            animator.SetTrigger("Shoot");
-            Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f,0.5f));
-            if (Physics.Raycast(ray, out var hitInfo) )
-            {
-              
-                hitInfo.transform.GetComponent<Animal>()?.TakeDamge(damage);
-                hitInfo.transform.GetComponent<BossCtl>()?.TakeDamge(damage);
+                    hitInfo.transform.GetComponent<Animal>()?.TakeDamge(damage);
+                    hitInfo.transform.GetComponent<BossCtl>()?.TakeDamge(damage);
+                }
+                shootCount = 0.5f;
             }
-            shootCount = 0.5f;
+            else
+            {
+                audioSource.PlayOneShot(noButton);
+            }
 
+            amountBullet.text = currentMunition.ToString();
         }
     }
     void EffectShooting()
@@ -78,6 +91,7 @@ public class DanChu : MonoBehaviour
             animator.SetTrigger("Reloading");
             canFire = false;
             StartCoroutine(WaitStatesToFire());
+
         }
     }
     void CasingBullet()
@@ -98,6 +112,8 @@ public class DanChu : MonoBehaviour
     {
 
         yield return new WaitForSeconds(3);
+        currentMunition = maxMunition;
+        amountBullet.text = currentMunition.ToString();
         canFire = true;
     }
     }

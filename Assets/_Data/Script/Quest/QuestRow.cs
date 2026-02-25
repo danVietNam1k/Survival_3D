@@ -33,6 +33,13 @@ public class QuestRow : MonoBehaviour
         
 
         coinAmount.text = $"{quest.info.coinReward}" + " Coin";
+        SetImage(quest);
+
+
+        SetTrackingButton();
+    }
+    void SetImage(Quest quest)
+    {
         if (quest.info.rewardItem1 != "")
         {
             firstReward.sprite = GetSpriteForItem(quest.info.rewardItem1);
@@ -53,8 +60,6 @@ public class QuestRow : MonoBehaviour
         {
             secondReward.gameObject.SetActive(false);
         }
-       
-        SetTrackingButton();
     }
     public void SetTrackingButton()
     {
@@ -105,6 +110,7 @@ public class QuestRow : MonoBehaviour
         coinAmount.text = $"{quest.info.coinReward}" + " Coin";
         firstRewardName.text = $"{quest.info.firstRequirementAmount}" + " " + quest.info.firstRequirmentItem;
         secondRweardName.text = quest.info.secondRequirementAmount + " " + quest.info.secondRequirmentItem;
+        SetImage(quest);
     }
     Sprite GetSpriteForItem(string itemName)
     {

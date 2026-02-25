@@ -14,6 +14,7 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
     public static GameObject itemBeingDragged;
     Vector3 startPosition;
     Transform startParent;
+    public int amountCurrent;
 
 
 
@@ -36,6 +37,7 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
         startParent = transform.parent;
         transform.SetParent(canvas.transform.root);
         itemBeingDragged = gameObject;
+        TakeAmount(startParent);
 
     }
 
@@ -57,6 +59,7 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
         {
             transform.position = startPosition;
             transform.SetParent(startParent);
+            SetAmount(startParent);
 
         }
         else
@@ -67,7 +70,22 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
         canvasGroup.alpha = 1f;
         canvasGroup.blocksRaycasts = true;
     }
-
+    void TakeAmount(Transform startParent)
+    {
+        if (GetComponent<InventoryItem>().stackable)
+        {
+            amountCurrent = startParent.GetComponent<ItemSlot>().amount;
+            startParent.GetComponent<ItemSlot>().amount = 0;
+        }
+    }
+    public void SetAmount(Transform newParent)
+    {
+        if (GetComponent<InventoryItem>().stackable)
+        {
+            newParent.GetComponent<ItemSlot>().amount = amountCurrent;
+        }
+    }
+    
 
 
 }

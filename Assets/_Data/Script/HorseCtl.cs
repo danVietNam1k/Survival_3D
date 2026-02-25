@@ -136,7 +136,7 @@ public class HorseController : MonoBehaviour
         rider.SetParent(saddlePoint);
         rider.localPosition = Vector3.zero;
         rider.localRotation = Quaternion.identity;
-
+        rider.Find("Head/PlayerCamera").localRotation = Quaternion.identity;
         // Disable player movement
         player.GetComponent<FirstPersonController>().enabled = false; 
     }

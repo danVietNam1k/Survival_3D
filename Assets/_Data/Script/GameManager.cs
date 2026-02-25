@@ -77,4 +77,17 @@ public class GameManager : MonoBehaviour
             return true;
         else return false;
     }
+    public bool UnableAction()
+    {
+
+        if (
+            InventorySystem.Instance.isOpeningChest ||
+            InventorySystem.Instance.isOpeningShop ||
+            DialogSystem.Instance.thePlayerTalking
+             || PlayerState.Instance.isPlayerdead||
+             InventorySystem.Instance.isOpenInventory
+            )
+            return true;
+        else return false;
+    }
 }

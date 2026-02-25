@@ -109,7 +109,6 @@ public class CutSceneManager : MonoBehaviour
         currentCutscene.Play();
 
         OnCutsceneStart();
-        Debug.Log($"?? Play Cutscene: {currentCutscene.name}");
     }
     public void Skip()
     {
@@ -117,14 +116,12 @@ public class CutSceneManager : MonoBehaviour
 
         currentCutscene.time = currentCutscene.duration;
         currentCutscene.Evaluate();
-
         EndCutscene();
     }
     private void EndCutscene()
     {
         currentCutscene.stopped -= OnCutsceneFinished;
 
-        Debug.Log($"✅ End Cutscene: {currentCutscene.name}");
 
         isPlayingCutScene = false;
         currentCutscene = null;

@@ -136,7 +136,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18d8f0ce2bf58f7469a64a32e37a2dfc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ItemName: Stone
+  ItemName: Bearskin
   showHp: 0
   CanHit: 0
   maxHealth: 0

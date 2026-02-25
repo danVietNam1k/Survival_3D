@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 
 public class JumpAtkState : IState
@@ -13,12 +14,13 @@ public class JumpAtkState : IState
     }
     public void Enter()
     {
-        ctl.EnterStateAtk(damge);
         ctl.agent.enabled = false;
         ctl.animator.SetTrigger("JumpAtk");
-        ctl.triggerDamge.damge = damge;
 
         countTime = 2.4f;
+        ctl.EnterStateAtk(damge);
+        Debug.Log("enter jumpState");
+
     }
 
     public void Execute()
@@ -35,5 +37,10 @@ public class JumpAtkState : IState
     {
         ctl.agent.enabled = true;
         ctl.ExitStateAtk();
+    }
+    IEnumerator WaitAtk()
+    {
+        yield return new WaitForSeconds(1.1f);
+        ctl.EnterStateAtk(damge);
     }
 }

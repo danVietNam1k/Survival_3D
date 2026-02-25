@@ -27,17 +27,22 @@ public class MenuManager : MonoBehaviour
     }
     private IEnumerator LoadAndApplySettings()
     {
-        LoadAndSetVolume();
 
         yield return new WaitForSeconds(0.1f);
+        LoadAndSetVolume();
+
     }
     void LoadAndSetVolume()
     {
         VolumeSettings volumeSettings = SaveManager.Instance.LoadVolumeSettings();
+        if (volumeSettings != null)
+        {
             matterSlider.value = volumeSettings.master;
             sfxSlider.value = volumeSettings.effects;
             musicSlider.value = volumeSettings.music;
-        print("Load and set volume");
+            print("Load and set volume");
+
+        }
 
     }
 

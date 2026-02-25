@@ -40,12 +40,12 @@ MonoBehaviour:
   finalWords: Rabbit meat is delicious, but they are so cute, I can't bring myself
     to kill them. Thank you for your help.
   finalWordsClip: {fileID: 8300000, guid: 8f000f634433050429fbf96d7d450295, type: 3}
-  coinReward: 25
-  rewardItem1: Stone
-  rewardItem2: Stone
-  firstRequirmentItem: Stick
+  coinReward: 200
+  rewardItem1: 
+  rewardItem2: 
+  firstRequirmentItem: Raw meat
   firstRequirementAmount: 3
-  secondRequirmentItem: Stone
-  secondRequirementAmount: 3
+  secondRequirmentItem: 
+  secondRequirementAmount: 0
   hasCheckpoints: 0
   checkpoints: []

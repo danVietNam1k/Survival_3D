@@ -48,6 +48,7 @@ public class BossCtl : MonoBehaviour
     private void Awake()
     {
         stateMachine = new StateMachine(this);
+        
     }
     private void Update()
     {
@@ -116,8 +117,12 @@ public class BossCtl : MonoBehaviour
     }
     public void EnterStateAtk(float damge)
     {
-        agent.isStopped = true;
-        notChangeState = true;
+        if(agent.enabled)
+        {
+            agent.isStopped = true;
+            notChangeState = true;
+        }
+        
         triggerDamge.damge = damge;
     }
     private void OnDrawGizmos()

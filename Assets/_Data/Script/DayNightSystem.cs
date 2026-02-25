@@ -36,7 +36,7 @@ public class DayNightSystem : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        EnviromentLight();
+        EnvironmentLight();
 
     }
     void UpdateSkybox()
@@ -79,28 +79,54 @@ public class DayNightSystem : MonoBehaviour
         }
         SwitchlightMoonSun();
     }
-    void EnviromentLight()
-    {
-        if (currenthour >= 6f && currenthour <= 17f)
-        {
-            if (valueBright < 200f)
-            {
-                valueBright += Time.deltaTime * dayDurationInSeconds;
-                float i = valueBright / 255f;
-                RenderSettings.ambientLight =new Color(i, i, i);
+    // void EnviromentLight()
+    // {
+    //     if (currenthour >= 6f && currenthour <= 19f)
+    //     {
+    //         if (valueBright < 200f)
+    //         {
+    //             valueBright += Time.deltaTime / (dayDurationInSeconds/60);
+    //             float i = valueBright / 255f;
+    //             RenderSettings.ambientLight =new Color(i, i, i);
                 
-            }
-        }
-        else
-        {
-            if (valueBright > 0f)
-            {
-                valueBright -= Time.deltaTime * dayDurationInSeconds;
-                float i = valueBright / 255f;
-                RenderSettings.ambientLight = new Color(i, i, i);
-            }
-        }
-    }
+    //         }
+    //     }
+    //     else
+    //     {
+    //         if (valueBright > 0f)
+    //         {
+    //             valueBright -= Time.deltaTime * dayDurationInSeconds;
+    //             float i = valueBright / 255f;
+    //             RenderSettings.ambientLight = new Color(i, i, i);
+    //         }
+    //     }
+    // }
+    void EnvironmentLight()
+{
+    float targetBrightness = GetTargetBrightness(currenthour);
+
+    valueBright = Mathf.Lerp(valueBright, targetBrightness * 200f, Time.deltaTime * 2f);
+
+    float i = valueBright / 255f;
+    RenderSettings.ambientLight = new Color(i, i, i);
+}
+
+float GetTargetBrightness(float hour)
+{
+    if (hour < 5f || hour >= 20f)
+        return 0f;
+
+    if (hour >= 5f && hour < 7f)
+        return Mathf.InverseLerp(5f, 7f, hour);
+
+    if (hour >= 7f && hour < 18f)
+        return 1f;
+
+    if (hour >= 18f && hour < 20f)
+        return Mathf.InverseLerp(20f, 18f, hour);
+
+    return 0f;
+}
     void SwitchlightMoonSun()
     {
         if (currenthour >= 6f && currenthour <= 17f)

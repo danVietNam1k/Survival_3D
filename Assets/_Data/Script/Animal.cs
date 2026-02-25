@@ -27,12 +27,18 @@ public class Animal : MonoBehaviour
     public void TakeDamge(float damegeTakeIn)
     {
         if (isDeath) return;
-        PlaySoundHitAnimal();
         currentHealth -= damegeTakeIn;
+
         if (currentHealth <= 0)
         {
+            isDeath = true;
             currentHealth = 0;
             StateDeadOfAnimal(animator);
+        }
+        else
+        {
+            PlaySoundHitAnimal();
+            GetComponent<BearCtl>()?.SetTarget();
         }
 
     }
@@ -40,10 +46,12 @@ public class Animal : MonoBehaviour
     {
         //obj = Instantiate(Resources.Load<GameObject>("Item_obj/Meat"));
         //obj.transform.position = this.transform.position;
-        isDeath = true;
         PlaySound("Death");
         animator.SetTrigger("isDying");
-        GetComponent<Rigidbody>().isKinematic = true;
+        if (GetComponent<Rigidbody>())
+        {
+            GetComponent<Rigidbody>().isKinematic = true;
+        }
         bloodFX.SetActive(true);
         GetComponent<ItemFallout>()?.FallOutItem();
         StartCoroutine(WaitForDestroyAnimal());
@@ -53,6 +61,7 @@ public class Animal : MonoBehaviour
     {
         currentHealth = maxHealth;
         isDeath = false ;
+        bloodFX?.SetActive(false);
 
     }
     IEnumerator WaitForDestroyAnimal()

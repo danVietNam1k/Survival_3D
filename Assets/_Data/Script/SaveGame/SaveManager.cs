@@ -166,7 +166,7 @@ public class SaveManager : MonoBehaviour
     }
     #endregion
 
-    public void LoadAllGameData(int slotNumber)
+    public void LoadGame(int slotNumber)
     {
         StartCoroutine(WaitLoadSceneToLoadData( slotNumber));
     }
@@ -186,16 +186,13 @@ public class SaveManager : MonoBehaviour
         //LoadSaveData(slotNumber);
     }
     void LoadSaveData(int slotNumber)
-    {
+    {   if (slotNumber == -1) return;// new game
         AllGameData allGameData = LoadGameDataFromJsonFile(slotNumber);
         // Player Data
         SetPlayerData(allGameData.playerData);
         SetEnviromentData(allGameData.enviromentData);
     }
     #endregion
-
-
-
 
     #region  -------------Setting Section--------------------
     [System.Serializable]
@@ -289,6 +286,8 @@ public class SaveManager : MonoBehaviour
         TextMeshProUGUI newTxt = canvasLoadingScene.GetComponentInChildren<TextMeshProUGUI>();
         newTxt.text = "Loading...";
         isLoading =true;
+        print("Load start");
+
 
     }
     public void DisableLoadingScene()
@@ -297,6 +296,8 @@ public class SaveManager : MonoBehaviour
         TextMeshProUGUI newTxt = canvasLoadingScene.GetComponentInChildren<TextMeshProUGUI>();
         newTxt.text = "Press any button...";
         Time.timeScale = 0;
+
+        print("Load done");
         
        
     }

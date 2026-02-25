@@ -49,6 +49,7 @@ public class ItemSlot : MonoBehaviour, IDropHandler
         { 
                 DragDrop.itemBeingDragged.transform.SetParent(transform);
                 DragDrop.itemBeingDragged.transform.localPosition = new Vector2(0, 0);
+                 DragDrop.itemBeingDragged.GetComponent<DragDrop>().SetAmount(this.transform);
                 print(Item.name);
         }
     }

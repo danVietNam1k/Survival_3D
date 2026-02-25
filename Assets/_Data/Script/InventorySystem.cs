@@ -75,6 +75,7 @@ public class InventorySystem : MonoBehaviour
             inventoryScreenUI.SetActive(isOpenInventory);
             ThrowItemAreaUI.SetActive(isOpenInventory);
             MenuScreen.SetActive(inventoryScreenUI.activeSelf);
+            ItemInforUI.gameObject.SetActive(false);
             TurnOffInMenu();
 
 
@@ -131,8 +132,7 @@ public class InventorySystem : MonoBehaviour
         {
            
             itemToAdd = Instantiate(Resources.Load<GameObject>("Item_Inventory/"+itemName));
-
-            if(popupTurnOn) OpenPopupItem(itemName, itemToAdd);
+            if (popupTurnOn) OpenPopupItem(itemName, itemToAdd);
             print("add item");
             if (ItemStackable(itemToAdd)) {
                 AddItemStackable(itemToAdd,itemName);
@@ -150,6 +150,8 @@ public class InventorySystem : MonoBehaviour
         itemToAdd.transform.SetParent(whatSlotToAdd.transform);
         itemToAdd.name = itemName;
         itemToAdd.transform.localPosition = Vector3.zero;
+        itemToAdd.transform.localScale = Vector3.one;
+
         whatSlotToAdd.GetComponent<ItemSlot>().amount = 1;
         CraftingSystem.Instance.RefreshNeededItems();
         QuestManager.Instance.RefreshTrackerAmountItem();
@@ -285,7 +287,7 @@ public class InventorySystem : MonoBehaviour
         inforItemPopup.SetActive(true);
         Sprite itemImgae = item.GetComponent<Image>().sprite;
         Transform popup = inforItemPopup.transform.Find("Popup");
-        popup.gameObject.SetActive(true);
+        //popup.gameObject.SetActive(true);
         popup.Find("Image").GetComponent<Image>().sprite = itemImgae;
         popup.Find("Text").GetComponent<Text>().text = itemName;
 

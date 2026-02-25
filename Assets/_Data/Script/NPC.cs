@@ -369,15 +369,16 @@ public class NPC : MonoBehaviour
     {
         QuestManager.Instance.MarkQuestCompleted(currentActiveQuest);
         currentActiveQuest.isCompleted = true;
-        var coinsRecievec = currentActiveQuest.info.coinReward;
+        InventorySystem invenSystem = InventorySystem.Instance;
+        invenSystem.currentMonney += currentActiveQuest.info.coinReward;
         
         if(currentActiveQuest.info.rewardItem1 != "")
         {
-            InventorySystem.Instance.AddItemToInventoryAndPopup(currentActiveQuest.info.rewardItem1, true);
+            invenSystem.AddItemToInventoryAndPopup(currentActiveQuest.info.rewardItem1, true);
         }
         if (currentActiveQuest.info.rewardItem2 != "")
         {
-            InventorySystem.Instance.AddItemToInventoryAndPopup(currentActiveQuest.info.rewardItem2, true);
+            invenSystem.AddItemToInventoryAndPopup(currentActiveQuest.info.rewardItem2, true);
         }
         activeQuestIndex++;
         // start next quest

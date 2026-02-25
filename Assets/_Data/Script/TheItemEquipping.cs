@@ -17,7 +17,7 @@ public class TheItemEquipping : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(action) && !InventorySystem.Instance.isOpenInventory)
+        if (Input.GetKeyDown(action) && !GameManager.Instance.UnableAction())
         {
             animator.SetTrigger("Action");
         }

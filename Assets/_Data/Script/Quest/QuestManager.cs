@@ -52,9 +52,8 @@ public class QuestManager : MonoBehaviour
     }
     public void MarkQuestCompleted(Quest quest)
     {
-        allActiveQuest.Remove(quest);
-
         allCompletedQuests.Add(quest);
+        allActiveQuest.Remove(quest);
         RefreshQuestList();
 
     }
@@ -72,9 +71,21 @@ public class QuestManager : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
+     
+
+        foreach (Quest completedQuest in allCompletedQuests)
+        {
+            GameObject questPrefab = Instantiate(completedQuestPrefab, Vector3.zero, Quaternion.identity);
+            questPrefab.transform.SetParent(questMenuContent.transform, false);
+            QuestRow qRow = questPrefab.GetComponent<QuestRow>();
+            tracker.StopTrackingQuest();
+            qRow.FininhQuestRow(completedQuest);
+
+
+        }
         foreach (Quest activeQuest in allActiveQuest)
         {
-            if(isTrackingPrevious != null)
+            if (isTrackingPrevious != null)
             {
                 isTrackingPrevious.isTracking = false;
                 isTrackingPrevious.SetTrackingButton();
@@ -85,18 +96,6 @@ public class QuestManager : MonoBehaviour
             qRow.StartQuestRow(activeQuest);
             isTrackingPrevious = qRow;
             SetNewTrackingQuest(activeQuest);
-        }
-
-        foreach (Quest completedQuest in allCompletedQuests)
-        {
-            GameObject questPrefab = Instantiate(completedQuestPrefab, Vector3.zero, Quaternion.identity);
-            questPrefab.transform.SetParent(questMenuContent.transform, false);
-            QuestRow qRow = questPrefab.GetComponent<QuestRow>();
-
-            qRow.FininhQuestRow(completedQuest);
-            
-            tracker.StopTrackingQuest();
-
         }
 
     }

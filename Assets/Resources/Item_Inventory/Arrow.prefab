@@ -55,13 +55,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 301
   cannotTrash: 1
-  isSelected: 0
+  isSelected: 1
   enableEquip: 0
   stackable: 1
   itemInfoUI: {fileID: 0}
   thisName: Arrow
-  thisDescription: 
-  thisFunctionality: 
+  thisDescription: made from sticks
+  thisFunctionality: combined with a bow for use.
   isConsumable: 0
   healthEffect: 30
   caloriesEffect: 200
@@ -129,6 +129,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvas: {fileID: 0}
+  amountCurrent: 0
 --- !u!1 &9120601336711443148
 GameObject:
   m_ObjectHideFlags: 0

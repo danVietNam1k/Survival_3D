@@ -701,6 +701,7 @@ GameObject:
   - component: {fileID: 4094092594215799321}
   - component: {fileID: 4640627199793907317}
   - component: {fileID: 1426497628346255734}
+  - component: {fileID: 8563069947431841878}
   - component: {fileID: 6036966091868900943}
   m_Layer: 5
   m_Name: QuestRowCompleted
@@ -757,6 +758,37 @@ MonoBehaviour:
   trackingBTN: {fileID: 6171118424653379047}
   isTracking: 0
   isActive: 0
+  coinAmount: {fileID: 6942241955006959356}
+  firstReward: {fileID: 8753014920886763156}
+  secondReward: {fileID: 1334031407778397583}
+  firstRewardName: {fileID: 2739280702793855767}
+  secondRweardName: {fileID: 2870770318276985267}
+  quest:
+    questGiver: 
+    questName: 
+    description: 
+    accepted: 0
+    declined: 0
+    initialDialogCompleted: 0
+    isCompleted: 0
+    hasNoRequirement: 0
+    info: {fileID: 0}
+  tracker: {fileID: 0}
+--- !u!114 &8563069947431841878
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5984721166575460416}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50851a8dea86b124eba3020c228d225b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  questName: {fileID: 4895048374424164769}
+  questGiver: {fileID: 8070405385215250422}
+  trackingBTN: {fileID: 6171118424653379047}
   coinAmount: {fileID: 6942241955006959356}
   firstReward: {fileID: 8753014920886763156}
   secondReward: {fileID: 1334031407778397583}
